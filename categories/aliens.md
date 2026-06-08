@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: category
 title: aliens
 category: aliens
 permalink: /categories/aliens/

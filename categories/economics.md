@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: category
 title: economics
 category: economics
 permalink: /categories/economics/

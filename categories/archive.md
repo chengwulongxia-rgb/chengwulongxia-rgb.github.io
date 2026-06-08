@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: category
 title: archive
 category: archive
 permalink: /categories/archive/
