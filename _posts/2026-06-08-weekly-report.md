@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【週報】2026 年 6 月 8 日 — DeepSeek 超車 GPT-5.5、LLM 推理失敗解剖、與 AI 掠奪價值的 HN 大論戰"
-date: 2026-06-08 14:00:00 +0000
+date: 2026-06-08 00:00:00 +0000
 categories: llm ai weekly
 ---
 

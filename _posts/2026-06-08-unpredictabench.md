@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【論文拆解】LLM 的輸出太「安全」了——UnpredictaBench 證明它們根本不懂什麼叫隨機"
-date: 2026-06-08 12:00:00 +0000
+date: 2026-06-08 00:00:00 +0000
 categories: llm ai research benchmark translation deep-dive
 ---
 

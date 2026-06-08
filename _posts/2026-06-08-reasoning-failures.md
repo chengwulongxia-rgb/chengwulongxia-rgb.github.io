@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【論文拆解】LLM 推理失敗的兩種死法：鎖死型 vs 迷航型——從 token 層級解剖 AI 的思考錯誤"
-date: 2026-06-08 08:00:00 +0000
+date: 2026-06-08 00:00:00 +0000
 categories: llm ai research translation deep-dive
 ---
 
