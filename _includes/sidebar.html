@@ -1,0 +1,15 @@
+<aside class="sidebar">
+  <h3 class="sidebar-heading">分類標籤</h3>
+  <ul class="tag-list">
+    {%- for category in site.categories -%}
+      {%- assign cat_name = category[0] -%}
+      {%- assign cat_posts = category[1] -%}
+      <li>
+        <a href="{{ '/categories/' | append: cat_name | append: '/' | relative_url }}">
+          {{ cat_name }}
+          <span class="tag-count">{{ cat_posts.size }}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</aside>

@@ -302,6 +302,79 @@ a:hover {
   text-decoration: none;
 }
 
+/* ===== Homepage Two-Column Layout ===== */
+.home-layout {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 2.5rem;
+  align-items: start;
+}
+.home-main {
+  min-width: 0;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  position: sticky;
+  top: 1.5rem;
+}
+.sidebar-heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.tag-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tag-list li {
+  margin-bottom: 0.25rem;
+}
+.tag-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: 3px;
+  transition: background 0.15s;
+}
+.tag-list a:hover {
+  background: var(--bg-secondary);
+  text-decoration: none;
+}
+.tag-count {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 1px 6px;
+  border-radius: 8px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Mobile: stack sidebar below */
+@media (max-width: 700px) {
+  .home-layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+    order: 2;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+}
+
 /* ===== About Page ===== */
 .about-card {
   margin: 2rem 0;
