@@ -27,14 +27,9 @@ layout: base
       {%- for post in posts -%}
       <li>
         <span class="post-meta">{{ post.date | date: date_format }}
-        <!-- DEBUG: categories={{ post.categories | jsonify }} -->
-        {% if post.categories %}
-          <span class="post-categories-list">
-          {% for category in post.categories %}
-            <a class="post-category" href="{{ '/categories/' | append: category | relative_url }}">{{ category }}</a>
-          {% endfor %}
-          </span>
-        {% endif %}
+        {% for category in post.categories %}
+          <a class="post-category" href="/chengwulongxia-rgb/categories/{{ category }}">{{ category }}</a>
+        {% endfor %}
         </span>
         <h3>
           <a class="post-link" href="{{ post.url | relative_url }}">
