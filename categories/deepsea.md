@@ -1,5 +1,5 @@
 ---
-layout: category
+layout: page
 title: deepsea
 category: deepsea
 permalink: /categories/deepsea/

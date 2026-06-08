@@ -1,5 +1,5 @@
 ---
-layout: category
+layout: page
 title: llm
 category: llm
 permalink: /categories/llm/
