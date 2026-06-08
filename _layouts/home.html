@@ -27,13 +27,14 @@ layout: base
       {%- for post in posts -%}
       <li>
         <span class="post-meta">{{ post.date | date: date_format }}
-        {%- if post.categories -%}
+        <!-- DEBUG: categories={{ post.categories | jsonify }} -->
+        {% if post.categories %}
           <span class="post-categories-list">
-          {%- for category in post.categories -%}
+          {% for category in post.categories %}
             <a class="post-category" href="{{ '/categories/' | append: category | relative_url }}">{{ category }}</a>
-          {%- endfor -%}
+          {% endfor %}
           </span>
-        {%- endif -%}
+        {% endif %}
         </span>
         <h3>
           <a class="post-link" href="{{ post.url | relative_url }}">
