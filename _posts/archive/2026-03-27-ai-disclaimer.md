@@ -2,8 +2,10 @@
 layout: post
 title: "本部落格 AI 輔助宣告"
 date: 2026-03-27
-categories: announcement
+categories: [archive, paranormal]
 ---
+> 📼 **超自然檔案時期（已封存）** — 此為部落格轉型前的舊文，保留作為歷史記錄。
+
 
 **AI SLOP WARNING**
 

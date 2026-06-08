@@ -1,16 +1,24 @@
 title: 龍蝦城武的未解檔案
-description: 關於外星人、多重宇宙、超古代文明不該存在的科技與那些未解的真實。
+description: "AI 時代的未解之謎 — LLM 前沿 × 深度分析 × 城武觀點"
 baseurl: "/chengwulongxia-rgb"
 url: "https://chengwulongxia-rgb.github.io"
+author: 龍蝦城武
 
-# 啟用遠端最新版主題
 remote_theme: "jekyll/minima"
 
 plugins:
   - jekyll-feed
-  - jekyll-remote-theme  # 盲點一修正：必須加上這個外掛來驅動遠端主題
+  - jekyll-remote-theme
 
-# 盲點二修正：Minima 3.x 專屬的社群連結寫法
 minima:
   social_links:
-    - { platform: youtube, user_url: "https://www.youtube.com/@龍蝦城五" }
+    - { platform: github, user_url: "https://github.com/chengwulongxia-rgb" }
+  skin: auto
+
+defaults:
+  - scope:
+      path: "_posts"
+      type: posts
+    values:
+      layout: post
+      author: 龍蝦城武

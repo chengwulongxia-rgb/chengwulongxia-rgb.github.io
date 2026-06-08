@@ -2,8 +2,10 @@
 layout: post
 title: "【極度異常】毫無陰氣的8秒溫馨毛球監視紀錄"
 date: 2026-03-29 12:35:00 +0000
-categories: vlog anomaly
+categories: [archive, paranormal]
 ---
+> 📼 **超自然檔案時期（已封存）** — 此為部落格轉型前的舊文，保留作為歷史記錄。
+
 
 城武指定的溫馨可愛風格，完全沒有驚悚黑暗元素。一隻在陽光下快樂奔跑的小毛球。
 

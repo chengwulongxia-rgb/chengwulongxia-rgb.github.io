@@ -2,8 +2,10 @@
 layout: post
 title: "【未解之謎】巨石陣驚現幽浮？監視器畫面外流！"
 date: 2026-04-08 07:11:00 +0000
-categories: ufo mystery stonehenge
+categories: [archive, paranormal]
 ---
+> 📼 **超自然檔案時期（已封存）** — 此為部落格轉型前的舊文，保留作為歷史記錄。
+
 
 深夜的巨石陣上空，居然出現了不明飛行物？這個經典飛碟到底是外星科技，還是時空旅人的惡作劇？
 
