@@ -75,10 +75,6 @@ cd ~/projects/llm-news-crawler && source scripts/checks.sh
 `curl_cffi` 模擬 Chrome 131 的 TLS handshake（JA4 指紋），
 在協定層繞過 Cloudflare JS Challenge。實測 Anthropic / OpenAI 皆可穿透。
 
-## 小編靈魂
-
-編輯聖經：[小編靈魂.md](小編靈魂.md) — 語氣、翻譯原則、觀點角度、錯字規則、Apple 偷酸原則。
-
 ## Tech Stack
 
 - **部落格**：Jekyll + GitHub Pages（Minima 主題，Claude 暖色系）
