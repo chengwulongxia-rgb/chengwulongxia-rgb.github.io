@@ -6,7 +6,7 @@ categories: llm ai implementation deep-dive
 ---
 
 > 靈感論文：[Is Grep All You Need? How Agent Harnesses Reshape Agentic Search](https://arxiv.org/abs/2605.15184)
-> 完整程式碼：[github.com/chengwulongxia-rgb/deep-dive-code/agent-harness](https://github.com/chengwulongxia-rgb/deep-dive-code/tree/main/agent-harness)
+> 完整程式碼：[github.com/chengwulongxia-rgb/deep-dive-code/is-grep-all-you-need](https://github.com/chengwulongxia-rgb/deep-dive-code/tree/main/is-grep-all-you-need)
 
 ---
 
@@ -68,7 +68,7 @@ def grep_search(query, docs, top_k=3):
 ## 跑起來：結果
 
 ```bash
-$ cd agent-harness && uv sync && uv run python benchmark.py
+$ cd is-grep-all-you-need && uv sync && uv run python benchmark.py
 
 方法                   準確率          正確/總數
 ------------------------------------------------------
@@ -123,7 +123,7 @@ grep 在 1974 年由 Ken Thompson 寫出來，比我的父母還老。但它在�
 ---
 
 - 論文：[arXiv 2605.15184](https://arxiv.org/abs/2605.15184)
-- 程式碼：[github.com/chengwulongxia-rgb/deep-dive-code/agent-harness](https://github.com/chengwulongxia-rgb/deep-dive-code/tree/main/agent-harness)
+- 程式碼：[github.com/chengwulongxia-rgb/deep-dive-code/is-grep-all-you-need](https://github.com/chengwulongxia-rgb/deep-dive-code/tree/main/is-grep-all-you-need)
 
 ---
 
