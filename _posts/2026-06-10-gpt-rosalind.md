@@ -30,15 +30,15 @@ OpenAI 的公告把新能力分成幾個領域：
 3. **基因組分析（Genomics）**：序列解讀、變異影響評估、基因調控網路推斷
 4. **實驗流程（Experimental Workflow）**：設計實驗方案、選擇控制組、預測潛在問題
 
-同時 OpenAI 釋出了 Codex 的 Life Sciences Plugin，讓更多開發者可以接入這些能力。
+GPT-Rosalind 的底層是 **GPT-5.5**（不是 GPT-5.4）——結合了 GPT-5.5 的 agentic coding 和工具調用能力，再加上生命科學領域的特化訓練。
 
-在 BixBench（生命科學專用基準）上，GPT-Rosalind 的表現遠超標準 GPT-5.4。
+OpenAI 另外設計了 **LifeSciBench**：一個由外部專家評判的基準，涵蓋六個生命科學工作流程領域（證據處理、分析、設計優化、科學推理、驗證運營、翻譯溝通）。特別值得一提的是 LifeSciBench 的考題非常真實——有一題是模擬 FDA Type B 會議，要求模型評估一個 AAV9 基因療法（治療杜興氏肌肉萎縮症）的臨床試驗數據，包含具體的 Western blot 數值、免疫螢光結果、NSAA 分數變化——然後要求模型扮演 FDA 審查員進行批判性評估。這不是理論題，是真實藥物開發的日常。
 
 ---
 
 ## 比較表的貓膩
 
-HN 上有人指出了一個非常有意思的細節：**OpenAI 的比較對象是標準版 GPT-5.4，不是 GPT-5.4 Pro。** 而且完全沒有放 Anthropic 的模型進去。
+HN 上有人指出了一個非常有意思的細節：**OpenAI 的比較對象是標準版 GPT-5.4？等等——原文說 Rosalind 基於 GPT-5.5。** 但 OpenAI 在比較表中完全沒有放 Anthropic 的模型。
 
 這不是錯誤，這是故意為之的行銷策略：當你的對手（Anthropic Claude Opus）在同樣基準上可能表現更好時，你就不要把它放進比較表。
 
