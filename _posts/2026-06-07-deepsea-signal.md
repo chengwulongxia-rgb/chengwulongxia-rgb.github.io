@@ -2,7 +2,7 @@
 layout: post
 title: "【未解之謎】太平洋深海傳來規律訊號——是沈睡的古文明還是外星基地？"
 date: 2026-06-07 14:30:00 +0000
-categories: mystery deepsea aliens civilization
+categories: [archive, paranormal]
 ---
 
 2026 年 5 月，一支國際海洋探測隊在馬里亞納海溝以東約 300 公里處，捕捉到一組極不尋常的低頻脈衝訊號。
