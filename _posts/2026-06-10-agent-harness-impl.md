@@ -84,6 +84,8 @@ MiniLM-L6-v2（向量）    35%            7/20
 
 grep 贏了 20 個百分點。不是小贏，是輾壓。
 
+![grep vs 向量搜尋準確率比較]({{ site.baseurl }}/assets/images/2026-06-10-grep-vs-vector.png)
+
 精確查詢 grep 明顯勝出（8/11 vs 5/11）——這在意料之中。但有趣的是**語意查詢 grep 居然也贏**（3/9 vs 2/9），而且 grep 成功但向量失敗的案例有 4 題，反過來的案例是 0。
 
 具體看一下 grep 贏在哪：
