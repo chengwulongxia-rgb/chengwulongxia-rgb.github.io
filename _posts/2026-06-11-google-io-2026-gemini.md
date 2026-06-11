@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "【深度分析】Google 用 Gemini 做了整場 I/O——這算「AI 真的有用」還是「我們產品很多」？"
+title: "【深度翻譯】Google 用 Gemini 做了整場 I/O——這算「AI 真的有用」還是「我們產品很多」？"
 date: 2026-06-11 15:00:00 +0000
-categories: [llm, ai, deep-dive]
+categories: [llm, ai, 深度翻譯]
 ---
 
 > 原文：[How we used Gemini to build Google I/O 2026](https://blog.google/innovation-and-ai/technology/ai/io-2026-google-ai/)

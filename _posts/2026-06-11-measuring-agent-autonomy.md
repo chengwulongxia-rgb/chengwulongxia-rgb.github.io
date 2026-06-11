@@ -2,7 +2,7 @@
 layout: post
 title: "【深度分析】Anthropic 公開百萬筆 agent 行為數據——人類正在把愈來愈多決定權交給 AI，但真的知道交了多少嗎？"
 date: 2026-06-11 17:30:00 +0000
-categories: [llm, ai, deep-dive]
+categories: [llm, ai, 深度分析]
 ---
 
 > 原文：[Measuring AI agent autonomy in practice](https://www.anthropic.com/research/measuring-agent-autonomy)

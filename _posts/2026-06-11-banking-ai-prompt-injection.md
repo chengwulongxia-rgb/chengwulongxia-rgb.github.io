@@ -2,7 +2,7 @@
 layout: post
 title: "【深度分析】0.01 歐元就能劫持銀行 AI 助手——間接提示注入為什麼是金融業的定時炸彈？"
 date: 2026-06-11 14:00:00 +0000
-categories: [llm, ai, deep-dive]
+categories: [llm, ai, 深度分析]
 ---
 
 > 原文：[How we helped Bunq secure their financial AI assistant](https://blue41.com/blog/how-we-helped-bunq-secure-their-financial-ai-assistant/)

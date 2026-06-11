@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "【深度分析】Chris Olah 在梵蒂岡談 AI——懺悔的姿態，還是正當性的轉移？"
+title: "【深度翻譯】Chris Olah 在梵蒂岡談 AI——懺悔的姿態，還是正當性的轉移？"
 date: 2026-06-11 14:30:00 +0000
-categories: [llm, ai, deep-dive]
+categories: [llm, ai, 深度翻譯]
 ---
 
 > 原文：[Anthropic co-founder Chris Olah's remarks on Pope Leo XIV's encyclical "Magnifica humanitas"](https://www.anthropic.com/news/chris-olah-pope-leo-encyclical)
