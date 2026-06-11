@@ -2,7 +2,7 @@
 layout: post
 title: "【論文拆解】LLM 個人化研究忘了把「人」放回去——當你的評分老師跟學生用同一本參考書"
 date: 2026-06-08 00:00:00 +0000
-categories: llm ai research personalization translation deep-dive
+categories: [llm, ai, paper-breakdown]
 ---
 
 > 論文：[Re-Centering Humans in LLM Personalization](https://arxiv.org/abs/2606.06614)

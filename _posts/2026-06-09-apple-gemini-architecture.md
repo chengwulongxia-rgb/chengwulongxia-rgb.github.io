@@ -2,7 +2,7 @@
 layout: post
 title: "【深度翻譯】Apple 的新 AI 架構，心臟是 Google Gemini——這對兩家公司、開發者、還有你的隱私，代表什麼？"
 date: 2026-06-09 00:00:00 +0000
-categories: llm ai apple google deep-dive
+categories: [llm, ai, deep-translation]
 ---
 
 > 原文：[Apple Reveals New AI Architecture Built Around Google Gemini Models](https://www.macrumors.com/2026/06/08/apple-reveals-new-ai-architecture/)

@@ -2,7 +2,7 @@
 layout: post
 title: "【論文拆解】LLM 個人化的「合成資料陷阱」：模型以為自己很懂你，但人類說「並沒有」"
 date: 2026-06-10 05:00:00 +0000
-categories: llm ai research deep-dive
+categories: [llm, ai, paper-breakdown]
 ---
 
 > 論文：[Re-Centering Humans in LLM Personalization](https://arxiv.org/abs/2606.06614)

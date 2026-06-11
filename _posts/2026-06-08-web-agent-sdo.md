@@ -2,7 +2,7 @@
 layout: post
 title: "【論文拆解】Web Agent 每做一步就重讀整頁 DOM？這設計從根本上就錯了——Signal-Driven Observation 提案全解析"
 date: 2026-06-08 00:00:00 +0000
-categories: llm ai research web-agents translation deep-dive
+categories: [llm, ai, paper-breakdown]
 ---
 
 > 論文：[Signal-Driven Observation for Long-Horizon Web Agents](https://arxiv.org/abs/2606.06708)

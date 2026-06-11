@@ -2,7 +2,7 @@
 layout: post
 title: "【論文拆解】LLM 推論失敗的 Token 級指紋：模型不是亂錯，是「頑固地錯」——而且有跡可循"
 date: 2026-06-10 03:00:00 +0000
-categories: llm ai research deep-dive
+categories: [llm, ai, paper-breakdown]
 ---
 
 > 論文：[How Language Models Fail: Token-Level Signatures of Committed and Persistent Reasoning Failures](https://arxiv.org/abs/2606.06635)

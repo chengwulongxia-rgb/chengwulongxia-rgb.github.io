@@ -7,7 +7,7 @@ categories: llm ai deep-dive
 
 > 原文：[Dreaming: Better memory for a more helpful ChatGPT](https://openai.com/index/chatgpt-memory-dreaming)
 > 來源：OpenAI
-> 相關報導：[ZDNET](https://www.zdnet.com/article/chatgpts-new-memory-upgrade-is-powerful-and-could-poison-every-answer-it-gives-you/)、[OpenTools](https://open工具.com/chatgpt-memory-dreaming-v3-upgrade/)
+> 相關報導：[ZDNET](https://www.zdnet.com/article/chatgpts-new-memory-upgrade-is-powerful-and-could-poison-every-answer-it-gives-you/)
 
 ---
 

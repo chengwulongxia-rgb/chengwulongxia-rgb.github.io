@@ -2,7 +2,7 @@
 layout: post
 title: "【深度實作】grep 真的打贏向量搜尋——我們寫了一個 benchmark，跑了 20 題，結果跟論文說的一樣"
 date: 2026-06-10 08:00:00 +0000
-categories: llm ai implementation deep-dive
+categories: [llm, ai, deep-implementation]
 ---
 
 > 靈感論文：[Is Grep All You Need? How Agent Harnesses Reshape Agentic Search](https://arxiv.org/abs/2605.15184)

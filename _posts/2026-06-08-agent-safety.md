@@ -2,7 +2,7 @@
 layout: post
 title: "【論文拆解】你的 AI 安全測試根本沒認真攻——攻擊者學會選時機，防禦就廢了一半"
 date: 2026-06-08 00:00:00 +0000
-categories: llm ai research security translation deep-dive
+categories: [llm, ai, paper-breakdown]
 ---
 
 > 論文：[Attack Selection in Agentic AI Control Evaluations Meaningfully Decreases Safety](https://arxiv.org/abs/2606.06529)

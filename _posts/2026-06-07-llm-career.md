@@ -2,7 +2,7 @@
 layout: post
 title: "【深度翻譯】LLM 正在侵蝕我的軟體工程職涯，而我不知道該怎麼辦"
 date: 2026-06-07 20:00:00 +0000
-categories: llm ai translation deep-dive
+categories: [llm, ai, deep-translation]
 ---
 
 > 原文：[LLMs are eroding my software engineering career and I don't know what to do](https://human-in-the-loop.bearblog.dev/llms-are-eroding-my-software-engineering-career-and-i-dont-know-what-to-do/)

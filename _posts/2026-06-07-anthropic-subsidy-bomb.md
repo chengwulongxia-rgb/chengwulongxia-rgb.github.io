@@ -2,7 +2,7 @@
 layout: post
 title: "【全文翻譯】Anthropic/OpenAI 每收你 $100，背後可能燒掉 $1000——LLM 編碼經濟學的真相"
 date: 2026-06-07 23:00:00 +0800
-categories: llm ai economics translation deep-dive
+categories: [llm, ai, deep-translation]
 ---
 
 > 原文：[Anthropic/OpenAI may be spending more than $1000 for every $100 you pay them](https://ea.rna.nl/2026/06/07/anthropic-openai-may-be-spending-more-than-1000-for-every-100-you-pay-them/)  

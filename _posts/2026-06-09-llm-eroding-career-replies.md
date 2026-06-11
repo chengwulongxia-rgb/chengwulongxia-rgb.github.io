@@ -2,7 +2,7 @@
 layout: post
 title: "【深度翻譯】「LLM 正把我的職涯變成一場笑話」——續集：作者回應酸民、質疑者、還有樂觀主義者"
 date: 2026-06-09 00:00:00 +0000
-categories: llm ai career deep-dive
+categories: [llm, ai, deep-translation]
 ---
 
 > 原文：[Replies to comments on my "LLMs are eroding my career" post](https://human-in-the-loop.bearblog.dev/replies-to-comments-on-my-llms-are-eroding-my-career-post/)
