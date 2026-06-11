@@ -5,6 +5,8 @@ date: 2026-06-11 14:30:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 
+![Chris Olah 在梵蒂岡——懺悔的姿態，還是正當性的轉移？]({{ site.baseurl }}/assets/images/2026-06-11-chris-olah-vatican.jpg)
+
 > 原文：[Anthropic co-founder Chris Olah's remarks on Pope Leo XIV's encyclical "Magnifica humanitas"](https://www.anthropic.com/news/chris-olah-pope-leo-encyclical)
 > 來源：Anthropic
 > 日期：2026-05-25
