@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "【深度分析】把神經網路刻進 FPGA，推論 + 訓練不到一微秒——KAN 架構正在重新定義「即時」的意義"
+title: "【論文拆解】把神經網路刻進 FPGA，推論 + 訓練不到一微秒——KAN 架構正在重新定義「即時」的意義"
 date: 2026-06-11 18:00:00 +0000
-categories: [llm, ai, 深度分析]
+categories: [llm, ai, paper-breakdown]
 ---
 
 > 原文：[Ultrafast machine learning on FPGAs via Kolmogorov-Arnold Networks](https://aarushgupta.io/posts/kan-fpga/)
