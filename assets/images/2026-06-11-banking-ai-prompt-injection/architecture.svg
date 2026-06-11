@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="'JetBrains Mono', 'Noto Sans TC', monospace, sans-serif">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#22d3ee"/>
+    </marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <!-- bg -->
+  <rect width="900" height="500" fill="#020617"/>
+  <rect width="900" height="500" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" fill="#f1f5f9" font-size="18" font-weight="bold">銀行 AI 助手架構（正常）</text>
+  <text x="450" y="58" text-anchor="middle" fill="#64748b" font-size="11">Banking AI Assistant Architecture — Normal Operation</text>
+
+  <!-- 用戶 -->
+  <rect x="50" y="90" width="160" height="56" rx="6" fill="#0f172a" stroke="#22d3ee" stroke-width="1.5"/>
+  <rect x="50" y="90" width="160" height="56" rx="6" fill="rgba(8,51,68,0.4)"/>
+  <text x="130" y="114" text-anchor="middle" fill="#22d3ee" font-size="13">👤 用戶</text>
+  <text x="130" y="134" text-anchor="middle" fill="#94a3b8" font-size="10">User</text>
+
+  <!-- 銀行 App -->
+  <rect x="340" y="90" width="160" height="56" rx="6" fill="#0f172a" stroke="#fbbf24" stroke-width="1.5"/>
+  <rect x="340" y="90" width="160" height="56" rx="6" fill="rgba(120,53,15,0.3)"/>
+  <text x="420" y="114" text-anchor="middle" fill="#fbbf24" font-size="13">📱 銀行 App</text>
+  <text x="420" y="134" text-anchor="middle" fill="#94a3b8" font-size="10">Banking App</text>
+
+  <!-- Arrows: user -> app -->
+  <line x1="210" y1="118" x2="335" y2="118" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="272" y="112" text-anchor="middle" fill="#64748b" font-size="9">「最近有什麼交易？」</text>
+
+  <!-- AI 助手 LLM (center) -->
+  <rect x="290" y="195" width="260" height="72" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="2"/>
+  <rect x="290" y="195" width="260" height="72" rx="8" fill="rgba(6,78,59,0.35)"/>
+  <text x="420" y="222" text-anchor="middle" fill="#34d399" font-size="15" font-weight="bold">🧠 AI 助手（LLM）</text>
+  <text x="420" y="244" text-anchor="middle" fill="#94a3b8" font-size="10">Context Window → Next Token Prediction</text>
+  <text x="420" y="258" text-anchor="middle" fill="#64748b" font-size="9">所有 token 生而平等：資料 = 指令</text>
+
+  <!-- Arrow: app -> LLM -->
+  <line x1="420" y1="146" x2="420" y2="190" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Data sources row -->
+  <!-- 交易紀錄 -->
+  <rect x="50" y="320" width="220" height="64" rx="6" fill="#0f172a" stroke="#a78bfa" stroke-width="1.5"/>
+  <rect x="50" y="320" width="220" height="64" rx="6" fill="rgba(76,29,149,0.3)"/>
+  <text x="160" y="346" text-anchor="middle" fill="#a78bfa" font-size="12">🗄 交易紀錄</text>
+  <text x="160" y="364" text-anchor="middle" fill="#94a3b8" font-size="10">Transactions</text>
+  <text x="160" y="378" text-anchor="middle" fill="#64748b" font-size="8">含第三方付款備註</text>
+
+  <!-- 產品文件 -->
+  <rect x="310" y="320" width="220" height="64" rx="6" fill="#0f172a" stroke="#a78bfa" stroke-width="1.5"/>
+  <rect x="310" y="320" width="220" height="64" rx="6" fill="rgba(76,29,149,0.3)"/>
+  <text x="420" y="346" text-anchor="middle" fill="#a78bfa" font-size="12">📄 產品文件</text>
+  <text x="420" y="364" text-anchor="middle" fill="#94a3b8" font-size="10">Product Docs</text>
+
+  <!-- 客服內容 -->
+  <rect x="570" y="320" width="220" height="64" rx="6" fill="#0f172a" stroke="#a78bfa" stroke-width="1.5"/>
+  <rect x="570" y="320" width="220" height="64" rx="6" fill="rgba(76,29,149,0.3)"/>
+  <text x="680" y="346" text-anchor="middle" fill="#a78bfa" font-size="12">💬 客服內容</text>
+  <text x="680" y="364" text-anchor="middle" fill="#94a3b8" font-size="10">Customer Support</text>
+
+  <!-- Arrows: LLM -> 3 data sources -->
+  <line x1="340" y1="267" x2="120" y2="317" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="420" y1="267" x2="420" y2="317" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="500" y1="267" x2="720" y2="317" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+  <text x="280" y="295" fill="#64748b" font-size="8">Retrieval</text>
+  <text x="640" y="295" fill="#64748b" font-size="8">Retrieval</text>
+
+  <!-- Output arrow -->
+  <line x1="420" y1="267" x2="420" y2="317" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Response -->
+  <rect x="290" y="415" width="260" height="42" rx="6" fill="#0f172a" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="290" y="415" width="260" height="42" rx="6" fill="rgba(8,51,68,0.3)"/>
+  <text x="420" y="438" text-anchor="middle" fill="#22d3ee" font-size="11">→ 自然語言回覆給用戶</text>
+  <text x="420" y="452" text-anchor="middle" fill="#64748b" font-size="9">Response in Banking App UI</text>
+
+  <!-- Arrow: LLM -> response -->
+  <line x1="420" y1="267" x2="420" y2="410" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Warning callout -->
+  <rect x="50" y="415" width="210" height="42" rx="6" fill="#0f172a" stroke="#fb7185" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="50" y="415" width="210" height="42" rx="6" fill="rgba(136,19,55,0.3)"/>
+  <text x="155" y="438" text-anchor="middle" fill="#fb7185" font-size="10">⚠ 交易備註 = 第三方資料</text>
+  <text x="155" y="452" text-anchor="middle" fill="#94a3b8" font-size="8">不可信的指令邊界</text>
+</svg>

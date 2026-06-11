@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 680" font-family="'JetBrains Mono', 'Noto Sans TC', monospace, sans-serif">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="680" fill="#020617"/>
+  <rect width="800" height="680" fill="url(#grid)"/>
+
+  <text x="400" y="36" text-anchor="middle" fill="#f1f5f9" font-size="18" font-weight="bold">金融業 AI 助手的四個結構性脆弱點</text>
+  <text x="400" y="54" text-anchor="middle" fill="#64748b" font-size="11">Four Structural Vulnerabilities of Banking AI Assistants</text>
+
+  <!-- ① 注入面普遍存在 -->
+  <rect x="30" y="75" width="740" height="120" rx="8" fill="#0f172a" stroke="#fb7185" stroke-width="1.5"/>
+  <rect x="30" y="75" width="740" height="120" rx="8" fill="rgba(136,19,55,0.15)"/>
+  <text x="55" y="104" fill="#fb7185" font-size="14" font-weight="bold">① 注入面普遍存在</text>
+  <text x="55" y="122" fill="#94a3b8" font-size="11">交易備註 · 付款參考 · 商家 metadata · 客服訊息 · 上傳文件 · Email · CRM 筆記 · 產品文件</text>
+  <text x="55" y="150" fill="#64748b" font-size="11">這些欄位從來不是被設計成「可信的指令邊界」。但它們現在全都有可能被餵進 LLM 的 context window。</text>
+  <line x1="55" y1="170" x2="745" y2="170" stroke="#1e293b" stroke-width="1"/>
+  <text x="400" y="188" text-anchor="middle" fill="#fb7185" font-size="10">⚠ 注入面 = 所有進入 AI 助手 context 的第三方資料欄位</text>
+
+  <!-- ② 傳遞機制 -->
+  <rect x="30" y="210" width="740" height="120" rx="8" fill="#0f172a" stroke="#fbbf24" stroke-width="1.5"/>
+  <rect x="30" y="210" width="740" height="120" rx="8" fill="rgba(120,53,15,0.12)"/>
+  <text x="55" y="239" fill="#fbbf24" font-size="14" font-weight="bold">② 傳遞機制：便宜到荒謬，可信到恐怖</text>
+  <text x="55" y="260" fill="#94a3b8" font-size="11">攻擊成本：</text>
+  <text x="145" y="260" fill="#fbbf24" font-size="14" font-weight="bold">0.02 歐元</text>
+  <text x="55" y="280" fill="#94a3b8" font-size="11">傳遞通道：銀行自己的 App（使用者被訓練成 100% 信任這個通道）</text>
+  <line x1="55" y1="300" x2="745" y2="300" stroke="#1e293b" stroke-width="1"/>
+  <text x="400" y="320" text-anchor="middle" fill="#64748b" font-size="10">對比：釣魚 Email 需要偽造網域 → 銀行 AI 釣魚直接出現在銀行 UI 裡</text>
+
+  <!-- ③ 特權上下文 -->
+  <rect x="30" y="345" width="740" height="120" rx="8" fill="#0f172a" stroke="#a78bfa" stroke-width="1.5"/>
+  <rect x="30" y="345" width="740" height="120" rx="8" fill="rgba(76,29,149,0.15)"/>
+  <text x="55" y="374" fill="#a78bfa" font-size="14" font-weight="bold">③ 助手有特權上下文</text>
+  <text x="55" y="395" fill="#94a3b8" font-size="11">釣魚 Email 做不到的事：引用你昨天在哪花多少錢 · 引用信用卡末四碼 · 引用最近轉帳對象</text>
+  <text x="55" y="415" fill="#94a3b8" font-size="11">銀行的 AI 助手全部都能做到。被操縱的回覆不只看起來像真的——它裡面寫的資訊</text>
+  <text x="55" y="432" fill="#f1f5f9" font-size="11" font-weight="bold">就是真的。</text>
+  <line x1="55" y1="448" x2="745" y2="448" stroke="#1e293b" stroke-width="1"/>
+  <text x="400" y="462" text-anchor="middle" fill="#a78bfa" font-size="10">🔑 特權上下文 = 攻擊者不需要偽造資訊，銀行 AI 自己會提供真實資訊</text>
+
+  <!-- ④ 風險隨能力增長 -->
+  <rect x="30" y="480" width="740" height="120" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="30" y="480" width="740" height="120" rx="8" fill="rgba(6,78,59,0.12)"/>
+  <text x="55" y="509" fill="#34d399" font-size="14" font-weight="bold">④ 風險隨能力增長</text>
+  <text x="55" y="530" fill="#94a3b8" font-size="11">唯讀助手 → 誤導用戶</text>
+  <text x="55" y="550" fill="#f1f5f9" font-size="13">有工具權限的助手 → 啟動金流、修改設定、轉帳</text>
+  <line x1="55" y1="565" x2="745" y2="565" stroke="#1e293b" stroke-width="1"/>
+  <text x="400" y="590" text-anchor="middle" fill="#34d399" font-size="11">助手愈有用 → 安全模型愈重要 · 這不是「如果」，是時間問題</text>
+
+  <!-- Bottom summary -->
+  <rect x="100" y="620" width="600" height="36" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="400" y="643" text-anchor="middle" fill="#64748b" font-size="11">每一個進入 AI 助手上下文的不受信任資料源，都成為助手攻擊面的一部分</text>
+</svg>

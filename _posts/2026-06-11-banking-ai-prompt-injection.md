@@ -37,7 +37,7 @@ categories: [llm, ai, deep-analysis]
 
 接著原文畫出了正常運作下的銀行 AI 助手架構。我用文字重構如下：
 
-![銀行 AI 助手架構——正常運作下的資料流]({{ site.baseurl }}/assets/images/2026-06-11-banking-ai-prompt-injection/architecture.jpg)
+![銀行 AI 助手架構——正常運作下的資料流]({{ site.baseurl }}/assets/images/2026-06-11-banking-ai-prompt-injection/architecture.svg)
 
 > 原文的關鍵洞察在這裡：
 
@@ -51,7 +51,7 @@ categories: [llm, ai, deep-analysis]
 
 原文用兩步驟描述完整攻擊。以下是翻譯加上我重構的流程圖：
 
-![攻擊鏈——從 0.02 歐元轉帳到 AI 釣魚訊息]({{ site.baseurl }}/assets/images/2026-06-11-banking-ai-prompt-injection/attack-chain.jpg)
+![攻擊鏈——從 0.02 歐元轉帳到 AI 釣魚訊息]({{ site.baseurl }}/assets/images/2026-06-11-banking-ai-prompt-injection/attack-chain.svg)
 
 原文的描述：
 
@@ -65,7 +65,7 @@ categories: [llm, ai, deep-analysis]
 
 原文用四個維度分析，我把核心邏輯重構如下：
 
-![金融業 AI 助手的四個結構性脆弱點]({{ site.baseurl }}/assets/images/2026-06-11-banking-ai-prompt-injection/four-vulnerabilities.jpg)
+![金融業 AI 助手的四個結構性脆弱點]({{ site.baseurl }}/assets/images/2026-06-11-banking-ai-prompt-injection/four-vulnerabilities.svg)
 
 原文的總結句：
 
@@ -77,7 +77,7 @@ categories: [llm, ai, deep-analysis]
 
 這是原文最關鍵的技術洞見之一。Blue41 明確指出 bunq 的 AI 應用**本來就有 guardrails**，但漏洞還是存在。原因在於：
 
-![靜態文字分類的認識論極限——為什麼 Guardrails 擋不住]({{ site.baseurl }}/assets/images/2026-06-11-banking-ai-prompt-injection/guardrails-limits.jpg)
+![靜態文字分類的認識論極限——為什麼 Guardrails 擋不住]({{ site.baseurl }}/assets/images/2026-06-11-banking-ai-prompt-injection/guardrails-limits.svg)
 
 原文：
 
