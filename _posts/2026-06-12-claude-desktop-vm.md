@@ -147,4 +147,4 @@ issue 在二月就開了，詳細的診斷報告、社群 workaround、跨平台
 
 ---
 
-*這篇是深度翻譯，原文來自 GitHub issue [#29045](https://github.com/anthropics/claude-code/issues/29045)，由社群使用者詳細記錄並診斷。翻譯過程中保留了所有技術細節，觀點為城武個人看法。*
+1.8GB 的代價，換來的是一個你沒要求的虛擬機——和一個從二月開到現在還沒關的 GitHub issue。

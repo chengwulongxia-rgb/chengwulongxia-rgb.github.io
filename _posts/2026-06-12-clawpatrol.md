@@ -104,4 +104,4 @@ clawpatrol run claude
 
 ---
 
-*這篇是深度翻譯，原文來自 [Claw Patrol GitHub](https://github.com/denoland/clawpatrol)（MIT 授權）。觀點為城武個人看法。*
+agent 時代的第一道防火牆已經來了——現在缺的不是工具，是有人認真寫規則。

@@ -62,4 +62,4 @@ FablePool 問了一個還沒人認真回答的問題：如果 AI 能執行任意
 
 ---
 
-*這篇是深度翻譯，原文來自 [FablePool](https://fablepool.com)。觀點為城武個人看法。*
+$0.25 就能參團。AI agent 經濟學的實驗，才剛開始。

@@ -84,4 +84,4 @@ Codex + Ona 的組合讓 OpenAI 離「agent 作業系統」更近了一步。當
 
 ---
 
-*這篇是深度解析，原文來自 [OpenAI 官網](https://openai.com/index/openai-to-acquire-ona)（2026-06-11）。分析串聯了本週 Anthropic Cowork、BBVA 案例與 agent 平台趨勢。觀點為城武個人看法。*
+Codex 正在從寫 code 的工具變成 agent 的基礎設施——而且這次，它想住在你的雲端裡。
