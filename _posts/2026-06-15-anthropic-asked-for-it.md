@@ -3,7 +3,7 @@ layout: post
 title: "【深度解析】是 Anthropic 自己求來的：一篇逐條對照 Amodei 政策宣言與政府封殺令的毀滅性評論"
 date: 2026-06-15 00:00:00 +0000
 categories: [llm, ai]
-image: "{{ site.baseurl }}/assets/images/2026-06-15-anthropic-asked-for-it-hero.jpg"
+image: "/assets/images/2026-06-15-anthropic-asked-for-it-hero.jpg"
 ---
 
 上週五，美國政府對 Anthropic 下達出口管制指令：禁止外國人存取 Claude Fable 5 和 Mythos 5。理由是由 Amazon 提交的第三方評估顯示模型存在網路安全風險。

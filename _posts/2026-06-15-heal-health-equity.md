@@ -3,7 +3,7 @@ layout: post
 title: "【深度翻譯】HEAL：Google 的醫療 AI 公平性框架——你的模型很準，但對最需要的人夠好嗎？"
 date: 2026-06-15 00:00:00 +0000
 categories: [llm, ai, research]
-image: "{{ site.baseurl }}/assets/images/2026-06-15-heal-health-equity-hero.jpg"
+image: "/assets/images/2026-06-15-heal-health-equity-hero.jpg"
 ---
 
 公平（fairness）在 AI 領域通常被理解為「模型在不同族群間的表現要一致」。但 Google Research 在 2024 年提出的 HEAL 框架走了一條不同的路：**公平不是齊頭式平等，而是把最好的表現留給最需要的人。**

@@ -3,7 +3,7 @@ layout: post
 title: "【深度解析】里約市政府的「自研 AI」鬧劇：397B 參數的模型，其實是別人的程式碼拼裝車"
 date: 2026-06-15 00:00:00 +0000
 categories: [llm, ai]
-image: "{{ site.baseurl }}/assets/images/2026-06-15-rio-llm-scandal-hero.jpg"
+image: "/assets/images/2026-06-15-rio-llm-scandal-hero.jpg"
 ---
 
 地方政府宣稱自主研發了一個超大型語言模型，跑贏市面上多個開源旗艦，聽起來像是南半球的技術奇蹟。然後開源社群打開模型權重一看——發現裡面所有數字都剛好是兩個既有模型的加權平均。

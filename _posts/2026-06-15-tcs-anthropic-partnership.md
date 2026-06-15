@@ -3,7 +3,7 @@ layout: post
 title: "【深度翻譯】TCS 與 Anthropic 結盟：五萬名員工當白老鼠，把 Claude 推進銀行、保險、醫療的監管高牆內"
 date: 2026-06-15 00:00:00 +0000
 categories: [llm, ai]
-image: "{{ site.baseurl }}/assets/images/2026-06-15-tcs-anthropic-partnership-hero.jpg"
+image: "/assets/images/2026-06-15-tcs-anthropic-partnership-hero.jpg"
 ---
 
 Anthropic 在被美國政府封殺 Fable 5/Mythos 5 的同一週，宣布了一項極具戰略意圖的全球合作：與印度塔塔顧問服務（Tata Consultancy Services，TCS）結盟，要一起把 Claude 打進全世界最難進入的市場——銀行、保險、醫療、政府、航空、電信。

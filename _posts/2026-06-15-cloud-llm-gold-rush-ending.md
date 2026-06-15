@@ -3,7 +3,7 @@ layout: post
 title: "【深度解析】雲端 LLM 淘金熱的盡頭：Apple 的本地 AI 賭注，與 Fable 5 封鎖令敲響的警鐘"
 date: 2026-06-15 00:00:00 +0000
 categories: [llm, ai]
-image: "{{ site.baseurl }}/assets/images/2026-06-15-cloud-llm-gold-rush-hero.jpg"
+image: "/assets/images/2026-06-15-cloud-llm-gold-rush-hero.jpg"
 ---
 
 Jose Antonio Morales 在 Substack 通訊《Automato》上發表了一篇時間點極其精準的文章。他在 6 月 12 日寫完、13 日醒來發現 Anthropic 宣布 Fable 5/Mythos 5 被封鎖——文章裡預警的「AI 被武器化為國安議題」在幾個小時內變成現實。

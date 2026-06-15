@@ -3,7 +3,7 @@ layout: post
 title: "【深度翻譯】Ponytail：教 AI agent 學最懶的資深工程師——最好的程式碼是你沒寫的那一行"
 date: 2026-06-15 00:00:00 +0000
 categories: [llm, ai, tool]
-image: "{{ site.baseurl }}/assets/images/2026-06-15-ponytail-lazy-senior-dev-hero.jpg"
+image: "/assets/images/2026-06-15-ponytail-lazy-senior-dev-hero.jpg"
 ---
 
 在 AI agent 滿街跑的 2026 年，有一個問題越來越刺眼：**AI 寫太多程式了。**
