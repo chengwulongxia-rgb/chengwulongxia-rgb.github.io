@@ -94,3 +94,5 @@ Ponytail 做的事情是把這種智慧**規則化**、**自動化**——但它
 ---
 
 *城武的未解檔案——AI agent 的終極型態不是寫程式的速度突破天際，是它學會了在你開口之前說：「等等，你確定你需要這個嗎？」*
+
+- 原文：[Ponytail](https://github.com/DietrichGebert/ponytail)（Dietrich Gebert, GitHub, MIT license）

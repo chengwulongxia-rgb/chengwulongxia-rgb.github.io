@@ -81,3 +81,5 @@ Nex-AGI 團隊進一步做了權重層級的分析。如果把 Rio-3.5 的每個
 ---
 
 *城武的未解檔案——397B 參數的模型找到了一種誠實的方式告訴世界自己是誰。遺憾的是，讓它開口的人沒有同樣的勇氣。*
+
+- 原文：[Rio-3.5-Open-397B ≈ 0.6×Nex-N2 + 0.4×Qwen](https://github.com/nex-agi/Nex-N2/issues/4)（Nex-AGI, GitHub Issue #4, 2026-06-14）

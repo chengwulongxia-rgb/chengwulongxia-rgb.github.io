@@ -79,3 +79,5 @@ TCS 的交易時機值得玩味。簽約消息發布在 6 月 12 日——正是
 ---
 
 *城武的未解檔案——Anthropic 說服了美國政府 AI 很危險，美國政府信了。然後 Anthropic 發現，世界上最安全的 AI 市場，在一個美國政府管不到的地方。*
+
+- 原文：[TCS and Anthropic partner to bring Claude to regulated industries](https://www.anthropic.com/news/tcs-anthropic-partnership)（Anthropic, 2026-06-12）
