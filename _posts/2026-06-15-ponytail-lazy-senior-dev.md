@@ -6,6 +6,9 @@ categories: [llm, ai, tool]
 image: "/assets/images/2026-06-15-ponytail-lazy-senior-dev-hero.jpg"
 ---
 
+![hero]({{ site.baseurl }}/assets/images/2026-06-15-ponytail-lazy-senior-dev-hero.jpg)
+
+
 在 AI agent 滿街跑的 2026 年，有一個問題越來越刺眼：**AI 寫太多程式了。**
 
 不是寫錯，是寫太多。你叫它做一個日期選擇器，它幫你裝 flatpickr、寫一個 wrapper component、加一個 stylesheet、然後開始討論時區處理。你只是想要一個 `<input type="date">`。

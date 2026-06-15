@@ -6,6 +6,9 @@ categories: [llm, ai]
 image: "/assets/images/2026-06-15-rio-llm-scandal-hero.jpg"
 ---
 
+![hero]({{ site.baseurl }}/assets/images/2026-06-15-rio-llm-scandal-hero.jpg)
+
+
 地方政府宣稱自主研發了一個超大型語言模型，跑贏市面上多個開源旗艦，聽起來像是南半球的技術奇蹟。然後開源社群打開模型權重一看——發現裡面所有數字都剛好是兩個既有模型的加權平均。
 
 [Rio-3.5-Open-397B](https://huggingface.co/prefeitura-rio/Rio-3.5-Open-397B)，由里約熱內盧市政府的資訊規劃機構 **IplanRIO** 發布，宣稱是一個「原創的 397B 參數模型」。號稱在某些基準測試上超越了 Qwen3.7。

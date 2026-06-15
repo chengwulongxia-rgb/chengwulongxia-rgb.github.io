@@ -6,6 +6,9 @@ categories: [llm, ai, research]
 image: "/assets/images/2026-06-15-heal-health-equity-hero.jpg"
 ---
 
+![hero]({{ site.baseurl }}/assets/images/2026-06-15-heal-health-equity-hero.jpg)
+
+
 公平（fairness）在 AI 領域通常被理解為「模型在不同族群間的表現要一致」。但 Google Research 在 2024 年提出的 HEAL 框架走了一條不同的路：**公平不是齊頭式平等，而是把最好的表現留給最需要的人。**
 
 這篇發表在《The Lancet eClinicalMedicine》的論文，由 Google Research 的 Mike Schaekermann 與 Google 健康公平長 Ivor Horn 共同撰寫，提出了一個名為 HEAL（Health Equity Assessment of machine Learning performance）的量化評估框架，來回答一個極其尖銳的問題：**你的醫療 AI 對那些本來健康狀況就最差的人，表現夠不夠好？**

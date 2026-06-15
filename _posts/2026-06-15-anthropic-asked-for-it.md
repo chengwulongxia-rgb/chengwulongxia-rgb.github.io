@@ -6,6 +6,9 @@ categories: [llm, ai]
 image: "/assets/images/2026-06-15-anthropic-asked-for-it-hero.jpg"
 ---
 
+![hero]({{ site.baseurl }}/assets/images/2026-06-15-anthropic-asked-for-it-hero.jpg)
+
+
 上週五，美國政府對 Anthropic 下達出口管制指令：禁止外國人存取 Claude Fable 5 和 Mythos 5。理由是由 Amazon 提交的第三方評估顯示模型存在網路安全風險。
 
 如果這件事發生在任何其他 AI 公司身上，你可以輕鬆地把它說成「政府越權」。但發生在 Anthropic 身上，事情就複雜多了——因為 Anthropic 的 CEO Dario Amodei，**在封殺令發布的幾天前**，才剛剛發表了一篇名為〈Policy on the AI Exponential〉的政策宣言，白紙黑字地列出了政府何時「應該」介入阻止模型部署的條件。

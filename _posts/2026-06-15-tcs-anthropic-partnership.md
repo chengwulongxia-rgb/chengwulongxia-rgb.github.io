@@ -6,6 +6,9 @@ categories: [llm, ai]
 image: "/assets/images/2026-06-15-tcs-anthropic-partnership-hero.jpg"
 ---
 
+![hero]({{ site.baseurl }}/assets/images/2026-06-15-tcs-anthropic-partnership-hero.jpg)
+
+
 Anthropic 在被美國政府封殺 Fable 5/Mythos 5 的同一週，宣布了一項極具戰略意圖的全球合作：與印度塔塔顧問服務（Tata Consultancy Services，TCS）結盟，要一起把 Claude 打進全世界最難進入的市場——銀行、保險、醫療、政府、航空、電信。
 
 這筆交易背後的邏輯很清楚：**如果美國政府不讓你把模型賣給外國人，你就找一個外國巨頭幫你賣。** TCS 在全球 56 個國家有業務，是僅次於 Accenture 的全球第二大 IT 服務商。它知道怎麼跟監管機構打交道——Anthropic 最缺的就是這個。

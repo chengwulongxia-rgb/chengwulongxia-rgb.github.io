@@ -6,6 +6,9 @@ categories: [llm, ai]
 image: "/assets/images/2026-06-15-cloud-llm-gold-rush-hero.jpg"
 ---
 
+![hero]({{ site.baseurl }}/assets/images/2026-06-15-cloud-llm-gold-rush-ending-hero.jpg)
+
+
 Jose Antonio Morales 在 Substack 通訊《Automato》上發表了一篇時間點極其精準的文章。他在 6 月 12 日寫完、13 日醒來發現 Anthropic 宣布 Fable 5/Mythos 5 被封鎖——文章裡預警的「AI 被武器化為國安議題」在幾個小時內變成現實。
 
 文章標題叫〈Apple WWDC and the Fable 5 Embargo〉，但真正的論點比標題更大：**雲端 LLM 的淘金熱正在結束**。不是因為技術停止進步，而是因為商業模式撐不住、Apple 帶頭轉向本地 AI、以及「AI 等於國安威脅」的敘事正在把整個產業推向懸崖。
