@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 340">
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#58a6ff"/></marker>
+    <marker id="g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#3fb950"/></marker>
+    <marker id="o" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#f0883e"/></marker>
+    <marker id="r" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#f85149"/></marker>
+  </defs>
+  <rect width="660" height="340" fill="#0d1117" rx="8"/>
+  <pattern id="p" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0L0 0 0 30" fill="none" stroke="#1e293b" stroke-width=".5"/></pattern>
+  <rect width="660" height="340" fill="url(#p)" opacity=".4"/>
+
+  <text x="330" y="26" text-anchor="middle" fill="#e6edf3" font-size="14" font-weight="700" font-family="system-ui,sans-serif">Deterministic-First 路由決策流程</text>
+
+  <rect x="180" y="42" width="300" height="44" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="2"/>
+  <text x="330" y="60" text-anchor="middle" fill="#e6edf3" font-size="12" font-weight="600" font-family="system-ui,sans-serif">Agent 接收任務</text>
+  <text x="330" y="76" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">「把昨天的會議連結加到日曆」</text>
+
+  <line x1="330" y1="86" x2="330" y2="108" stroke="#58a6ff" stroke-width="2" marker-end="url(#a)"/>
+
+  <rect x="140" y="110" width="380" height="56" rx="8" fill="#0d1a2a" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="330" y="130" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="700" font-family="system-ui,sans-serif">Deterministic-First Routing</text>
+  <text x="330" y="152" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">優先選擇確定性最高的動作路徑</text>
+
+  <line x1="220" y1="166" x2="140" y2="210" stroke="#3fb950" stroke-width="2.5" marker-end="url(#g)"/>
+  <line x1="330" y1="166" x2="330" y2="210" stroke="#f0883e" stroke-width="2" marker-end="url(#o)"/>
+  <line x1="440" y1="166" x2="520" y2="210" stroke="#f85149" stroke-width="2" marker-end="url(#r)"/>
+
+  <text x="105" y="195" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="700" font-family="system-ui,sans-serif">優先</text>
+  <text x="330" y="195" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">次選</text>
+  <text x="535" y="195" text-anchor="middle" fill="#f85149" font-size="10" font-family="system-ui,sans-serif">最後</text>
+
+  <rect x="40" y="215" width="200" height="70" rx="6" fill="#0d2a1a" stroke="#3fb950" stroke-width="2"/>
+  <text x="140" y="237" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="700" font-family="system-ui,sans-serif">CLI / 結構化指令</text>
+  <text x="140" y="255" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">shell · Python · ADB</text>
+  <text x="140" y="273" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">確定性高、不受畫面影響</text>
+
+  <rect x="235" y="215" width="190" height="70" rx="6" fill="#1a1a0d" stroke="#f0883e" stroke-width="1.5"/>
+  <text x="330" y="237" text-anchor="middle" fill="#f0883e" font-size="13" font-weight="700" font-family="system-ui,sans-serif">TOOL / API</text>
+  <text x="330" y="255" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">MCP proxy 工具</text>
+  <text x="330" y="273" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">search · email · docs</text>
+
+  <rect x="435" y="215" width="185" height="70" rx="6" fill="#1a0d0d" stroke="#f85149" stroke-width="1.5"/>
+  <text x="527" y="237" text-anchor="middle" fill="#f85149" font-size="13" font-weight="700" font-family="system-ui,sans-serif">GUI Fallback</text>
+  <text x="527" y="255" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">tap · swipe · input</text>
+  <text x="527" y="273" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">無結構化路徑可用時</text>
+
+  <text x="330" y="315" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif" font-style="italic">結果透過 Trace Logging 記錄，供評分與除錯使用</text>
+</svg>

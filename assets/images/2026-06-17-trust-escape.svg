@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 500">
+  <rect width="720" height="500" fill="#0d1117" rx="8"/>
+  <pattern id="p" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0L0 0 0 30" fill="none" stroke="#1e293b" stroke-width=".5"/></pattern>
+  <rect width="720" height="500" fill="url(#p)" opacity=".4"/>
+
+  <text x="360" y="28" text-anchor="middle" fill="#e6edf3" font-size="15" font-weight="700" font-family="system-ui,sans-serif">Escape Room 生存遊戲架構</text>
+
+  <!-- 4 Agents -->
+  <rect x="30" y="44" width="150" height="90" rx="8" fill="#0d2a3a" stroke="#58a6ff" stroke-width="2"/>
+  <text x="105" y="66" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="700" font-family="system-ui,sans-serif">Agent A</text>
+  <text x="105" y="84" text-anchor="middle" fill="#e6edf3" font-size="11" font-family="system-ui,sans-serif">受測模型</text>
+  <text x="105" y="102" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">知道 Q1 答案</text>
+  <text x="105" y="118" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">只能看 Q2-Q4 capsule</text>
+
+  <rect x="200" y="44" width="150" height="90" rx="8" fill="#0d2a3a" stroke="#58a6ff" stroke-width="2"/>
+  <text x="275" y="66" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="700" font-family="system-ui,sans-serif">Agent B</text>
+  <text x="275" y="84" text-anchor="middle" fill="#e6edf3" font-size="11" font-family="system-ui,sans-serif">受測模型</text>
+  <text x="275" y="102" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">知道 Q2 答案</text>
+  <text x="275" y="118" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">只能看 Q1/Q3/Q4 capsule</text>
+
+  <rect x="370" y="44" width="150" height="90" rx="8" fill="#0d2a3a" stroke="#58a6ff" stroke-width="2"/>
+  <text x="445" y="66" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="700" font-family="system-ui,sans-serif">Agent C</text>
+  <text x="445" y="84" text-anchor="middle" fill="#e6edf3" font-size="11" font-family="system-ui,sans-serif">受測模型</text>
+  <text x="445" y="102" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">知道 Q3 答案</text>
+  <text x="445" y="118" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">只能看 Q1/Q2/Q4 capsule</text>
+
+  <rect x="540" y="44" width="150" height="90" rx="8" fill="#2a0d1a" stroke="#f85149" stroke-width="2"/>
+  <text x="615" y="66" text-anchor="middle" fill="#f85149" font-size="14" font-weight="700" font-family="system-ui,sans-serif">Agent D</text>
+  <text x="615" y="84" text-anchor="middle" fill="#e6edf3" font-size="11" font-family="system-ui,sans-serif">腳本控制</text>
+  <text x="615" y="102" text-anchor="middle" fill="#f85149" font-size="10" font-family="system-ui,sans-serif">永遠持有 Q4</text>
+  <text x="615" y="118" text-anchor="middle" fill="#f85149" font-size="10" font-family="system-ui,sans-serif">可靠性可調</text>
+
+  <!-- Capsule -->
+  <rect x="30" y="150" width="660" height="62" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="360" y="170" text-anchor="middle" fill="#a371f7" font-size="12" font-weight="700" font-family="system-ui,sans-serif">Capsule 系統</text>
+  <text x="360" y="192" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">對其他 agent 的謎題，只能看到 capsule（公開索引＋背書 agent）——不顯示答案內容</text>
+  <text x="360" y="206" text-anchor="middle" fill="#f0883e" font-size="11" font-family="system-ui,sans-serif">要知道答案，必須花 1 coin 驗證（Verify）</text>
+
+  <!-- Three actions -->
+  <rect x="30" y="228" width="200" height="80" rx="6" fill="#1a1a0d" stroke="#f0883e" stroke-width="1.5"/>
+  <text x="130" y="250" text-anchor="middle" fill="#f0883e" font-size="13" font-weight="700" font-family="system-ui,sans-serif">PASS 不行動</text>
+  <text x="130" y="270" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">零成本 · 零資訊</text>
+  <text x="130" y="290" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">維持現狀等待</text>
+
+  <rect x="260" y="228" width="200" height="80" rx="6" fill="#0d2a1a" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="360" y="250" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="700" font-family="system-ui,sans-serif">VERIFY 驗證</text>
+  <text x="360" y="270" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">支付 1 coin</text>
+  <text x="360" y="290" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">看到答案並可解題</text>
+
+  <rect x="490" y="228" width="200" height="80" rx="6" fill="#0d1a2a" stroke="#58a6ff" stroke-width="2"/>
+  <text x="590" y="250" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="700" font-family="system-ui,sans-serif">VOLUNTEER 提交</text>
+  <text x="590" y="270" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">提交四碼密碼</text>
+  <text x="590" y="290" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui,sans-serif">正確→全員逃出 / 錯誤→死亡</text>
+
+  <!-- Key design -->
+  <rect x="30" y="324" width="660" height="42" rx="6" fill="#2a0d1a" stroke="#f85149" stroke-width="1.5"/>
+  <text x="360" y="346" text-anchor="middle" fill="#f85149" font-size="12" font-weight="700" font-family="system-ui,sans-serif">關鍵設計：D 永遠持有 Q4 → 驗證 Q4 = 對 D 的信任投票 · Q4-share 追蹤懷疑對象</text>
+
+  <text x="360" y="390" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">信任定義：可觀測的行為改變——驗證量低於 memoryless baseline 的量 = 信任</text>
+  <text x="360" y="410" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">「不是模型說它信任誰，而是它的驗證行為顯示它信任誰」</text>
+
+  <!-- 4 criteria -->
+  <text x="360" y="446" text-anchor="middle" fill="#3fb950" font-size="11" font-family="system-ui,sans-serif">信任測量滿足四條件：歷史依賴 · 對象特定 · 代價真實 · 可分離於能力</text>
+  <text x="360" y="470" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui,sans-serif">論文實測了 Claude Opus/Sonnet 4.6、GPT-5.1、Gemini 3.1 Pro 等六個 frontier snapshot</text>
+</svg>
