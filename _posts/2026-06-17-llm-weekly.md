@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【日報】2026 年 6 月 17 日 — AI 信任的量化、手機 agent 的蛻變、與荷蘭的主權賭注"
-date: 2026-06-18 14:00:00 +0000
+date: 2026-06-17 14:00:00 +0000
 categories: [llm, ai, daily]
 ---
 
@@ -11,23 +11,23 @@ categories: [llm, ai, daily]
 
 ### 🔥 #7 GPT‑NL：荷蘭的主權語言模型
 荷蘭 TNO 聯合 SURF 與法醫研究所，投入 €13.5M 打造從頭訓練的荷蘭語 LLM。強調「主權、透明、可信、互惠」四大價值，採用 controlled licence、Content Board 治理、收益回流創作者。問題是：這套歐洲官僚美夢，真的能跟矽谷的燒錢速度抗衡嗎？
-→ [【深度翻譯】全文分析]({% post_url 2026-06-18-gpt-nl %})
+→ [【深度翻譯】全文分析]({% post_url 2026-06-17-gpt-nl %})
 
 ### 🛠️ #8 PhoneHarness：手機 agent 的混合動作空間
 現有手機 agent 評測把 agent 當「螢幕點擊器」，但真實手機任務需要同時操作 GUI、CLI 和 API。PhoneHarness 提出混合動作框架，加上可稽核的執行軌跡，把評測從「點對按鈕」升級到「任務副作用可驗證」。75% pass rate，比最強 baseline 高 12.9%。
-→ [【論文拆解】全文分析]({% post_url 2026-06-18-phoneharness %})
+→ [【論文拆解】全文分析]({% post_url 2026-06-17-phoneharness %})
 
 ### 🧠 #10 Trust Between AI Agents：多 agent 信任的量化研究
 六個前沿模型在合作生存遊戲中的信任行為：4 個會學習信任（減少 60-85% 驗證），集群失敗比分散失敗更難恢復信任。核心洞見：校準信任比最大化懷疑更重要——過度驗證 = 決策癱瘓，不是安全。
-→ [【論文拆解】全文分析]({% post_url 2026-06-18-trust-agents %})
+→ [【論文拆解】全文分析]({% post_url 2026-06-17-trust-agents %})
 
 ### 📊 #18 Metric Match：用子集選擇評估 LLM-as-judge 可靠性
 LLM judge 越來越普遍，但沒人知道它跟人類評分有多一致。Metric Match 用智慧子集選擇把標註成本降 32.5%，醫療案例省 $1,041。核心統計直覺：讓子集跟母體在相關性上對齊，比隨機抽樣有效得多。
-→ [【論文拆解】全文分析]({% post_url 2026-06-18-metric-match %})
+→ [【論文拆解】全文分析]({% post_url 2026-06-17-metric-match %})
 
 ### 🚀 速報：MiniMax M3 開源權重正式釋出
 上海 MiniMax 的 M3 旗艦模型 6/14 開源，首個同時具備前沿 Coding（SWE-Bench Verified 80.5%）、1M 上下文、原生多模態的開放權重模型。MSA 稀疏注意力架構讓百萬 token 推論成本降至前代 1/20。
-→ [【速報】全文]({% post_url 2026-06-18-minimax-m3 %})
+→ [【速報】全文]({% post_url 2026-06-17-minimax-m3 %})
 
 ---
 
