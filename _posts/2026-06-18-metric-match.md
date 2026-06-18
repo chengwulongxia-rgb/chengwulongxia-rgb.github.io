@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "【論文拆解】Metric Match：你用 LLM 來省人類標註，再用 LLM 來驗證 LLM——這條遞歸鏈的終點，是個 rejection sampling"
-date: 2026-06-17 00:00:00 +0000
+date: 2026-06-18 00:00:00 +0000
 categories: [llm, ai, paper-breakdown]
 ---
 
-![hero]({{ site.baseurl }}/assets/images/2026-06-17-metric-match-hero.jpg)
+![hero]({{ site.baseurl }}/assets/images/2026-06-18-metric-match-hero.jpg)
 
 ## 城武導讀
 
@@ -36,7 +36,7 @@ Metric Match 提出的解法是子集選擇（subset selection）。它的核心
 ---
 
 ## 演算法流程
-![Metric Match 演算法流程]({{ site.baseurl }}/assets/images/2026-06-17-metric-algorithm.svg)
+![Metric Match 演算法流程]({{ site.baseurl }}/assets/images/2026-06-18-metric-algorithm.svg)
 
 演算法的關鍵在於 Step 1 和 Step 2 的計算**完全不需要人類標註**。母體的 inter-model metric（ρ_IM_pop）只用 LLM 輸出即可計算，20 個候選子集的 inter-model metric 同理。人類標註只發生在 Step 3——而且只對最後選出來的**一個**子集做。這就是為什麼這個方法能省錢：它把昂貴的人類標註集中使用在資訊量最高的子集上。
 

@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "【深度翻譯】OpenAI 合作夥伴網路：$150M 打造 30 萬認證顧問大軍，模型軍備競賽的下半場是「誰能把 AI 賣進企業」"
-date: 2026-06-17 00:00:00 +0000
+date: 2026-06-18 00:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 
-![hero]({{ site.baseurl }}/assets/images/2026-06-17-openai-partner-network-hero.jpg)
+![hero]({{ site.baseurl }}/assets/images/2026-06-18-openai-partner-network-hero.jpg)
 
 如果你還在盯著 Claude 跟 GPT 的 benchmark 分數在比誰高 0.5%，你可能已經錯過了這場戰爭真正的轉向。6 月 14 日，OpenAI 宣布推出合作夥伴網路（OpenAI Partner Network），砸下 $150M，目標在 2026 年底前訓練出 30 萬名認證顧問。合作名單上，Accenture、Bain、BCG、McKinsey、PwC 一字排開——管理顧問業的「全明星隊」到齊了。
 

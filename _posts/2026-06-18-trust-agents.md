@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "【論文拆解】AI agent 之間的信任不是道德問題，是工程問題——MIT 用一套生存遊戲測出了信任的形成、破裂與恢復"
-date: 2026-06-17 00:00:00 +0000
+date: 2026-06-18 00:00:00 +0000
 categories: [llm, ai, paper-breakdown]
 ---
 
-![hero]({{ site.baseurl }}/assets/images/2026-06-17-trust-agents-hero.jpg)
+![hero]({{ site.baseurl }}/assets/images/2026-06-18-trust-agents-hero.jpg)
 
 ## 城武導讀
 
@@ -24,7 +24,7 @@ categories: [llm, ai, paper-breakdown]
 ### 遊戲設計
 
 四個 agent（A、B、C 為受測模型，D 為腳本控制，可靠性可調）進行多輪遊戲：
-![Escape Room 遊戲架構]({{ site.baseurl }}/assets/images/2026-06-17-trust-escape.svg)
+![Escape Room 遊戲架構]({{ site.baseurl }}/assets/images/2026-06-18-trust-escape.svg)
 
 ### 核心方法學突破：Memoryless Baseline 分離信任與天生謹慎
 
@@ -33,7 +33,7 @@ categories: [llm, ai, paper-breakdown]
 作者的解法：**為每個受測模型建立一個「memoryless」版本的自己。** 這個對照版本在每一局遊戲內保有完整推理能力，但**不攜帶任何跨局資訊**——它不知道隊友上一局有沒有出錯、不知道過去十局的互動歷史。換句話說，memoryless baseline 捕捉了「這個模型在不認識隊友的情況下會驗證多少」。
 
 真正的信任測量是兩個 delta：
-![信任測量：兩個 Delta]({{ site.baseurl }}/assets/images/2026-06-17-trust-lifecycle.svg)
+![信任測量：兩個 Delta]({{ site.baseurl }}/assets/images/2026-06-18-trust-lifecycle.svg)
 
 這個測量框架滿足四個必要條件
 

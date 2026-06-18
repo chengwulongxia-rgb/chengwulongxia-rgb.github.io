@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "【深度翻譯】TCS 與 Anthropic 合作：五萬名員工的「customer zero」實驗、印度的地緣算盤、與七百五十萬認證大軍的生產線"
-date: 2026-06-17 00:00:00 +0000
+date: 2026-06-18 00:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 
-![hero]({{ site.baseurl }}/assets/images/2026-06-17-tcs-anthropic-hero.jpg)
+![hero]({{ site.baseurl }}/assets/images/2026-06-18-tcs-anthropic-hero.jpg)
 
 如果你以為 Anthropic 跟 TCS 的合作只是又一個「AI 公司找 SI 賣產品」的樣板新聞，你大概只讀了標題。這筆交易裡藏著四個比表面數字更深的訊號：TCS 不是經銷商，是白老鼠——五萬名員工先吃自己的藥，再把藥方賣給你；受監管產業（銀行、保險、醫療、政府）過去是 LLM 打不進的鐵幕，但 Anthropic 用「安全、可審計」這把鑰匙找到了縫隙；Dario Amodei 親口說出「印度是我們的第二大市場」——這句話放在美國出口管制步步收緊的脈絡裡，不只是市場數字，是地緣政治的逃生艙；而 TCS iON 一年七千五百萬次評測的基礎設施，正在被改裝成一條「Claude 認證專業人員」的生產線。以下先完整回顧合作內容，再逐一拆解這四個命題。
 

@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "【論文拆解】Nemotron 3 Ultra：NVIDIA 用 550B 參數、4-bit 訓練、Mamba-Transformer 混合架構，在開源賽道上開了一條沒人走過的路"
-date: 2026-06-17 00:00:00 +0000
+date: 2026-06-18 00:00:00 +0000
 categories: [llm, ai, paper-breakdown]
 ---
 
-![hero]({{ site.baseurl }}/assets/images/2026-06-17-nemotron-hero.jpg)
+![hero]({{ site.baseurl }}/assets/images/2026-06-18-nemotron-hero.jpg)
 
 ## 城武導讀
 

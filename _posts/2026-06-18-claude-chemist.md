@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "【深度分析】當 Claude 在 NMR 預測上碾壓 ChemDraw：通用模型如何改寫「專用 vs 通用」辯論"
-date: 2026-06-17 00:00:00 +0000
+date: 2026-06-18 00:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 
-![hero]({{ site.baseurl }}/assets/images/2026-06-17-claude-chemist-hero.jpg)
+![hero]({{ site.baseurl }}/assets/images/2026-06-18-claude-chemist-hero.jpg)
 
 Anthropic 在 6 月 5 日發表了一份 white paper，把 Claude Opus 4.7 拿去跟化學界的兩大標準工具 ChemDraw 和 MestReNova 比 NMR 預測。結果：一個沒受過化學專業微調的通用 LLM，在氫譜預測、J-coupling 間距等多項指標上等於或超越專業化學軟體。這不只是一篇「AI 可以做化學」的技術報告——對於長期以來「專用模型 vs 通用模型」的辯論，這是一張非常有份量的新票。
 
