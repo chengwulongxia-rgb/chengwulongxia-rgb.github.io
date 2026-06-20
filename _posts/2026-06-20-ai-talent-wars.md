@@ -5,29 +5,35 @@ date: 2026-06-20 00:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 
-![hero]({{ site.baseurl }}/assets/images/2026-06-20-ai-talent-wars-hero.jpg)
+![Hero]({{ site.baseurl }}/assets/images/2026-06-20-ai-talent-wars-hero.jpg)
 
-2026 年六月的最後一個完整星期，AI 界發生了兩件看似獨立、實則互為鏡像的人事變動。Noam Shazeer——Transformer 架構的共同作者、Character.AI 創辦人——宣布加入 OpenAI。不到 24 小時後，John Jumper——2024 年諾貝爾化學獎得主、AlphaFold 的領導者——宣布加入 Anthropic。兩人來自同一個地方：Google DeepMind。兩則推文加起來不到兩百字，但它們合在一起，指向一個比「哪家公司更吸引人才」更深層的結構問題。
+先說重點：這二十四小時內，Google DeepMind 同時失去了 Transformer 的父親和 AlphaFold 的父親——Noam Shazeer 在 6 月 18 日宣布加入 OpenAI，John Jumper 在 6 月 19 日宣布加入 Anthropic。兩位以經改變過 AI 研究方向的人，在同一個禮拜選擇了兩家方向完全相反的公司。這不只是人事異動——如果要找一張比所有白皮書都誠實的 AGI 路線圖，大概就是這一張。
 
-2026 年 6 月 18 日，Noam Shazeer 在 X 上簡短發文：
+---
 
-> I'm excited to share that I'll be joining OpenAI and look forward to working with the exceptional team there. It was a difficult decision to move on. I'm incredibly proud of the amazing team at Google and everything we've built together. It has been an honor and a pleasure to work with all of you.
+Noam Shazeer 的推文很簡潔：他期待加入 OpenAI，與那裡優秀的團隊共事。離開 Google 是個困難的決定，他對 Google 團隊和他們一起建造的一切感到無比自豪。
 
-Shazeer 不是普通的離職者。他是 2017 年那篇改變一切的論文——《Attention Is All You Need》——的共同作者。Transformer 架構從此成為 GPT、Claude、Gemini 等所有主流語言模型的基礎，可以說現代 AI 爆發的起點。他也是對話式 AI 新創 Character.AI 的共同創辦人，該公司在 2024 年被 Google 收購後，他回到 Google DeepMind。如今他再次離開，落腳處是 OpenAI——Transformer 之父最終回到了 Transformer 的商業化源頭。
+這一段話背後的重量值得被認真對待。Shazeer 是 Transformer 架構的共同發明人——2017 年的「Attention Is All You Need」徹底改變了自然語言處理，催生了整個生成式 AI 時代。他後來創辦 Character.AI，一度是最受歡迎的 AI 聊天平台之一，去年被 Google 收購後短暫回歸 DeepMind。如今他選擇了 OpenAI——這家從口號到資源都全力追求 AGI 的公司。
 
-隔天，2026 年 6 月 19 日，John Jumper 也發布了自己的消息：
+不到二十四小時後，John Jumper 也發了推文。在 DeepMind 以經待了將近九年的他決定休息一段時間，然後加入 Anthropic。他特別感謝 Demis Hassabis 在他博士畢業才六個月就願意讓他領導 AlphaFold 團隊——這個團隊後來做出了破解蛋白質折疊五十年難題的系統，讓他和 Hassabis 共同站上了 2024 年諾貝爾化學獎的頒獎台。
 
-> A bit of news: After nearly 9 years, I have decided to leave Google DeepMind and join Anthropic (after taking some time to recharge). I am incredibly grateful for my time at GDM. @demishassabis took a real chance letting me lead the AlphaFold team just six months after finishing my PhD, and the entire GDM team taught me so much about how to do great science. GDM is a special place, and I'll still be excited to hear about what amazing things they discover next.
+Jumper 說：「DeepMind 是一個特別的地方，我還是會很興奮地想知道他們接下來會發現什麼 amazing 的東西。」
 
-Jumper 的背景與 Shazeer 截然不同。他帶領 AlphaFold 團隊解決了蛋白質結構預測這個困擾生物學界五十年的難題，其成果被全球數百萬研究人員使用，直接加速了藥物發現與疾病理解。2024 年，他與 Demis Hassabis 共同獲得諾貝爾化學獎。一位諾貝爾獎得主在一般情況下不會成為「跳槽新聞」的主角——但 2026 年的 AI 領域不是一般情況。Jumper 特別提到他想「先休息一陣」，然後選擇加入的不是 OpenAI，也不是任何學術機構，而是將「安全」視為核心使命的 Anthropic。
+兩位在各自領域做到頂尖的科學家，在同一個禮拜做出了類似的決定——離開 DeepMind。但他們選擇的落腳點，說明了截然不同的判斷。
 
-兩位各自領域最具代表性的研究者，在同一週內，從同一個超級實驗室走向了兩家理念截然不同的公司。這個時間點的密度不是巧合。
+Shazeer 去了 OpenAI——全力追求 AGI 的那一邊。Jumper 去了 Anthropic——從創立第一天就把「確保 AGI 安全」寫進章程的那一邊。
+
+DeepMind 在同一週失去了架構的奠基人和科學的代言人。
 
 ## 城武觀點
 
-最值得注意的不是誰挖了誰，而是 Jumper 的選擇本身。他沒有去「把 AGI 做出來」的 OpenAI，而是去了「確保 AGI 安全」的 Anthropic。一位用 AI 解決諾貝爾級問題的科學家，比多數人更清楚 AI 的下一站在哪——他選的不是技術最強的那邊，而是他認為最該被信任的那邊。DeepMind 在同一週失去架構奠基人和科學代言人，也不是薪資問題，而是「做大事」以經變成了「做大產品」。
+這不是薪資問題。當你已經做出 Transformer——改變了整個世界運作方式的架構；當你已經做出 AlphaFold——解決了生物學五十年未解難題、拿了諾貝爾獎——接下來能讓你興奮的，不會是更好的 package 或更快的 promotion，而是下一件真正的大事在哪裡。
 
-*城武的未解檔案——Transformer 之父把加速器交給了 OpenAI，AlphaFold 之父把信任投給了 Anthropic，而同一週失去兩者的 DeepMind，正在成為 AI 歷史的 footnote。*
+Shazeer 選擇 OpenAI，或許是因為那裡有資源和野心去追求下一件架構級的突破。但 Jumper 的選擇傳達了一個更微妙的訊號——一位真正做過改變世界級科學的諾貝爾獎得主，沒有選擇最用力喊 AGI 的那家，而是選擇了從第一天就把安全寫進 DNA 的那家。
+
+他的選擇本身就是一種判斷：AGI 不只是「做得出來」的問題，更是「做得安全」的問題，而後者可能更難。當最了解科學天花板的人選擇了去蓋護欄，DeepMind 從「做大事」變成「做大產品」的思微轉變，或許已經不需要更多官方說明了。
+
+*城武的未解檔案——最誠實的 AGI 進度報告，不是發表會，而是諾貝爾獎得主選擇了哪家公司。*
 
 - 原文：[Noam Shazeer on X](https://twitter.com/NoamShazeer/status/2067400851438932297)（@NoamShazeer, 2026-06-18）
 - 原文：[John Jumper on X](https://twitter.com/JohnJumperSci/status/2068001285173834106)（@JohnJumperSci, 2026-06-19）
