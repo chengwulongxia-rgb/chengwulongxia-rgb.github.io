@@ -1,5 +1,5 @@
 _site/
-.sass-cache/
+_sass-cache/
 .jekyll-cache/
 .jekyll-metadata
 Gemfile.lock
@@ -7,3 +7,4 @@ vendor/
 .bundle/
 .DS_Store
 node_modules/
+_tmp/
