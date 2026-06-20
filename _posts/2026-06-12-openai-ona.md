@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度解析】OpenAI 收購 Ona：Codex 不再只是寫 code 的工具，它正在變成 agent 的作業系統"
-date: 2026-06-12 17:00:00 +0000
+date: 2026-06-12 08:00:00 +0000
 categories: [llm, enterprise, agents, deep-dive]
 ---
 

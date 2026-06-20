@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】Chris Olah 在梵蒂岡談 AI——懺悔的姿態，還是正當性的轉移？"
-date: 2026-06-11 14:30:00 +0000
+date: 2026-06-11 02:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

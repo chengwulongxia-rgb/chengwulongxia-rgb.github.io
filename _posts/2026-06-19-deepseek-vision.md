@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】DeepSeek V4 沉默上線視覺功能：當中國開源模型不再有功能缺口，矽谷的護城河剩下什麼？"
-date: 2026-06-19 00:00:00 +0000
+date: 2026-06-19 02:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 

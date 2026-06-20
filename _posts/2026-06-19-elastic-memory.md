@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】搜尋引擎能當記憶嗎？Elasticsearch 上的 agent 長期記憶系統，與 0.89 recall 背後沒說的 11%"
-date: 2026-06-19 00:00:00 +0000
+date: 2026-06-19 03:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 

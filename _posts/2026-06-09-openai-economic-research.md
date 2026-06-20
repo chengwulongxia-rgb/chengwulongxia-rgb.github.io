@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】OpenAI 砸錢研究 AI 會消滅多少工作——這是社會責任，還是先射箭再畫靶？"
-date: 2026-06-09 00:00:00 +0000
+date: 2026-06-09 03:00:00 +0000
 categories: llm ai openai economy research deep-dive
 ---
 

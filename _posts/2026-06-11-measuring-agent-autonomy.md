@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】Anthropic 公開百萬筆 agent 行為數據——人類正在把愈來愈多決定權交給 AI，但真的知道交了多少嗎？"
-date: 2026-06-11 17:30:00 +0000
+date: 2026-06-11 06:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 

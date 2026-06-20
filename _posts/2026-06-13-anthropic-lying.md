@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】ThePrimeagen 的憤怒：「我覺得 Anthropic 在騙你」——Coding 真的被「解決」了嗎？"
-date: 2026-06-13 12:00:00 +0800
+date: 2026-06-13 02:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【論文拆解】Metric Match：你用 LLM 來省人類標註，再用 LLM 來驗證 LLM——這條遞歸鏈的終點，是個 rejection sampling"
-date: 2026-06-17 00:00:00 +0000
+date: 2026-06-17 02:00:00 +0000
 categories: [llm, ai, paper-breakdown]
 ---
 

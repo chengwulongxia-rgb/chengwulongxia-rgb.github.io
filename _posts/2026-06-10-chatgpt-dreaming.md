@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】ChatGPT Dreaming：當你的 AI 開始在你睡覺時「做夢」整理記憶——貼心還是恐怖？"
-date: 2026-06-10 02:00:00 +0000
+date: 2026-06-10 03:00:00 +0000
 categories: llm ai deep-dive
 ---
 

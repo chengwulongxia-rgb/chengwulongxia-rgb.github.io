@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【論文拆解】PhoneHarness：手機 Agent 評測從「點對下一頁」進化到「任務真的完成了嗎」——以及那失敗的 25% 教我們的事"
-date: 2026-06-17 00:00:00 +0000
+date: 2026-06-17 04:00:00 +0000
 categories: [llm, ai, paper-breakdown]
 ---
 

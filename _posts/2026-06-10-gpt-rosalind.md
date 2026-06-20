@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】GPT-Rosalind：OpenAI 的「生命科學專家」是真正的突破，還是精美的比較表魔術？"
-date: 2026-06-10 01:00:00 +0000
+date: 2026-06-10 05:00:00 +0000
 categories: llm ai deep-dive
 ---
 

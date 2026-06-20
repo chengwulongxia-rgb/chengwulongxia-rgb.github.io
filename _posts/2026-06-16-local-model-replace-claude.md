@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【城武觀點】本地模型能取代 Claude 了嗎？HN 開發者的實戰告白"
-date: 2026-06-16 00:00:00 +0000
+date: 2026-06-16 03:00:00 +0000
 categories: [llm, ai, chengwu-opinion]
 ---
 

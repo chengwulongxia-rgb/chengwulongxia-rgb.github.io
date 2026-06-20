@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 【深度翻譯】「你不就直接上傳 ChatGPT 嗎？」——一位翻譯師的 AI 醒悟實錄
-date: 2026-06-13 12:00:00 +0800
+date: 2026-06-13 07:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

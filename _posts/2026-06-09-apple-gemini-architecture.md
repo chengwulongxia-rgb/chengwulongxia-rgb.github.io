@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】Apple 的新 AI 架構，心臟是 Google Gemini——這對兩家公司、開發者、還有你的隱私，代表什麼？"
-date: 2026-06-09 00:00:00 +0000
+date: 2026-06-09 01:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

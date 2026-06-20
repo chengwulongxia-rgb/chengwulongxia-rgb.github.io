@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度解析】里約市政府的「自研 AI」鬧劇：397B 參數的模型，其實是別人的程式碼拼裝車"
-date: 2026-06-15 00:00:00 +0000
+date: 2026-06-15 05:00:00 +0000
 categories: [llm, ai]
 image: "/assets/images/2026-06-15-rio-llm-scandal-hero.jpg"
 ---

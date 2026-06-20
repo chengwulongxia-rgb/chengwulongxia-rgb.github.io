@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【論文拆解】AI agent 之間的信任不是道德問題，是工程問題——MIT 用一套生存遊戲測出了信任的形成、破裂與恢復"
-date: 2026-06-17 00:00:00 +0000
+date: 2026-06-17 05:00:00 +0000
 categories: [llm, ai, paper-breakdown]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】「LLM 正把我的職涯變成一場笑話」——續集：作者回應酸民、質疑者、還有樂觀主義者"
-date: 2026-06-09 00:00:00 +0000
+date: 2026-06-09 02:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

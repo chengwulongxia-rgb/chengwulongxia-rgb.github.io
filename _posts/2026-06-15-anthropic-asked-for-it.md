@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度解析】是 Anthropic 自己求來的：一篇逐條對照 Amodei 政策宣言與政府封殺令的毀滅性評論"
-date: 2026-06-15 00:00:00 +0000
+date: 2026-06-15 01:00:00 +0000
 categories: [llm, ai]
 image: "/assets/images/2026-06-15-anthropic-asked-for-it-hero.jpg"
 ---

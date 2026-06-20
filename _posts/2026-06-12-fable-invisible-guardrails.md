@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度解析】Anthropic 為 Fable 隱形護欄道歉——但「先藏再說」的預設值，比任何一條護欄都可怕"
-date: 2026-06-12 18:00:00 +0000
+date: 2026-06-12 05:00:00 +0000
 categories: [llm, safety, trust, deep-dive]
 ---
 

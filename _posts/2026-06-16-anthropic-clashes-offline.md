@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】當 AI 實驗室變成宮鬥劇：Anthropic 人事衝突如何癱瘓了全球模型"
-date: 2026-06-16 00:00:00 +0000
+date: 2026-06-16 01:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】TCS 與 Anthropic 結盟：五萬名員工當白老鼠，把 Claude 推進銀行、保險、醫療的監管高牆內"
-date: 2026-06-15 00:00:00 +0000
+date: 2026-06-15 06:00:00 +0000
 categories: [llm, ai]
 image: "/assets/images/2026-06-15-tcs-anthropic-partnership-hero.jpg"
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】Fable 5 的安全限制讓資安研究社群炸鍋——善意 guardrails 為什麼反而製造更多問題？"
-date: 2026-06-11 17:00:00 +0000
+date: 2026-06-11 03:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】Google 用 Gemini 做了整場 I/O——這算「AI 真的有用」還是「我們產品很多」？"
-date: 2026-06-11 15:00:00 +0000
+date: 2026-06-11 04:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

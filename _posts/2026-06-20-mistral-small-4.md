@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】Mistral Small 4：128 專家的統一者，把推理、多模態、編碼塞進一顆模型"
-date: 2026-06-20 00:00:00 +0000
+date: 2026-06-20 03:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 

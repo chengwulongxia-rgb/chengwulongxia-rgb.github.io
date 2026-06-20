@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】我用 Claude 設計的次數已經超過 Figma——一個 Jane Street 設計師的告白"
-date: 2026-06-08 00:00:00 +0000
+date: 2026-06-08 03:00:00 +0000
 categories: llm ai design translation deep-dive
 ---
 

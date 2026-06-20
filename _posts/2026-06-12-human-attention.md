@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】你想要我的注意力，但你連自己都沒讀過這篇？——一篇 AI 時代的協作禮儀宣言"
-date: 2026-06-12 12:00:00 +0000
+date: 2026-06-12 07:00:00 +0000
 categories: [llm, culture, deep-dive]
 ---
 

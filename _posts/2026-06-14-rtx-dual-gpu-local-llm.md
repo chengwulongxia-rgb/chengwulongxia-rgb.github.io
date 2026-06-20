@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】消費級雙卡救星：RTX 5080 + 3090 跑 Qwen 3.6 27B Q8，每秒 80+ tokens 實戰配置"
-date: 2026-06-14 12:00:00 +0000
+date: 2026-06-14 03:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

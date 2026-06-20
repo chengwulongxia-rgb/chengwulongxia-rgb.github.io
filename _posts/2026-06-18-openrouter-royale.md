@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】一個機器人朝你衝過來——你希望它跑的是 Claude 還是 Grok？"
-date: 2026-06-18 00:00:00 +0000
+date: 2026-06-18 03:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】FablePool：群眾集資一個 prompt，AI 幫你做出來——而且全程公開"
-date: 2026-06-12 11:00:00 +0000
+date: 2026-06-12 06:00:00 +0000
 categories: [llm, tools, web, deep-dive]
 ---
 

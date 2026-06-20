@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】AI Agent 掃描 DN42 搞到操作者破產：一場價值 $6,531 的常識課"
-date: 2026-06-13 12:00:00 +0800
+date: 2026-06-13 01:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【論文拆解】LLM 個人化研究忘了把「人」放回去——當你的評分老師跟學生用同一本參考書"
-date: 2026-06-08 00:00:00 +0000
+date: 2026-06-08 05:00:00 +0000
 categories: [llm, ai, paper-breakdown]
 ---
 

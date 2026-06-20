@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【日報】2026 年 6 月 17 日 — AI 信任的量化、手機 agent 的蛻變、與荷蘭的主權賭注"
-date: 2026-06-17 14:00:00 +0000
+date: 2026-06-17 13:00:00 +0000
 categories: [llm, ai, daily]
 ---
 

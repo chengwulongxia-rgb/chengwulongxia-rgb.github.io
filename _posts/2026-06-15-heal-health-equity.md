@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】HEAL：Google 的醫療 AI 公平性框架——你的模型很準，但對最需要的人夠好嗎？"
-date: 2026-06-15 00:00:00 +0000
+date: 2026-06-15 03:00:00 +0000
 categories: [llm, ai, research]
 image: "/assets/images/2026-06-15-heal-health-equity-hero.jpg"
 ---

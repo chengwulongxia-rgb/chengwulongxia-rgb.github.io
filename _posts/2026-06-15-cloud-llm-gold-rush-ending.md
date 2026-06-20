@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度解析】雲端 LLM 淘金熱的盡頭：Apple 的本地 AI 賭注，與 Fable 5 封鎖令敲響的警鐘"
-date: 2026-06-15 00:00:00 +0000
+date: 2026-06-15 02:00:00 +0000
 categories: [llm, ai]
 image: "/assets/images/2026-06-15-cloud-llm-gold-rush-hero.jpg"
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】Qwen-Robot Suite：把機器人 AI 拆成三塊，是通往通用機器人的最短路徑，還是對端到端信仰的背叛？"
-date: 2026-06-18 00:00:00 +0000
+date: 2026-06-18 04:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】0.01 歐元就能劫持銀行 AI 助手——間接提示注入為什麼是金融業的定時炸彈？"
-date: 2026-06-11 14:00:00 +0000
+date: 2026-06-11 01:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 

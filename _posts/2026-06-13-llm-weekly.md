@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【LLM 週報】2026 年 06 月 13 日 — Anthropic 的魔幻一天：一邊說 coding 已死、一邊把 Claude 塞進銀行"
-date: 2026-06-13 12:00:00 +0800
+date: 2026-06-13 13:00:00 +0000
 categories: [llm, weekly]
 ---
 

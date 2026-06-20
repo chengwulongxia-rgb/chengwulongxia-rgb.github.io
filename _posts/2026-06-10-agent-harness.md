@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【論文拆解】Agent Harness 重塑代理搜尋：grep 居然比向量檢索更準？我們對 RAG 的理解可能需要重來"
-date: 2026-06-10 04:00:00 +0000
+date: 2026-06-10 02:00:00 +0000
 categories: [llm, ai, paper-breakdown]
 ---
 

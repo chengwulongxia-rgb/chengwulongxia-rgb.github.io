@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 【深度翻譯】FablePool：當眾人集資買一個 Prompt，AI 的群眾募資時代來了
-date: 2026-06-13 12:00:00 +0800
+date: 2026-06-13 03:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

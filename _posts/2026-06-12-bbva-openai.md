@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】BBVA 把整間銀行押在 AI 上——10 萬員工、2 萬個自訂 GPT，OpenAI 最大銀行客戶現身"
-date: 2026-06-12 09:00:00 +0000
+date: 2026-06-12 01:00:00 +0000
 categories: [llm, enterprise, deep-dive]
 ---
 

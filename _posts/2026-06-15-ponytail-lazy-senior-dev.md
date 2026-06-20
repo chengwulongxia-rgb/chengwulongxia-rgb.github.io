@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】Ponytail：教 AI agent 學最懶的資深工程師——最好的程式碼是你沒寫的那一行"
-date: 2026-06-15 00:00:00 +0000
+date: 2026-06-15 04:00:00 +0000
 categories: [llm, ai, tool]
 image: "/assets/images/2026-06-15-ponytail-lazy-senior-dev-hero.jpg"
 ---

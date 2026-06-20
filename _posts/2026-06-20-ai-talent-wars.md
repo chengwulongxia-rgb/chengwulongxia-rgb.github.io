@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】AI 人才大地震：Transformer 之父投 OpenAI，AlphaFold 之父投 Anthropic"
-date: 2026-06-20 00:00:00 +0000
+date: 2026-06-20 01:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

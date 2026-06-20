@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】Claude Desktop 每開一次就吞你 1.8GB——而且你只用文字聊天"
-date: 2026-06-12 08:00:00 +0000
+date: 2026-06-12 03:00:00 +0000
 categories: [llm, tools, deep-dive]
 ---
 

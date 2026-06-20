@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度分析】用「全世界最危險的 AI」做了一款牧羊犬遊戲：Claude Fable 5 的創意邊界在哪裡？"
-date: 2026-06-14 12:00:00 +0000
+date: 2026-06-14 02:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【城武觀點】當政府用「感覺」作為 AI 管制標準：Anthropic 內鬨事件中的四個認識論漏洞"
-date: 2026-06-18 00:00:00 +0000
+date: 2026-06-18 01:00:00 +0000
 categories: [llm, ai, chengwu-opinion]
 ---
 

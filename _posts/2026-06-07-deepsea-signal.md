@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【未解之謎】太平洋深海傳來規律訊號——是沈睡的古文明還是外星基地？"
-date: 2026-06-07 14:30:00 +0000
+date: 2026-06-07 01:00:00 +0000
 categories: [archive, paranormal]
 ---
 

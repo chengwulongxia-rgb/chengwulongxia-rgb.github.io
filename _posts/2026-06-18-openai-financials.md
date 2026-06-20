@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】OpenAI 財務文件外洩：$21B 虧損的背後，前沿 AI 是一門什麼樣的生意？"
-date: 2026-06-18 00:00:00 +0000
+date: 2026-06-18 02:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 

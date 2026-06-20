@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】Anthropic 公開 Claude 跨產品安全容器化架構：三次出事、三種隔離模式、一個核心原則"
-date: 2026-06-12 14:00:00 +0000
+date: 2026-06-12 02:00:00 +0000
 categories: [llm, security, engineering, deep-dive]
 ---
 

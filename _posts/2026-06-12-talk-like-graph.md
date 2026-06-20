@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】Google Research：教 LLM「用圖的語言說話」——圖結構編碼對推理能力的影響有多大？"
-date: 2026-06-12 15:00:00 +0000
+date: 2026-06-12 09:00:00 +0000
 categories: [llm, research, deep-dive]
 ---
 

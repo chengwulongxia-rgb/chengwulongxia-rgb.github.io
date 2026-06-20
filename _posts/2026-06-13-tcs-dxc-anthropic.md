@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【深度翻譯】Anthropic 的監管產業登陸戰：TCS 與 DXC 雙線出擊"
-date: 2026-06-13 12:00:00 +0800
+date: 2026-06-13 06:00:00 +0000
 categories: [llm, ai, deep-translation]
 ---
 
