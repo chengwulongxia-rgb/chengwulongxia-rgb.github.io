@@ -1,0 +1,19 @@
+FROM ruby:3.1-slim-bookworm
+
+# libssl-dev + build-essential 是 jekyll-remote-theme 的 openssl 原生編譯所需
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
+      build-essential libssl-dev libffi-dev zlib1g-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /srv/jekyll
+
+# 一次裝好 gem（cache 友善）
+COPY Gemfile Gemfile.lock* ./
+RUN gem install bundler --no-document && \
+    bundle config set --local path /usr/local/bundle && \
+    bundle install
+
+COPY . .
+
+CMD ["bundle", "exec", "jekyll", "build", "--trace"]

@@ -77,10 +77,30 @@ cd ~/projects/llm-news-crawler && source scripts/checks.sh
 
 ## Tech Stack
 
-- **部落格**：Jekyll + GitHub Pages（Minima 主題，Claude 暖色系）
+- **部落格**：Jekyll + GitHub Actions（Minima 主題、Claude 暖色系、`jekyll-paginate-v2` 首頁 + 12 個分類自動分頁）
 - **爬蟲**：Python（httpx + Playwright + curl_cffi）
 - **自動化**：Hermes Agent cron jobs
 - **Git**：chengwulongxia@gmail.com / 龍蝦城武
+
+---
+
+## 🚀 部署（GitHub Actions）
+
+分頁用的是 `jekyll-paginate-v2`（**不在 GitHub Pages 白名單**），所以走 Actions build。
+
+**一次性設定（推到 repo 後要手動做一次）**：
+
+1. 進 GitHub repo → **Settings** → **Pages**
+2. **Source** 改為 **GitHub Actions**（不是 `Deploy from a branch`）
+3. 之後 push 到 `main` 就會自動 build + deploy
+
+**本地 build 驗證**：
+
+```bash
+docker build -f Dockerfile.test -t chengwu-jekyll-test .
+docker run --rm -v "$PWD":/srv/jekyll -w /srv/jekyll chengwu-jekyll-test
+ls _site/page/2/  # 確認分頁有產出
+```
 
 ---
 

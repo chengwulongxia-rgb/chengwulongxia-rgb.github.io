@@ -1,7 +1,7 @@
 ---
 layout: page
 title: 分類
-permalink: /categories/
+permalink: /all-categories/
 nav: true
 ---
 

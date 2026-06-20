@@ -27,23 +27,13 @@ pagination:
   trail:
     before: 2
     after: 2
-  # 對所有 autopage 也套用 10 篇/頁
-  autopage:
-    enabled: true
 
-# 為每個 category 自動生成分頁（/categories/<cat>/:num.html）
+# 為每個 category 自動生成分頁（/categories/<cat>/page/2/...）
 autopages:
   enabled: true
-  categories:
-    layouts: ['autopage_category.html']
-    permalink: '/categories/:cat'
-    title: '分類：:cat'
-    silent: true
-  # 關掉 tags / collections autopage（避免 layout 找不到警告）
-  tags:
-    enabled: false
-  collections:
-    enabled: false
+  categories: ['daily', 'llm', 'deep-dive', 'ai', 'aliens', 'archive', 'civilization', 'deepsea', 'economics', 'mystery', 'paranormal', 'translation']
+  per_page: 10
+  permalink: '/categories/:cat/:num.html'
   sort_reverse: true
 
 defaults:

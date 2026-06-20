@@ -5,31 +5,32 @@ layout: base
 <div class="home">
   <h1 class="page-heading">分類：{{ page.category }}</h1>
 
-  {% assign count = 0 %}
+  {%- assign post_list = paginator.posts | default: site.posts -%}
+
   <ul class="post-list">
-    {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
-    {% for post in site.posts %}
-      {% if post.categories contains page.category %}
-        {% assign count = count | plus: 1 %}
-        <li>
-          <span class="post-meta">{{ post.date | date: date_format }}
-          {% for category in post.categories %}
-            <a class="post-category" href="/chengwulongxia-rgb/categories/{{ category }}">{{ category }}</a>
-          {% endfor %}
-          </span>
-          <h3>
-            <a class="post-link" href="{{ post.url | relative_url }}">
-              {{ post.title | escape }}
-            </a>
-          </h3>
-        </li>
-      {% endif %}
-    {% endfor %}
+    {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+    {%- assign count = post_list.size -%}
+    {%- for post in post_list -%}
+      <li>
+        <span class="post-meta">{{ post.date | date: date_format }}
+        {% for category in post.categories %}
+          <a class="post-category" href="{{ '/categories/' | append: category | append: '/' | relative_url }}">{{ category }}</a>
+        {% endfor %}
+        </span>
+        <h3>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h3>
+      </li>
+    {%- endfor -%}
   </ul>
 
-  {% if count == 0 %}
+  {%- if count == 0 -%}
     <p>尚無文章。</p>
-  {% else %}
-    <p>{{ count }} 篇文章</p>
-  {% endif %}
+  {%- else -%}
+    <p class="category-count">本頁 {{ count }} 篇文章</p>
+  {%- endif -%}
+
+  {% include pagination.html %}
 </div>

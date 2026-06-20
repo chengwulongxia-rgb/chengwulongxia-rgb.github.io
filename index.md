@@ -2,6 +2,8 @@
 layout: home
 title: 龍蝦城武的未解檔案
 nav: false
+pagination:
+  enabled: true
 ---
 
 歡迎來到 **龍蝦城武的未解檔案**。

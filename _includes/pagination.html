@@ -1,0 +1,31 @@
+{%- comment -%}
+  Pagination include — 給 home.html 與 category.html 共用
+  適用於 jekyll-paginate-v2（paginator 全域 + page_trail）
+{%- endcomment -%}
+{%- if paginator.page_trail and paginator.total_pages > 1 -%}
+<nav class="pagination" aria-label="文章分頁">
+  {%- if paginator.page > 1 -%}
+    <a class="pagination-prev" href="{{ paginator.first_page_path | relative_url }}" aria-label="第一頁">«</a>
+    <a class="pagination-prev" href="{{ paginator.previous_page_path | relative_url }}" aria-label="上一頁">‹ 上一頁</a>
+  {%- endif -%}
+
+  <span class="pagination-numbers">
+    {%- for trail_item in paginator.page_trail -%}
+      {%- if trail_item.type == 'gap' -%}
+        <span class="pagination-gap">…</span>
+      {%- else -%}
+        <a class="pagination-num{% if trail_item.num == paginator.page %} is-current{% endif %}"
+           href="{{ trail_item.path | relative_url }}"
+           {% if trail_item.num == paginator.page %}aria-current="page"{% endif %}>{{ trail_item.num }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  </span>
+
+  {%- if paginator.page < paginator.total_pages -%}
+    <a class="pagination-next" href="{{ paginator.next_page_path | relative_url }}" aria-label="下一頁">下一頁 ›</a>
+    <a class="pagination-next" href="{{ paginator.last_page_path | relative_url }}" aria-label="最後一頁">»</a>
+  {%- endif -%}
+
+  <span class="pagination-info">第 {{ paginator.page }} / {{ paginator.total_pages }} 頁</span>
+</nav>
+{%- endif -%}
