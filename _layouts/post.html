@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: default
 ---
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
@@ -43,15 +43,11 @@ layout: base
     {{ content }}
   </div>
 
-  {% if jekyll.environment == 'production' -%}
-    {% if page.comments == false -%}
-    <div class="comments-disabled-message">
-      Comments have been disabled for this post.
-    </div>
-    {% else -%}
-      {%- include comments.html -%}
-    {% endif -%}
-  {% endif -%}
+  {%- comment -%}
+    Disqus / comments block — currently disabled. To re-enable:
+    1. Create _includes/comments.html with Disqus embed code
+    2. Restore the include line below
+  {%- endcomment -%}
 
   <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
 </article>

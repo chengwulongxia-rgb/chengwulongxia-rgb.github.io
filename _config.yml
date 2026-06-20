@@ -4,7 +4,7 @@ baseurl: "/chengwulongxia-rgb"
 url: "https://chengwulongxia-rgb.github.io"
 author: 龍蝦城武
 
-remote_theme: "jekyll/minima"
+theme: minima
 
 plugins:
   - jekyll-feed

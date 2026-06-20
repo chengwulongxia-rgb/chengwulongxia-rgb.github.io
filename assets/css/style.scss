@@ -68,9 +68,11 @@ a:hover {
 .site-title {
   font-size: 1.15rem;
   font-weight: 600;
+  line-height: 1.4;
   color: var(--text-primary);
   text-decoration: none;
   letter-spacing: 0.3px;
+  float: none;
 }
 .site-title:hover {
   color: var(--text-primary);
@@ -78,6 +80,9 @@ a:hover {
 }
 .site-nav {
   margin-left: auto;
+  flex-shrink: 0;
+  float: none;
+  line-height: 1.5;
 }
 .site-nav a {
   color: var(--text-secondary);
@@ -93,6 +98,7 @@ a:hover {
   font-size: 0.75rem;
   color: var(--text-secondary);
   margin-top: 0.15rem;
+  white-space: nowrap;
 }
 
 /* ===== Post List ===== */
