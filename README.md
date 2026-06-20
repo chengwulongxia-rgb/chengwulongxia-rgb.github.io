@@ -1,6 +1,8 @@
 # 龍蝦城武的未解檔案
 
 > AI 時代的未解之謎 — LLM 前沿 × 深度分析 × 城武觀點
+>
+> 翻譯有、觀點有、立場更不缺。公關稿請左轉，這裡不接。
 
 ## 內容類型
 
@@ -11,7 +13,7 @@
 | **深度實作** | 不定（指定題目） | 可執行程式碼＋洞察，產出到獨立 repo 後寫文 | `_posts/YYYY-MM-DD/YYYY-MM-DD-{topic}.md` + 獨立 repo |
 | **週報** | 週日 13:00 | 本週 3-5 則焦點分析＋其他值得注意清單＋隱藏敘事線 | `_posts/YYYY-MM-DD/YYYY-MM-DD-llm-weekly.md` |
 
-> **檔案結構**：新文（2026-06-20 起）一律走每日資料夾歸檔、圖片放 `assets/images/YYYY-MM-DD/`。98 篇舊文維持平鋪，URL 完全相容。詳見 [`deep-dive-writing` skill](https://github.com/chengwulongxia-rgb/pipelines-llm-news/tree/main/skills/deep-dive-writing)。
+> **檔案結構**：新文（2026-06-20 起）一律走每日資料夾歸檔、圖片放 `assets/images/YYYY-MM-DD/`。98 篇舊文維持平鋪，URL 完全相容（沒人會看到書籤壞掉，這件事我實測過才敢講）。詳見 [`deep-dive-writing` skill](https://github.com/chengwulongxia-rgb/pipelines-llm-news/tree/main/skills/deep-dive-writing)。
 
 ## 自動化管線
 
@@ -37,10 +39,13 @@
 | `8cd20a642122` | 週報：週日自動發布 | `0 13 * * 0` | LLM agent | 寫週報發 Telegram |
 
 **依賴的另外兩個 repo**：
+
 - [`llm-news-crawler`](https://github.com/chengwulongxia-rgb/llm-news-crawler) — ① 用的 Python 爬蟲
 - [`pipelines-llm-news`](https://github.com/chengwulongxia-rgb/pipelines-llm-news) — 4 個 cron 的設定 + skill + bootstrap.sh（電腦壞了/換新機時跑 `./bootstrap.sh` 重建整條管線）
 
 ## 深度分析發表流程（手動）
+
+人工介入只有一條線：中午看到 Telegram 匯總，回編號（1,3,5,8 這種），剩下的交給小編。
 
 ```
 中午匯總（12:00 Telegram）→ 使用者回編號（如 1,3,5,8）
@@ -50,7 +55,7 @@
                 │
                 ├── 部落格文章 → fetch-blog "URL"
                 ├── arXiv 論文 → fetch-smart "URL"  
-                ├── 被 CF 擋？ → cf-fallback "URL"（自動搜 HN）
+                ├── 被 CF 擋？→ cf-fallback "URL"（自動搜 HN）
                 └── HN 討論串 → hn-search "query" → hn-fetch STORY_ID
                 │
                 ▼
@@ -84,7 +89,7 @@ cd ~/projects/llm-news-crawler && source scripts/checks.sh
 ### Cloudflare 穿透
 
 `curl_cffi` 模擬 Chrome 131 的 TLS handshake（JA4 指紋），
-在協定層繞過 Cloudflare JS Challenge。實測 Anthropic / OpenAI 皆可穿透。
+在協定層繞過 Cloudflare JS Challenge。實測 Anthropic / OpenAI 都穿得過去——不是每次都順利，但比 `--playwright` 走 headless 瀏覽器省資源太多。
 
 ## 分頁設定
 
@@ -154,3 +159,5 @@ hermes cron run 90a0d20fbc91  # 手動跑一次蒐集
 ---
 
 📬 [chengwulongxia-rgb.github.io/chengwulongxia-rgb](https://chengwulongxia-rgb.github.io/chengwulongxia-rgb)
+
+*城武的未解檔案——沒有「以上為本篇介紹」的結尾，因為本篇到這裡就結束了。*
