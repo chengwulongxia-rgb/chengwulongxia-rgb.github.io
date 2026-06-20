@@ -1,7 +1,5 @@
 ---
 layout: base
-pagination:
-  enabled: true
 ---
 
 <div class="home-layout">
@@ -10,7 +8,7 @@ pagination:
       <h1 class="page-heading">{{ page.title }}</h1>
     {%- endif -%}
 
-    {{ content }}
+    {{ content | markdownify }}
 
     {%- assign post_list = paginator.posts | default: site.posts -%}
 
