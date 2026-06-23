@@ -78,6 +78,8 @@ categories: [llm, ai, deep-implementation]
 
 我們用 Ollama 的 Python API（直接的 HTTP 請求，不需要額外套件），目標是 gpt-oss:120b-cloud。
 
+> ⚠️ gpt-oss:120b-cloud 是 Ollama 的雲端託管模型，需要在 [ollama.com](https://ollama.com) 註冊帳號、申請 API 金鑰，然後在本地執行 `ollama login` 登入才能使用。本地小模型（如 qwen2.5-coder:3b）可以直接跑，但沒有 `thinking` 能力，不適用於本實驗。
+
 ```python
 import json, urllib.request, time
 
