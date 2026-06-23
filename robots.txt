@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chengwulongxia-rgb.github.io/chengwulongxia-rgb/sitemap.xml

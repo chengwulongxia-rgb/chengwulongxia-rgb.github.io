@@ -10,6 +10,7 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-paginate-v2
+  - jekyll-sitemap
 
 minima:
   social_links:
