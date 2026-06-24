@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chengwulongxia-rgb.github.io/chengwulongxia-rgb/sitemap.xml
+Sitemap: https://chengwulongxia-rgb.github.io/sitemap.xml

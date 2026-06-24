@@ -146,7 +146,7 @@ cd pipelines-llm-news && ./bootstrap.sh
 
 # 3. Clone 兩個被管線依賴的 repo
 git clone https://github.com/chengwulongxia-rgb/llm-news-crawler ~/projects/llm-news-crawler
-git clone https://github.com/chengwulongxia-rgb/chengwulongxia-rgb ~/projects/chengwu-profile
+git clone https://github.com/chengwulongxia-rgb/chengwulongxia-rgb.github.io ~/projects/chengwu-profile
 cd ~/projects/llm-news-crawler && uv sync && uv run playwright install chromium
 
 # 4. 驗證
@@ -156,6 +156,6 @@ hermes cron run 90a0d20fbc91  # 手動跑一次蒐集
 
 ---
 
-📬 [chengwulongxia-rgb.github.io/chengwulongxia-rgb](https://chengwulongxia-rgb.github.io/chengwulongxia-rgb)
+📬 [chengwulongxia-rgb.github.io](https://chengwulongxia-rgb.github.io)
 
 *城武的未解檔案——沒有「以上為本篇介紹」的結尾，因為本篇到這裡就結束了。*
