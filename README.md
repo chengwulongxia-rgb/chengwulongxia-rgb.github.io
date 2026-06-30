@@ -125,7 +125,15 @@ docker build -f Dockerfile.test -t chengwu-jekyll-test .
 docker run --rm -v "$PWD":/srv/jekyll -w /srv/jekyll chengwu-jekyll-test
 ls _site/page/2/  # 確認首頁分頁有產出
 ls _site/categories/llm/page/2/  # 確認分類分頁有產出
+ls _site/pagefind/  # 確認 Pagefind 搜尋索引有產出
 ```
+
+**搜尋功能（Pagefind）**：
+
+- 搜尋頁面：`/search/`（`search.md`）
+- 索引在 build 時自動產生到 `_site/pagefind/`，走 GitHub Actions `Build Pagefind search index` 步驟
+- 內建 CJK segmenter，中文無痛
+- UI 配色透過 CSS 變數覆寫成 Claude 暖色系，定義在 `assets/css/style.scss` 末段
 
 ---
 

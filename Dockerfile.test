@@ -1,9 +1,11 @@
 FROM ruby:3.1-slim-bookworm
 
 # libssl-dev + build-essential 是 jekyll-remote-theme 的 openssl 原生編譯所需
+# nodejs + npm 給 Pagefind 索引建立用（GitHub Actions 走 setup-node，這裡走 apt）
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
-      build-essential libssl-dev libffi-dev zlib1g-dev && \
+      build-essential libssl-dev libffi-dev zlib1g-dev \
+      nodejs npm ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /srv/jekyll
@@ -16,4 +18,5 @@ RUN gem install bundler --no-document && \
 
 COPY . .
 
-CMD ["bundle", "exec", "jekyll", "build", "--trace"]
+# build Jekyll → 跑 Pagefind 建索引（產到 _site/pagefind/）
+CMD ["sh", "-c", "bundle exec jekyll build --trace && npx -y pagefind@latest --site _site --output-subdir pagefind"]
