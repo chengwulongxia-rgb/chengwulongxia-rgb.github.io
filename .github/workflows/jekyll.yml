@@ -36,6 +36,14 @@ jobs:
         env:
           JEKYLL_ENV: production
 
+      - name: Setup Node.js (for Pagefind)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build Pagefind search index
+        run: npx -y pagefind@latest --site _site --output-subdir pagefind
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 

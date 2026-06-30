@@ -424,3 +424,70 @@ a:hover {
   border-radius: 50%;
   margin-bottom: 1rem;
 }
+
+/* ===== Pagefind Search (覆寫官方 UI 變數，套用暖色系) ===== */
+#search {
+  margin: 2rem 0;
+}
+.pagefind-ui {
+  --pagefind-ui-scale: 0.9;
+  --pagefind-ui-primary: var(--accent);
+  --pagefind-ui-text: var(--text-primary);
+  --pagefind-ui-background: var(--bg-primary);
+  --pagefind-ui-border: var(--border);
+  --pagefind-ui-tag: var(--bg-secondary);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 6px;
+  --pagefind-ui-image-border-radius: 4px;
+  --pagefind-ui-font: var(--font-sans);
+}
+.pagefind-ui__search-input {
+  background: var(--bg-primary);
+  font-family: var(--font-sans);
+}
+.pagefind-ui__search-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+.pagefind-ui__result {
+  border-top: 1px solid var(--border);
+  padding: 1.2rem 0;
+}
+.pagefind-ui__result:first-child {
+  border-top: none;
+}
+.pagefind-ui__result-title a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+.pagefind-ui__result-title a:hover {
+  color: var(--accent);
+}
+.pagefind-ui__result-excerpt {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.pagefind-ui__result-excerpt mark {
+  background: rgba(196, 102, 134, 0.15);
+  color: var(--accent-hover);
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+.pagefind-ui__message {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+.pagefind-ui__button {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: var(--font-sans);
+}
+.pagefind-ui__button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
