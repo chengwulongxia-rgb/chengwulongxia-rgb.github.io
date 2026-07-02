@@ -5,8 +5,8 @@ permalink: /search/
 nav: true
 ---
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pagefind@1/pagefind-ui.css">
-<script src="https://cdn.jsdelivr.net/npm/pagefind@1/pagefind-ui.js"></script>
+<script src=" https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.5.2/ui.min.js "></script>
+<link href=" https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.5.2/css/ui.min.css " rel="stylesheet">
 
 <div id="search"></div>
 
