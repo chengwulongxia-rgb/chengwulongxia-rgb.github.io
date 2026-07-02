@@ -5,13 +5,19 @@ permalink: /search/
 nav: true
 ---
 
-<script src=" https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.5.2/ui.min.js "></script>
-<link href=" https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.5.2/css/ui.min.css " rel="stylesheet">
+<!-- 1. 引入正確的 CSS（注意：無空格、沒有 .min） -->
+<link href="https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.5.2/css/ui.css" rel="stylesheet">
 
 <div id="search"></div>
 
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
+<!-- 2. 必須宣告為 type="module" -->
+<script type="module">
+  // 3. 使用 ESM 語法從 CDN 匯入 PagefindUI (+esm 是 jsDelivr 自動轉換 ESM 的機制)
+  import { PagefindUI } from "https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.5.2/+esm";
+
+  // 4. 因為 type="module" 是非同步載入，DOM 通常在此時已解析完畢。
+  // 我們用安全的方式確保 DOM 載入後才初始化。
+  const initPagefind = () => {
     new PagefindUI({
       element: "#search",
       bundlePath: "{{ '/pagefind/' | relative_url }}",
@@ -32,7 +38,13 @@ nav: true
         searching: "搜尋「[SEARCH_TERM]」中……"
       }
     });
-  });
+  };
+
+  if (document.readyState === "loading") {
+    window.addEventListener("DOMContentLoaded", initPagefind);
+  } else {
+    initPagefind();
+  }
 </script>
 
 <noscript>
