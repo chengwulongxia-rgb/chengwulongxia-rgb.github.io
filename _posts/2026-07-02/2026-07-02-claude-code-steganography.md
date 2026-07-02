@@ -26,6 +26,8 @@ Thereallo 在逆向 Claude Code 的過程中，注意到一段處理系統提示
 
 這兩個修改組合在一起，形成了一個 4×2 的分類矩陣：四種撇號變體 × 兩種日期格式 = 八種可能的標記組合。每一種組合都對應著不同的請求分類結果。關鍵是：這些字元的視覺差異極小。U+2019 的右單引號跟 ASCII 單引號在大多數字體裡幾乎一模一樣；U+02BC 和 U+02B9 在等寬字體下更是難以分辨。如果你不是在 hex editor 裡看，你根本不會發現。
 
+這些清單不是明文儲存的。known domain 清單經過 XOR 混淆——原始資料是 base64 編碼的字串，解碼後每個 byte 與金鑰 91 做 XOR 運算才還原成可讀網域。lab keyword 清單也是同樣的混淆方式。Thereallo 從 binary 中解出了名為 `Gla()` 的解碼函式：`Buffer.from(encoded, "base64")` 後逐 byte XOR 91，再以逗號分割成清單。換句話說，Anthropic 不只藏了標記行為，連標記的目標清單都刻意混淆過——兩層隱藏。
+
 觸發條件也很精確：這個標記機制只在使用者設定了 `ANTHROPIC_BASE_URL` 環境變數，而且該 URL 不是指向官方 `api.anthropic.com` 的時候才會啟動。直接使用官方 API 的開發者完全不受影響。換句話說，Anthropic 知道自己在做什麼——它只標記那些「繞過官方路徑」的請求。
 
 那 Claude Code 到底在檢查什麼？Thereallo 解出了兩份清單。
@@ -34,7 +36,9 @@ Thereallo 在逆向 Claude Code 的過程中，注意到一段處理系統提示
 
 第二份是 known domain 清單，使用 XOR 混淆儲存。解碼後包含大量中國企業網域：baidu.com、alibaba-inc.com、bytedance.net、kuaishou.com、xiaohongshu.com、jd.com、bilibili.co、iflytek.com 等；也包含中國 AI 公司的網域如 stepfun-inc.com、moonshot.ai；還有一批代理和轉售服務的網域：anyrouter.top、claude-code-hub.app、claude-opus.top、openclaude.me、proxyai.com、yunwu.ai、zenmux.ai。
 
-技術實作上，整個邏輯濃縮在一個簡潔的函式 `edp(known, labKw)` 中：根據兩個布林參數的四種組合，回傳對應的 Unicode 撇號。另一個函式 `Vla()` 則負責組合標記結果和時區檢查，產出最終的 `currentDate` 字串，作為系統提示詞的一部分發送給 Claude 模型。模型本身不會感知到這些差異——它看到的就是一段日期文字——但 API 伺服器端可以在接收請求時解析出這些標記，據此對請求進行分類、路由、或記錄。
+技術實作上，整個邏輯濃縮在一個簡潔的函式 `edp(known, labKw)` 中：根據兩個布林參數的四種組合，回傳對應的 Unicode 撇號。另一個函式 `Vla()` 則負責組合標記結果和時區檢查，產出最終的 `currentDate` 字串。這一步由 `Zup()` 函式觸發——它先檢查 `ANTHROPIC_BASE_URL` 是否指向非官方端點（函式 `Crt()` 判斷：若未設定或指向 `api.anthropic.com` 則跳過），再提取 hostname（`Qup()`）與兩份清單比對。
+
+標記完成後，`currentDate` 作為系統提示詞的一部分，和 `userEmail`、`attachedProject` 等欄位一起被組裝成 agent context 發送給 Claude 模型。模型本身不會感知到這些差異——它看到的就是一段日期文字——但 API 伺服器端可以在接收請求時解析出這些標記，據此對請求進行分類、路由、或記錄。
 
 Thereallo 本人的環境並未觸發這個標記機制。他的 Claude Code binary 由 Anthropic 正式簽名，且未設定 `ANTHROPIC_BASE_URL`。換句話說，他不是被追蹤的對象——他只是讀了程式碼，發現了這個為別人設計的陷阱。
 
