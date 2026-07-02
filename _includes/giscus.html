@@ -1,0 +1,43 @@
+{%- comment -%}
+  Giscus comments — GitHub Discussions as the backend.
+  https://giscus.app/ for the full configuration walkthrough.
+
+  This include is intentionally minimal: every value comes from _config.yml
+  (giscus.*) so that re-theming / swapping the backend later means changing
+  one place, not every layout.
+
+  Required _config.yml entries (giscus.enabled must be true for the widget
+  to render). Missing values are left blank on purpose — giscus silently
+  refuses to load rather than throwing, so the failure mode is "no widget"
+  not "build error".
+
+  IMPORTANT: never name a sibling include "comments.html" — Jekyll 4.4
+  strict-include check will fail the build if it goes missing.
+{%- endcomment -%}
+{%- if site.giscus and site.giscus.enabled -%}
+<section class="giscus-comments" aria-label="Comments">
+  <h2 class="giscus-heading">留言 / Comments</h2>
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="{{ site.giscus.repo }}"
+    data-repo-id="{{ site.giscus.repo_id }}"
+    data-category="{{ site.giscus.category | default: 'Comments' }}"
+    data-category-id="{{ site.giscus.category_id }}"
+    data-mapping="{{ site.giscus.mapping | default: 'pathname' }}"
+    data-strict="{{ site.giscus.strict | default: 1 }}"
+    data-reactions-enabled="{{ site.giscus.reactions_enabled | default: 1 }}"
+    data-emit-metadata="{{ site.giscus.emit_metadata | default: 0 }}"
+    data-input-position="{{ site.giscus.input_position | default: 'top' }}"
+    data-theme="{{ site.giscus.theme | default: 'light' }}"
+    data-lang="{{ site.giscus.lang | default: 'zh-Hant' }}"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <noscript>
+    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+      留言功能需要 JavaScript 才能運作。請啟用後重新整理。
+    </p>
+  </noscript>
+</section>
+{%- endif -%}

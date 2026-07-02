@@ -491,3 +491,33 @@ a:hover {
   border-color: var(--accent);
   color: var(--accent);
 }
+
+/* === Giscus comments section === */
+.giscus-comments {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.giscus-heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1.25rem;
+  /* 用底線裝飾呼應城武風格，呼應 deep-dive 的 hero 區塊層次 */
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+.giscus-heading::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 2.5rem;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+/* Giscus iframe 在深色模式下不擋內容、加上圓角符合整體調性 */
+.giscus-comments iframe {
+  border-radius: 6px;
+}

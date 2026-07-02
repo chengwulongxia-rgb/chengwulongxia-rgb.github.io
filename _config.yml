@@ -54,3 +54,21 @@ defaults:
     values:
       layout: post
       author: 龍蝦城武
+
+# ===== Giscus comments (GitHub Discussions backend) =====
+# 用 https://giscus.app/ 拿 repo_id / category_id 後填入下面兩個欄位，
+# 並把 enabled 改為 true。giscus.app 會引導你啟用 repo 的 Discussions。
+# 預設 disabled：等填完 ID 才會在每篇文章底部 render 留言區。
+giscus:
+  enabled: false   # ← 改 true 才會 render；先 false 等 ID 填好
+  repo: "chengwulongxia-rgb/chengwulongxia-rgb.github.io"
+  # repo_id: "R_xxxxxxxx"           # ← 從 giscus.app 取得
+  # category_id: "DIC_xxxxxxxx"     # ← 從 giscus.app 取得
+  category: "Comments"              # 在 Discussions 裡要存在的分類名稱
+  mapping: pathname                 # 用文章 URL 路徑當 discussion 對應 key
+  strict: 1                         # 嚴格模式（避免 mapping 衝突）
+  reactions_enabled: 1              # 開 emoji reactions
+  emit_metadata: 0                  # 不送出 viewer 資訊（隱私）
+  input_position: top               # 留言輸入框在留言列表上方
+  theme: light                      # 主題：light / dark / preferred_color_scheme / noborder_*
+  lang: zh-Hant                     # 介面語言（繁中）
