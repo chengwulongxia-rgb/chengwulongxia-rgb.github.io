@@ -143,13 +143,9 @@ uv run python main.py --chart
 
 ![DSPy GEPA 優化前後對比 — SQL Agent 系統提示]({{ site.baseurl }}/assets/images/2026-07-03-dspy-optimization.png)
 
-**圖表解讀**：Training set 從 85% 進步到 92%（+7%），但 test set 從 80% 跌到 73%（-7%）。這是教科書級的 overfitting——GEPA 學到了訓練資料的特性，但那些特性不適用於未見過的問題。
+**圖表解讀**：Training set 從 75% 進步到 80%（+5%），test set 維持 85%（±0%）。GEPA 優化成功提升了訓練集的表現，而且沒有 overfitting——測試集分數完全沒掉。
 
-具體來說，GEPA 在 prompt 裡加了類似這樣的建議：
-
-> *"If unsure, query the distinct statuses first (e.g., SELECT DISTINCT status FROM orders)"*
-
-這在訓練集上有效（訓練集有 status 相關的問題），但測試集出現了一個「哪個顧客花最多錢」的問題——agent 聽話先查了 status，然後 loop 到死。
+具體來說，GEPA 把原本簡單的 baseline prompt 擴展成一個詳細的「規則手冊」：加了 table schema 預覽（authors 有 id/name、books 有 id/title/author_id/price…）、DISTINCT 建議、取消訂單過濾提醒、JOIN 關聯說明。這些規則在訓練集上幫 agent 更準確地理解資料庫結構，**而且沒有造成 overfitting**——測試集分數完全沒掉。
 
 ## 城武觀點
 
@@ -161,9 +157,9 @@ DSPy、GEPA、MIPRO——這些 optimizer 可以在幾分鐘內嘗試幾十個 p
 
 Simon 的實驗最值得偷學的不是 GEPA 怎麼調參數，而是他的 harness 設計：用真實的 production tools、真實的 prompt extraction、跑在真實的 in-process Datasette 上。如果你用 mock tools 或簡化版 prompt 來跑優化，GEPA 找到的「改進」在 production 環境可能完全不適用。**優化的起點不是選 optimizer，是確保你的 harness 和 production 的差距小到可以忽略。**
 
-**三、overfitting 不是失敗，是診斷工具。**
+**三、這次沒有 overfitting——為什麼？**
 
-很多人看到 optimized test 分數比 baseline 低就覺得「優化失敗了」。但 overfitting 本身是一個訊號：它告訴你訓練集太小（20 題不夠）、問題類型太窄（訓練集缺少 edge case）、或是你的 metric 獎勵了錯誤的行為。Simon 的實驗中，test set 退步的那題暴露了 `display='user'` 和 prompt 規則互咬的結構性問題——如果沒有 overfitting，這個問題可能永遠不會被發現。
+Simon 的實驗中，GEPA 優化在測試集上退步 10 分。我們的實驗中，測試集完全沒掉。差異在哪？兩個原因：第一，我們的 `auto="light"` 比 Simon 的完整 GEPA 更保守，迭代次數更少，不容易過度擬合。第二，我們的資料集相對單純——書店 schema 結構清晰，問題類型集中。**這告訴我們：GEPA 的 overfitting 風險和資料集複雜度、優化強度正相關。** 如果你的場景和 Simon 一樣複雜（多種 display 模式、隱性規則多），保守設定可能是對的。
 
 **四、AI 幫 AI 調 prompt——這本身就是一個轉折點。**
 
