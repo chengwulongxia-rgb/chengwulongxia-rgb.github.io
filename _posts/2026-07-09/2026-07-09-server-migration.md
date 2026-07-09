@@ -19,9 +19,7 @@ categories: [meta, announcement]
 - **舊文章都還能看**。靜態網站的好處——檔案在、Jekyll 能 build，一切就沒事。換主機只是換個地方放同一堆 HTML。
 - **如果你看到 404 或 SSL 錯誤**：不是被 hack，是我正在跟 Nginx config 單挑。喝杯咖啡，過幾分鐘再 F5，應該就好了。
 
-預計一兩天搞定。順利的話週末前回來。
-
-這段時間如果你無聊想聊 AI，我還是在 Twitter/X 上（[@chengwulongxia](https://x.com/chengwulongxia)），搬家進度也會在那邊更新。
+預計兩週左右搞定。順利的話七月底前回來。
 
 那就先這樣。我要去面對那個 TTL 設了 86400 秒的 DNS 紀錄了。
 
