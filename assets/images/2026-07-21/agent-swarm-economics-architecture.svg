@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720" style="background:#0d1117;font-family:system-ui,sans-serif">
+  <defs>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#56d4dd"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#57ab5a"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#d29922"/>
+    </marker>
+    <marker id="arrowRose" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#e5534b"/>
+    </marker>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="720" fill="url(#bgGrad)"/>
+
+  <!-- Title -->
+  <text x="500" y="36" text-anchor="middle" fill="#e6edf3" font-size="20" font-weight="700">Cursor Agent Swarm 架構圖</text>
+
+  <!-- ===== TOP: Intent / Spec ===== -->
+  <rect x="370" y="56" width="260" height="46" rx="8" fill="#1c2a3a" stroke="#56d4dd" stroke-width="1.5"/>
+  <text x="500" y="76" text-anchor="middle" fill="#56d4dd" font-size="13" font-weight="700">📋 Intent / Spec</text>
+  <text x="500" y="93" text-anchor="middle" fill="#8b949e" font-size="11">835-page manual → SQLite in Rust</text>
+
+  <!-- Arrow: Intent → Planner -->
+  <line x1="500" y1="102" x2="500" y2="126" stroke="#56d4dd" stroke-width="1.5" marker-end="url(#arrowCyan)"/>
+
+  <!-- ===== MIDDLE LEFT: Planner Agents ===== -->
+  <rect x="50" y="130" width="240" height="110" rx="10" fill="#0d2b1e" stroke="#57ab5a" stroke-width="1.5"/>
+  <text x="170" y="154" text-anchor="middle" fill="#57ab5a" font-size="14" font-weight="700">🧠 Planner Agents</text>
+  <line x1="70" y1="166" x2="270" y2="166" stroke="#57ab5a" stroke-width="0.5" opacity="0.4"/>
+  <text x="170" y="185" text-anchor="middle" fill="#8b949e" font-size="11">Frontier Models</text>
+  <text x="170" y="200" text-anchor="middle" fill="#7d8590" font-size="10">(Opus 4.8 / GPT-5.5 / Grok 4.5)</text>
+  <text x="170" y="218" text-anchor="middle" fill="#8b949e" font-size="11">分解目標 → Task Tree</text>
+  <text x="170" y="233" text-anchor="middle" fill="#8b949e" font-size="11">設計決策 → Shared Design Docs</text>
+
+  <!-- Arrow: Planner → Task Tree -->
+  <line x1="290" y1="185" x2="340" y2="185" stroke="#57ab5a" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- ===== CENTER: Task Tree ===== -->
+  <rect x="345" y="140" width="160" height="90" rx="8" fill="#1c2838" stroke="#d29922" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <text x="425" y="164" text-anchor="middle" fill="#d29922" font-size="13" font-weight="700">🌳 Task Tree</text>
+  <text x="425" y="184" text-anchor="middle" fill="#8b949e" font-size="11">遞迴分解</text>
+  <text x="425" y="200" text-anchor="middle" fill="#8b949e" font-size="11">Root → Subtrees</text>
+  <text x="425" y="216" text-anchor="middle" fill="#8b949e" font-size="11">→ Leaf Tasks</text>
+
+  <!-- Arrow: Task Tree → Workers (multiple) -->
+  <line x1="425" y1="230" x2="425" y2="268" stroke="#d29922" stroke-width="1.5" marker-end="url(#arrowAmber)"/>
+  <line x1="395" y1="230" x2="200" y2="268" stroke="#d29922" stroke-width="1" marker-end="url(#arrowAmber)" opacity="0.5"/>
+  <line x1="455" y1="230" x2="650" y2="268" stroke="#d29922" stroke-width="1" marker-end="url(#arrowAmber)" opacity="0.5"/>
+
+  <!-- ===== BOTTOM: Worker Agents ===== -->
+  <rect x="50" y="272" width="300" height="80" rx="10" fill="#1a1c2a" stroke="#56d4dd" stroke-width="1.2"/>
+  <text x="200" y="296" text-anchor="middle" fill="#56d4dd" font-size="13" font-weight="700">🔧 Worker Agents (×N)</text>
+  <text x="200" y="315" text-anchor="middle" fill="#8b949e" font-size="11">低成本模型 (Composer 2.5 / Haiku)</text>
+  <text x="200" y="335" text-anchor="middle" fill="#7d8590" font-size="10">執行 Leaf Task → 產生 commit</text>
+
+  <rect x="400" y="272" width="300" height="80" rx="10" fill="#1a1c2a" stroke="#56d4dd" stroke-width="1.2"/>
+  <text x="550" y="296" text-anchor="middle" fill="#56d4dd" font-size="13" font-weight="700">🔧 Worker Agents (×N)</text>
+  <text x="550" y="315" text-anchor="middle" fill="#8b949e" font-size="11">低成本模型 (Composer 2.5 / Haiku)</text>
+  <text x="550" y="335" text-anchor="middle" fill="#7d8590" font-size="10">執行 Leaf Task → 產生 commit</text>
+
+  <!-- Arrow: Workers → VCS -->
+  <line x1="200" y1="352" x2="200" y2="395" stroke="#56d4dd" stroke-width="1.2" marker-end="url(#arrowCyan)"/>
+  <line x1="550" y1="352" x2="550" y2="395" stroke="#56d4dd" stroke-width="1.2" marker-end="url(#arrowCyan)"/>
+
+  <!-- ===== Custom VCS ===== -->
+  <rect x="120" y="400" width="610" height="55" rx="8" fill="#1c2a3a" stroke="#d29922" stroke-width="1.5"/>
+  <text x="425" y="422" text-anchor="middle" fill="#d29922" font-size="14" font-weight="700">🗄️ Custom Version Control System</text>
+  <text x="425" y="442" text-anchor="middle" fill="#8b949e" font-size="11">~1,000 commits/sec · 碰撞偵測 · 協調層</text>
+
+  <!-- ===== RIGHT: Coordination Mechanisms ===== -->
+  <rect x="760" y="130" width="220" height="325" rx="10" fill="#1a1c2a" stroke="#e5534b" stroke-width="1.2" stroke-dasharray="6,3"/>
+
+  <text x="870" y="156" text-anchor="middle" fill="#e5534b" font-size="13" font-weight="700">⚙️ 協調機制</text>
+  <line x1="775" y1="166" x2="965" y2="166" stroke="#e5534b" stroke-width="0.5" opacity="0.4"/>
+
+  <!-- Reconciler -->
+  <rect x="775" y="178" width="190" height="40" rx="5" fill="#2d1a1e" stroke="#e5534b" stroke-width="0.8"/>
+  <text x="870" y="194" text-anchor="middle" fill="#e5534b" font-size="11" font-weight="600">🤝 Reconciler</text>
+  <text x="870" y="209" text-anchor="middle" fill="#8b949e" font-size="9">合併 Design Docs 衝突</text>
+
+  <!-- Merge Agent -->
+  <rect x="775" y="225" width="190" height="40" rx="5" fill="#2d1a1e" stroke="#e5534b" stroke-width="0.8"/>
+  <text x="870" y="241" text-anchor="middle" fill="#e5534b" font-size="11" font-weight="600">🔀 Merge Agent</text>
+  <text x="870" y="256" text-anchor="middle" fill="#8b949e" font-size="9">第三方中立解決衝突</text>
+
+  <!-- Megafile Decomposer -->
+  <rect x="775" y="272" width="190" height="40" rx="5" fill="#2d1a1e" stroke="#e5534b" stroke-width="0.8"/>
+  <text x="870" y="288" text-anchor="middle" fill="#e5534b" font-size="11" font-weight="600">📦 Megafile Decomposer</text>
+  <text x="870" y="303" text-anchor="middle" fill="#8b949e" font-size="9">膨脹檔案 → 分解模組</text>
+
+  <!-- Review Lenses -->
+  <rect x="775" y="319" width="190" height="40" rx="5" fill="#2d1a1e" stroke="#e5534b" stroke-width="0.8"/>
+  <text x="870" y="335" text-anchor="middle" fill="#e5534b" font-size="11" font-weight="600">🔍 Review Lenses</text>
+  <text x="870" y="350" text-anchor="middle" fill="#8b949e" font-size="9">多層 decorrelated 審查</text>
+
+  <!-- Field Guide -->
+  <rect x="775" y="366" width="190" height="40" rx="5" fill="#2d1a1e" stroke="#e5534b" stroke-width="0.8"/>
+  <text x="870" y="382" text-anchor="middle" fill="#e5534b" font-size="11" font-weight="600">📖 Field Guide</text>
+  <text x="870" y="397" text-anchor="middle" fill="#8b949e" font-size="9">Agent 自維護共享知識庫</text>
+
+  <!-- Coordination arrows to VCS -->
+  <path d="M760,300 L740,300 L740,427 L730,427" stroke="#e5534b" stroke-width="1.2" fill="none" marker-end="url(#arrowRose)" stroke-dasharray="3,3"/>
+  <path d="M760,350 L740,350 L740,440" stroke="#e5534b" stroke-width="1.2" fill="none" marker-end="url(#arrowRose)" stroke-dasharray="3,3"/>
+
+  <!-- VCS → Codebase -->
+  <line x1="425" y1="455" x2="425" y2="500" stroke="#d29922" stroke-width="1.5" marker-end="url(#arrowAmber)"/>
+
+  <!-- Codebase -->
+  <rect x="280" y="504" width="290" height="50" rx="8" fill="#0d2b1e" stroke="#57ab5a" stroke-width="1.5"/>
+  <text x="425" y="525" text-anchor="middle" fill="#57ab5a" font-size="14" font-weight="700">📁 Codebase</text>
+  <text x="425" y="543" text-anchor="middle" fill="#8b949e" font-size="11">9,908 lines · 9 crates · 100% SQL test pass</text>
+
+  <!-- ===== BOTTOM RIGHT: Cost Comparison ===== -->
+  <rect x="770" y="504" width="210" height="140" rx="8" fill="#1c2838" stroke="#d29922" stroke-width="1.2"/>
+
+  <text x="875" y="528" text-anchor="middle" fill="#d29922" font-size="12" font-weight="700">💰 成本分析 (4hrs)</text>
+  <line x1="785" y1="537" x2="965" y2="537" stroke="#d29922" stroke-width="0.5" opacity="0.4"/>
+
+  <text x="790" y="555" fill="#56d4dd" font-size="11">Opus 4.8 + Composer</text>
+  <text x="950" y="555" text-anchor="end" fill="#57ab5a" font-size="11" font-weight="700">$1,339</text>
+
+  <text x="790" y="574" fill="#8b949e" font-size="11">Fable 5 + Composer</text>
+  <text x="950" y="574" text-anchor="end" fill="#d29922" font-size="11" font-weight="700">$4,047</text>
+
+  <text x="790" y="593" fill="#8b949e" font-size="11">GPT-5.5 Solo</text>
+  <text x="950" y="593" text-anchor="end" fill="#e5534b" font-size="11" font-weight="700">$10,565</text>
+
+  <text x="790" y="615" fill="#8b949e" font-size="11">Grok 4.5 Solo</text>
+  <text x="950" y="615" text-anchor="end" fill="#d29922" font-size="11" font-weight="700">$1,594</text>
+
+  <text x="875" y="636" text-anchor="middle" fill="#7d8590" font-size="9">Worker tokens ≥ 69% total</text>
+
+  <!-- Key -->
+  <rect x="50" y="630" width="380" height="78" rx="6" fill="#161b22" stroke="#30363d" stroke-width="0.8"/>
+  <text x="65" y="650" fill="#8b949e" font-size="10" font-weight="600">圖例：</text>
+  <rect x="65" y="658" width="12" height="12" rx="2" fill="#56d4dd"/>
+  <text x="83" y="669" fill="#8b949e" font-size="10">模型/Worker</text>
+  <rect x="175" y="658" width="12" height="12" rx="2" fill="#57ab5a"/>
+  <text x="193" y="669" fill="#8b949e" font-size="10">Planner / 輸出</text>
+  <rect x="285" y="658" width="12" height="12" rx="2" fill="#d29922"/>
+  <text x="303" y="669" fill="#8b949e" font-size="10">Task Tree / VCS</text>
+  <rect x="65" y="680" width="12" height="12" rx="2" fill="#e5534b"/>
+  <text x="83" y="691" fill="#8b949e" font-size="10">協調機制</text>
+  <rect x="175" y="680" width="12" height="12" rx="2" fill="#e5534b" opacity="0.5" stroke="#e5534b" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="193" y="691" fill="#8b949e" font-size="10">外部機制</text>
+</svg>
