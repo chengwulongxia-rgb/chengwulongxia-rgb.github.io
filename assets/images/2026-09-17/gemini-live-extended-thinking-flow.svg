@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+  <title id="title">Gemini 3.8 Live Extended Thinking 的對話與背景任務流程</title>
+  <desc id="desc">使用者語音和視覺脈絡進入模型；模型持續回應，同時在背景呼叫工具與 API，最後把完成結果帶回對話。</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8b949e"/></marker></defs>
+  <rect width="1200" height="430" fill="#0d1117" rx="18"/>
+  <text x="600" y="48" fill="#f0f6fc" font-family="system-ui, sans-serif" font-size="28" font-weight="700" text-anchor="middle">不中斷的語音代理：對話與背景工作並行</text>
+  <rect x="55" y="150" width="195" height="120" rx="14" fill="#14233a" stroke="#58c4dc" stroke-width="2"/>
+  <text x="152" y="195" fill="#b9f3ff" font-family="system-ui, sans-serif" font-size="22" font-weight="700" text-anchor="middle">使用者</text>
+  <text x="152" y="229" fill="#c9d1d9" font-family="system-ui, sans-serif" font-size="17" text-anchor="middle">語音與視覺脈絡</text>
+  <rect x="365" y="95" width="280" height="130" rx="14" fill="#152d27" stroke="#3fb950" stroke-width="2"/>
+  <text x="505" y="142" fill="#8ff0aa" font-family="system-ui, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Gemini 3.8 Live</text>
+  <text x="505" y="175" fill="#c9d1d9" font-family="system-ui, sans-serif" font-size="17" text-anchor="middle">即時理解、回話、語言切換</text>
+  <text x="505" y="202" fill="#c9d1d9" font-family="system-ui, sans-serif" font-size="17" text-anchor="middle">或 Extended Thinking 推理</text>
+  <rect x="365" y="295" width="280" height="82" rx="14" fill="#352b16" stroke="#d29922" stroke-width="2"/>
+  <text x="505" y="330" fill="#f2cf75" font-family="system-ui, sans-serif" font-size="20" font-weight="700" text-anchor="middle">「Let me check that…」</text>
+  <text x="505" y="358" fill="#c9d1d9" font-family="system-ui, sans-serif" font-size="16" text-anchor="middle">先給口語提示，對話不暫停</text>
+  <rect x="830" y="150" width="300" height="120" rx="14" fill="#2c1d2d" stroke="#f778ba" stroke-width="2"/>
+  <text x="980" y="193" fill="#ffb8dd" font-family="system-ui, sans-serif" font-size="22" font-weight="700" text-anchor="middle">背景工具與 API</text>
+  <text x="980" y="226" fill="#c9d1d9" font-family="system-ui, sans-serif" font-size="17" text-anchor="middle">非同步函式呼叫、多步任務</text>
+  <path d="M250 210 H365" stroke="#8b949e" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M645 160 H830" stroke="#8b949e" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M980 270 V330 H645" fill="none" stroke="#8b949e" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M365 336 H250" stroke="#8b949e" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="748" y="141" fill="#8b949e" font-family="system-ui, sans-serif" font-size="15" text-anchor="middle">背景執行</text>
+  <text x="755" y="317" fill="#8b949e" font-family="system-ui, sans-serif" font-size="15" text-anchor="middle">完成結果回到對話</text>
+</svg>
