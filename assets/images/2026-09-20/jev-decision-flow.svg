@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 560" role="img" aria-labelledby="title desc">
+  <title id="title">Jev 結構化決策流程</title>
+  <desc id="desc">State 與型別問題輸入 Jev，平行輸出機率與信心，再由應用程式程式碼決定行動或升級給人類與更強的 LLM。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0d1117"/><stop offset="1" stop-color="#101c24"/></linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#67e8f9"/></marker>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6ee7b7"/></marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/></marker>
+    <style>text{font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif}.label{font-size:25px;font-weight:700;fill:#e6edf3}.body{font-size:17px;fill:#9fb0c0}.small{font-size:15px;fill:#9fb0c0}.pill{font-size:15px;font-weight:700}</style>
+  </defs>
+  <rect width="1440" height="560" fill="url(#bg)" rx="24"/>
+  <text x="72" y="74" class="label" font-size="30">把小判斷放回程式：Jev 的系統決策迴路</text>
+  <text x="72" y="105" class="body">模型提供受限選項的機率；閾值、權限與不可逆後果仍由應用程式負責。</text>
+  <path d="M330 276 H405" stroke="#67e8f9" stroke-width="4" marker-end="url(#arrow-cyan)"/>
+  <path d="M700 276 H775" stroke="#67e8f9" stroke-width="4" marker-end="url(#arrow-cyan)"/>
+  <path d="M1065 246 H1145" stroke="#6ee7b7" stroke-width="4" marker-end="url(#arrow-emerald)"/>
+  <path d="M920 385 V449 H1145" stroke="#fbbf24" stroke-width="4" fill="none" marker-end="url(#arrow-amber)"/>
+  <rect x="72" y="180" width="258" height="192" rx="18" fill="#102a36" stroke="#67e8f9" stroke-width="2"/>
+  <text x="102" y="229" class="label">State</text><text x="102" y="260" class="body">工單、UI snapshot、</text><text x="102" y="286" class="body">工具呼叫、任務脈絡</text>
+  <rect x="72" y="312" width="210" height="36" rx="18" fill="#083344"/><text x="95" y="337" class="pill" fill="#67e8f9">+ 型別問題</text>
+  <rect x="405" y="160" width="295" height="232" rx="18" fill="#102a36" stroke="#67e8f9" stroke-width="2" filter="url(#glow)"/>
+  <text x="437" y="211" class="label">Jev</text><text x="437" y="242" class="body">平行評估各個問題</text><text x="437" y="270" class="small">Choice／Score／Noul</text><rect x="437" y="300" width="203" height="42" rx="21" fill="#083344"/><text x="458" y="328" class="pill" fill="#67e8f9">型別機率 + confidence</text>
+  <rect x="775" y="160" width="290" height="232" rx="18" fill="#102b28" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="806" y="211" class="label">應用程式程式碼</text><text x="806" y="242" class="body">驗證 schema、比對閾值、</text><text x="806" y="270" class="body">執行權限與審計紀錄</text><rect x="806" y="302" width="184" height="38" rx="19" fill="#064e3b"/><text x="830" y="327" class="pill" fill="#6ee7b7">政策在這裡定義</text>
+  <rect x="1145" y="170" width="220" height="150" rx="18" fill="#102b28" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="1175" y="221" class="label">允許的行動</text><text x="1175" y="252" class="body">route、queue、</text><text x="1175" y="278" class="body">press、notify</text>
+  <rect x="1145" y="395" width="220" height="105" rx="18" fill="#34270e" stroke="#fbbf24" stroke-width="2"/>
+  <text x="1175" y="438" class="label">升級處理</text><text x="1175" y="469" class="body">人類或更強 LLM</text>
+  <text x="890" y="431" class="small" fill="#fbbf24">低信心／高風險／不可逆</text>
+</svg>
