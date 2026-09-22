@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 720" role="img" aria-labelledby="title desc">
+  <title id="title">AX agent execution runtime control plane</title>
+  <desc id="desc">Task、Workspace、Gateway 與 Model 四種宣告式設定，匯入隔離的 task actors；actors 可暫停、恢復並被監控。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0d1117"/><stop offset="1" stop-color="#111c25"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#58d5e8"/></marker>
+    <marker id="arrowAmber" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#f6c760"/></marker>
+  </defs>
+  <rect width="1440" height="720" fill="url(#bg)"/>
+  <text x="70" y="75" fill="#e6edf3" font-family="system-ui, sans-serif" font-size="32" font-weight="700">AX：將 agent 執行控制面宣告化</text>
+  <text x="70" y="112" fill="#8b949e" font-family="system-ui, sans-serif" font-size="17">設定進入 sandboxed task actors，再經歷等待、暫停／恢復與監控。</text>
+
+  <g font-family="system-ui, sans-serif">
+    <rect x="70" y="170" width="235" height="92" rx="14" fill="#112632" stroke="#58d5e8" stroke-width="2"/>
+    <text x="94" y="207" fill="#58d5e8" font-size="22" font-weight="700">Task</text><text x="94" y="236" fill="#c9d1d9" font-size="15">sandbox · CPU · memory</text>
+    <rect x="70" y="285" width="235" height="92" rx="14" fill="#112b27" stroke="#3ddc97" stroke-width="2"/>
+    <text x="94" y="322" fill="#3ddc97" font-size="22" font-weight="700">Workspace</text><text x="94" y="351" fill="#c9d1d9" font-size="15">repos · MCP · skills · goal</text>
+    <rect x="70" y="400" width="235" height="92" rx="14" fill="#332916" stroke="#f6c760" stroke-width="2"/>
+    <text x="94" y="437" fill="#f6c760" font-size="22" font-weight="700">Gateway</text><text x="94" y="466" fill="#c9d1d9" font-size="15">host／port allowlist · credentials</text>
+    <rect x="70" y="515" width="235" height="92" rx="14" fill="#112b27" stroke="#3ddc97" stroke-width="2"/>
+    <text x="94" y="552" fill="#3ddc97" font-size="22" font-weight="700">Model</text><text x="94" y="581" fill="#c9d1d9" font-size="15">config · parameters · secrets</text>
+
+    <path d="M305 216 H430" fill="none" stroke="#58d5e8" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M305 331 H430" fill="none" stroke="#3ddc97" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M305 446 H430" fill="none" stroke="#f6c760" stroke-width="3" marker-end="url(#arrowAmber)"/>
+    <path d="M305 561 H430" fill="none" stroke="#3ddc97" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="440" y="164" width="445" height="454" rx="22" fill="#0b1520" stroke="#58d5e8" stroke-width="2"/>
+    <text x="475" y="212" fill="#58d5e8" font-size="24" font-weight="700">Sandboxed task actors</text>
+    <text x="475" y="244" fill="#8b949e" font-size="15">每個 actor 保有任務狀態；AX 主張由 Agent Substrate 承載</text>
+    <rect x="480" y="280" width="365" height="75" rx="12" fill="#122536" stroke="#58d5e8"/>
+    <text x="505" y="326" fill="#e6edf3" font-size="19">active：模型推理／工具執行</text>
+    <path d="M662 355 V395" fill="none" stroke="#f6c760" stroke-width="3" marker-end="url(#arrowAmber)"/>
+    <rect x="480" y="405" width="365" height="75" rx="12" fill="#332916" stroke="#f6c760"/>
+    <text x="505" y="451" fill="#e6edf3" font-size="19">waiting：模型／工具／人類回覆</text>
+    <path d="M662 480 V520" fill="none" stroke="#58d5e8" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="480" y="530" width="365" height="55" rx="12" fill="#112b27" stroke="#3ddc97"/>
+    <text x="505" y="565" fill="#e6edf3" font-size="18">checkpoint → suspend → resume</text>
+
+    <path d="M885 390 H1010" fill="none" stroke="#58d5e8" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1020" y="250" width="350" height="145" rx="18" fill="#112b27" stroke="#3ddc97" stroke-width="2"/>
+    <text x="1050" y="295" fill="#3ddc97" font-size="22" font-weight="700">密度與恢復（專案主張）</text>
+    <text x="1050" y="329" fill="#c9d1d9" font-size="16">共享 worker 資源</text><text x="1050" y="359" fill="#c9d1d9" font-size="16">checkpoint 後暫停、恢復</text>
+    <path d="M1195 395 V447" fill="none" stroke="#f6c760" stroke-width="3" marker-end="url(#arrowAmber)"/>
+    <rect x="1020" y="457" width="350" height="128" rx="18" fill="#332916" stroke="#f6c760" stroke-width="2" filter="url(#glow)"/>
+    <text x="1050" y="502" fill="#f6c760" font-size="22" font-weight="700">監控與治理</text>
+    <text x="1050" y="536" fill="#c9d1d9" font-size="16">資源上限 · 網路邊界 · 金鑰邊界</text><text x="1050" y="564" fill="#c9d1d9" font-size="16">誰定義政策，誰決定行動範圍</text>
+  </g>
+</svg>

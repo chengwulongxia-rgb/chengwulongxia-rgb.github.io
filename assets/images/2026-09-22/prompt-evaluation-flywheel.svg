@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 760" role="img" aria-labelledby="title desc">
+  <title id="title">Prompt 評估回饋迴路</title>
+  <desc id="desc">Prompt 或 skill 經過 pass^k 與對抗測試、最佳化、保留測試、部署監控，正式環境失敗再回流為測試資料。</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#161d29"/>
+      <stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#38d9ff"/></marker>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#40e0a0"/></marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ffbf5b"/></marker>
+  </defs>
+  <rect width="1440" height="760" rx="28" fill="#0d1117"/>
+  <text x="720" y="70" text-anchor="middle" fill="#e6edf3" font-family="system-ui, sans-serif" font-size="32" font-weight="700">Production agent 的評估飛輪</text>
+  <text x="720" y="106" text-anchor="middle" fill="#8b949e" font-family="system-ui, sans-serif" font-size="18">Prompt 是可替換參數；可重複量測與失敗回流才是系統</text>
+
+  <path d="M 342 292 L 456 292" stroke="#38d9ff" stroke-width="5" fill="none" marker-end="url(#arrow-cyan)"/>
+  <path d="M 630 292 L 744 292" stroke="#40e0a0" stroke-width="5" fill="none" marker-end="url(#arrow-emerald)"/>
+  <path d="M 918 292 L 1032 292" stroke="#ffbf5b" stroke-width="5" fill="none" marker-end="url(#arrow-amber)"/>
+  <path d="M 1170 390 C 1170 590 720 666 300 574 C 154 542 124 442 180 390" stroke="#ffbf5b" stroke-width="5" stroke-dasharray="13 10" fill="none" marker-end="url(#arrow-amber)"/>
+
+  <g transform="translate(90 210)">
+    <rect width="252" height="180" rx="20" fill="url(#panel)" stroke="#38d9ff" stroke-width="3"/>
+    <circle cx="42" cy="43" r="17" fill="#38d9ff" filter="url(#glow)"/>
+    <text x="72" y="50" fill="#e6edf3" font-family="system-ui, sans-serif" font-size="23" font-weight="700">Prompt / Skill</text>
+    <text x="30" y="101" fill="#8b949e" font-family="system-ui, sans-serif" font-size="17">新增規則不是獨立物件</text>
+    <text x="30" y="132" fill="#8b949e" font-family="system-ui, sans-serif" font-size="17">會改變既有上下文</text>
+  </g>
+  <g transform="translate(456 190)">
+    <rect width="174" height="220" rx="20" fill="url(#panel)" stroke="#40e0a0" stroke-width="3"/>
+    <text x="87" y="58" text-anchor="middle" fill="#40e0a0" font-family="system-ui, sans-serif" font-size="27" font-weight="700">pass^k</text>
+    <text x="87" y="99" text-anchor="middle" fill="#e6edf3" font-family="system-ui, sans-serif" font-size="19" font-weight="600">對抗測試</text>
+    <text x="87" y="130" text-anchor="middle" fill="#e6edf3" font-family="system-ui, sans-serif" font-size="19" font-weight="600">＋善意案例</text>
+    <text x="87" y="172" text-anchor="middle" fill="#8b949e" font-family="system-ui, sans-serif" font-size="15">有 / 無 skill 比較</text>
+  </g>
+  <g transform="translate(744 210)">
+    <rect width="174" height="180" rx="20" fill="url(#panel)" stroke="#40e0a0" stroke-width="3"/>
+    <text x="87" y="67" text-anchor="middle" fill="#40e0a0" font-family="system-ui, sans-serif" font-size="25" font-weight="700">Optimize</text>
+    <text x="87" y="106" text-anchor="middle" fill="#e6edf3" font-family="system-ui, sans-serif" font-size="18">依測試改寫</text>
+    <text x="87" y="136" text-anchor="middle" fill="#8b949e" font-family="system-ui, sans-serif" font-size="15">例如 GEPA</text>
+  </g>
+  <g transform="translate(1032 210)">
+    <rect width="174" height="180" rx="20" fill="url(#panel)" stroke="#ffbf5b" stroke-width="3"/>
+    <text x="87" y="66" text-anchor="middle" fill="#ffbf5b" font-family="system-ui, sans-serif" font-size="23" font-weight="700">Holdout</text>
+    <text x="87" y="104" text-anchor="middle" fill="#e6edf3" font-family="system-ui, sans-serif" font-size="18">未見測試</text>
+    <text x="87" y="137" text-anchor="middle" fill="#8b949e" font-family="system-ui, sans-serif" font-size="15">檢查 overfit</text>
+  </g>
+  <g transform="translate(1040 480)">
+    <rect width="280" height="142" rx="20" fill="url(#panel)" stroke="#38d9ff" stroke-width="3"/>
+    <text x="140" y="53" text-anchor="middle" fill="#38d9ff" font-family="system-ui, sans-serif" font-size="24" font-weight="700">Deploy / Monitor</text>
+    <text x="140" y="90" text-anchor="middle" fill="#e6edf3" font-family="system-ui, sans-serif" font-size="17">抽樣 production 對話</text>
+    <text x="140" y="118" text-anchor="middle" fill="#8b949e" font-family="system-ui, sans-serif" font-size="15">deterministic assertion / LLM judge</text>
+  </g>
+  <g transform="translate(300 505)">
+    <rect width="450" height="100" rx="20" fill="#1b1710" stroke="#ffbf5b" stroke-width="3"/>
+    <text x="225" y="43" text-anchor="middle" fill="#ffbf5b" font-family="system-ui, sans-serif" font-size="22" font-weight="700">正式環境的失敗 → 測試資料</text>
+    <text x="225" y="74" text-anchor="middle" fill="#e6edf3" font-family="system-ui, sans-serif" font-size="17">標註 hard cases，回到 pass^k 與最佳化</text>
+  </g>
+  <text x="720" y="710" text-anchor="middle" fill="#8b949e" font-family="system-ui, sans-serif" font-size="16">量測並不取代判斷：誰定義資料與評分標準，誰就決定系統看得見什麼。</text>
+</svg>
