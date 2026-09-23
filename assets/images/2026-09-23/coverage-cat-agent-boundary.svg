@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">受控 AI 系統的資訊、決策與責任邊界</title><desc id="desc">深色資訊圖，呈現輸入、受限決策、驗證與人類責任節點。</desc>
+<rect width="1600" height="900" fill="#0d1117"/>
+<text x="100" y="120" fill="#e6edf3" font-family="sans-serif" font-size="54" font-weight="700">AI 的能力，必須回到可驗證的邊界</text>
+<text x="104" y="174" fill="#94a3b8" font-family="sans-serif" font-size="27">資料路徑、決策範圍、驗證證據與責任歸屬，不能互相取代</text>
+<g font-family="sans-serif"><rect x="120" y="330" width="280" height="180" rx="25" fill="#102a43" stroke="#38bdf8" stroke-width="3"/><text x="165" y="410" fill="#7dd3fc" font-size="35">輸入與脈絡</text><text x="165" y="458" fill="#cbd5e1" font-size="23">使用者選擇的資料</text><rect x="660" y="330" width="280" height="180" rx="25" fill="#302510" stroke="#fbbf24" stroke-width="3"/><text x="705" y="410" fill="#fde68a" font-size="35">受限決策</text><text x="705" y="458" fill="#cbd5e1" font-size="23">模型只能回答的範圍</text><rect x="1200" y="330" width="280" height="180" rx="25" fill="#351827" stroke="#fb7185" stroke-width="3"/><text x="1245" y="410" fill="#fda4af" font-size="35">驗證與責任</text><text x="1245" y="458" fill="#cbd5e1" font-size="23">可查核的人類判斷</text><path d="M400 420H660M940 420H1200" stroke="#94a3b8" stroke-width="6"/><rect x="250" y="650" width="1100" height="95" rx="22" fill="#161b22" stroke="#a78bfa" stroke-width="2"/><text x="365" y="710" fill="#c4b5fd" font-size="31">宣稱、形式、介面與現實：每一層都必須獨立驗證</text></g>
+</svg>
