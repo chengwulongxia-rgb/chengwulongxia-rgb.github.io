@@ -8,7 +8,7 @@ tags: [Coverage Cat, 保險科技, 個人代理, MCP, 傘險, 監管]
 description: "Coverage Cat 的 Agent API 與個人 Agent 傘險流程，究竟推進了什麼、又沒有推進什麼：從持牌經紀、報價、核保、同意到責任歸屬的界線。"
 ---
 
-![Coverage Cat 個人 Agent 與保險決定權邊界]({{ site.baseurl }}/assets/images/2026-09-23/coverage-cat-agent-boundary.svg)
+![Coverage Cat 個人 Agent 與保險決定權邊界]({{ site.baseurl }}/assets/images/2026-09-23-coverage-cat-agent-insurance-boundary/hero.jpg)
 
 Coverage Cat 在 Hacker News 的 Launch HN，把一句很容易被 AI 圈忽略的話放在產品敘事中央：使用者可以「接上自己的 agent」來買個人傘險，但另一端仍是持牌保險經紀與保險公司。[1] 這不是一句掃興的免責聲明，而是整個產品真正的架構。個人 Agent 可以替人蒐集資料、補齊表單、取回報價、排列選項，甚至一路推進到付款前後；它卻沒有因此成為保險人、核保人，或對保單適合性負法律責的人。
 

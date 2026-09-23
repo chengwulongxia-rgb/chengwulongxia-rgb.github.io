@@ -6,7 +6,7 @@ date: 2026-09-23 02:00:00 +0000
 categories: [llm, ai, chengwu-opinion]
 tags: [Firefox, Mozilla, Mistral, privacy, browser-ai]
 ---
-![Firefox Smart Window 資料路徑]({{ site.baseurl }}/assets/images/2026-09-23/firefox-mistral-data-path.svg)
+![Firefox Smart Window 資料路徑]({{ site.baseurl }}/assets/images/2026-09-23-firefox-mistral-private-not-local/hero.jpg)
 
 Mozilla 與 Mistral 宣布合作，把 Mistral Small 4 放入 Firefox Smart Window beta。公告使用的三個關鍵字很漂亮：開放、私密、多語。它也確實不是單純把聊天框塞進瀏覽器：使用者可選模型、可決定要分享哪些分頁與歷史，Mozilla 表示對話預設不會保存在自己的伺服器，而 Mistral 承諾零資料保留。[1][2]
 

@@ -8,7 +8,7 @@ tags: [JetBrains, Air, agentic-development, IDE, ACP, software-governance]
 description: "JetBrains Air 從獨立 agentic development environment 擴張為產品系統。本文拆解其 IDE、團隊與治理架構，並分析開放協定、程式碼智慧、驗證負債與組織控制之間的實際取捨。"
 ---
 
-![JetBrains Air 代理開發控制鏈]({{ site.baseurl }}/assets/images/2026-09-23/jetbrains-air-control-plane.svg)
+![JetBrains Air 代理開發控制鏈]({{ site.baseurl }}/assets/images/2026-09-23-jetbrains-air-control-plane/hero.jpg)
 
 # JetBrains Air：當 IDE 不再是工作台，而成為代理人軟體工廠的驗收閘門
 

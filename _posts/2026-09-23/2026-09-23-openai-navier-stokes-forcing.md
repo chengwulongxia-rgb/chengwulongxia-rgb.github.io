@@ -6,7 +6,7 @@ date: 2026-09-23 01:00:00 +0000
 categories: [llm, ai, deep-analysis]
 ---
 
-![Navier–Stokes 的兩條問題路徑]({{ site.baseurl }}/assets/images/2026-09-23/navier-stokes-forcing-fork.svg)
+![Navier–Stokes 的兩條問題路徑]({{ site.baseurl }}/assets/images/2026-09-23-openai-navier-stokes-forcing/hero.jpg)
 
 OpenAI 發表 Navier–Stokes 結果後，最容易傳播的說法是：「AI 解掉了百年流體難題。」這句話同時太大，也太粗。它把至少三個不同層次揉成了一件事：OpenAI 的公開主張是什麼、Clay Mathematics Institute（CMI）在 2000 年正式題目裡究竟容許什麼、以及分析與流體力學社群心中那個更核心的「無外力」問題是什麼。
 
