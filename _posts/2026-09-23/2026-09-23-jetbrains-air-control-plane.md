@@ -43,34 +43,7 @@ Air 今年 3 月先以 Public Preview 形式出現，是一個獨立的「agenti
 
 這個定位有一個重要含義：Air 的核心單位不是檔案，也不是聊天紀錄，而是**可委派、可隔離、可審查、可追責的任務**。它將軟體開發重新描述為任務的生命週期，而不是開發者在游標前輸入每一行字的生命週期。
 
-```svg
-<!-- SVG 概念圖：建議存為 assets/images/2026-09-23/jetbrains-air-control-plane.svg -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" role="img" aria-labelledby="title desc">
-  <title id="title">JetBrains Air 的代理開發控制鏈</title>
-  <desc id="desc">從任務定義、代理執行到 IDE 驗證，並由團隊協調與治理層橫向約束的架構圖。</desc>
-  <rect width="1280" height="620" fill="#0d1117" rx="28"/>
-  <text x="70" y="72" fill="#e6edf3" font-family="sans-serif" font-size="30" font-weight="700">JetBrains Air：從代理執行到可追責交付</text>
-  <g font-family="sans-serif">
-    <rect x="70" y="150" width="220" height="125" rx="18" fill="#102a43" stroke="#38bdf8" stroke-width="2"/>
-    <text x="100" y="205" fill="#7dd3fc" font-size="22" font-weight="700">任務與脈絡</text>
-    <text x="100" y="240" fill="#cbd5e1" font-size="16">symbol / commit / 規格</text>
-    <rect x="380" y="150" width="220" height="125" rx="18" fill="#122b24" stroke="#34d399" stroke-width="2"/>
-    <text x="410" y="205" fill="#6ee7b7" font-size="22" font-weight="700">代理執行</text>
-    <text x="410" y="240" fill="#cbd5e1" font-size="16">本機 · worktree · Docker · cloud</text>
-    <rect x="690" y="150" width="220" height="125" rx="18" fill="#302510" stroke="#fbbf24" stroke-width="2"/>
-    <text x="720" y="205" fill="#fde68a" font-size="22" font-weight="700">IDE 驗證</text>
-    <text x="720" y="240" fill="#cbd5e1" font-size="16">語義、診斷、diff、review</text>
-    <rect x="1000" y="150" width="210" height="125" rx="18" fill="#351827" stroke="#fb7185" stroke-width="2"/>
-    <text x="1030" y="205" fill="#fda4af" font-size="22" font-weight="700">交付與責任</text>
-    <text x="1030" y="240" fill="#cbd5e1" font-size="16">PR、核准、可回溯紀錄</text>
-    <path d="M290 212 H380 M600 212 H690 M910 212 H1000" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
-    <rect x="175" y="365" width="930" height="140" rx="22" fill="#161b22" stroke="#a78bfa" stroke-width="2"/>
-    <text x="220" y="420" fill="#c4b5fd" font-size="22" font-weight="700">跨層控制面：Air Teams + Air Governance</text>
-    <text x="220" y="457" fill="#cbd5e1" font-size="17">共享脈絡、環境與自動化　｜　agent / provider 政策　｜　權限、成本、稽核與可追責性</text>
-  </g>
-  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
-</svg>
-```
+![JetBrains Air 的代理開發控制鏈]({{ site.baseurl }}/assets/images/2026-09-23/jetbrains-air-control-plane.svg)
 
 圖中的箭頭不能被誤讀成自動化的直線進步。任務從左向右流動很容易；真正的瓶頸是最後兩格：人是否能判斷這個變更在整個系統內意味著什麼，以及組織是否能證明誰在什麼條件下接受了它。
 

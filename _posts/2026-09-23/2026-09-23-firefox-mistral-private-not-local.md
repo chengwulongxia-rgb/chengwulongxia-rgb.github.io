@@ -20,6 +20,8 @@ Mozilla 的產品定位並非強迫啟用：Smart Window 是 beta、需要使用
 
 但模型參數與端點資料路徑不能被品牌敘事抹平。Mistral Small 4 即使是 open-weight，也不代表 Firefox 將它下載到使用者電腦；open weight 描述的是模型發布與可取得性，local inference 描述的是特定產品在特定裝置上如何執行。兩件事可以同時成立，也可以完全無關。[1][3]
 
+![Firefox Smart Window 的 hosted inference 資料路徑]({{ site.baseurl }}/assets/images/2026-09-23/firefox-mistral-data-path.svg)
+
 ```text
 使用者選擇 context
   → Firefox Smart Window

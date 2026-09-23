@@ -92,17 +92,7 @@ Coverage Cat 最值得肯定的不是它宣稱「AI-native」，而是它的公�
 
 建議製作一張深色 SVG，檔名概念為 `coverage-cat-agent-boundary.svg`，`viewBox="0 0 1440 760"`。不要畫成炫目的「AI 大腦」；重點是角色邊界與狀態轉換。
 
-```svg
-<svg viewBox="0 0 1440 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Coverage Cat 個人 Agent 與保險決定權邊界</title>
-  <desc id="desc">上方是使用者授權的對話與資料流程，下方是持牌經紀、承保人和保戶之間的可問責保險流程；兩軌在明確同意與報價處交會，但不合併。</desc>
-  <!-- Background #0d1117. Upper lane cyan: user → personal agent → intake/API → review/offers. -->
-  <!-- Lower lane emerald/amber: licensed broker → carrier underwriting → quote → user confirmation → bind. -->
-  <!-- A dashed rose vertical boundary marks: Agent cannot underwrite or create legal authority. -->
-  <!-- Use lock icons on operator credential and consent; document icon on declarations; scales icon on carrier decision. -->
-  <!-- Put explicit labels: 「估算 ≠ 報價」「確認 ≠ 理解」「API 可呼叫 ≠ 可問責」. -->
-</svg>
-```
+![Coverage Cat 的對話流程與法律責任邊界]({{ site.baseurl }}/assets/images/2026-09-23/coverage-cat-agent-boundary.svg)
 
 圖的交會點應只有三個：`資料確認`、`報價選擇`、`付款／bind`。每個交會點都要標示「使用者確認」與「留下可稽核紀錄」；承保人節點則明確標示「核保／出價權仍在 carrier」。視覺上用 cyan 表示技術通道、emerald 表示持牌分銷、amber 表示承保條件、rose 表示不能跨越的權力邊界。
 

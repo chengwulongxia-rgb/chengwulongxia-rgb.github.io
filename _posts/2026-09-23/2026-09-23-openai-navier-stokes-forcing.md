@@ -98,6 +98,8 @@ Scientific American 報導提到 Constantin、Ignatova 與 Vicol 的後續工作
 3. 在右支旁以紫紅色 `#fb7185` 畫一個精密控制器／外部脈衝圖樣，註解「平滑不等於自然或可任意移除」。
 4. 底部放三層驗證條，依序為「形式化：Lean 檢查已編碼定理」、「數學社群：獨立審閱與接受」、「物理意義：外力與模型情境是否相稱」；三條均以灰色虛線連向主圖，表明它們不能互相取代。
 
+![Navier–Stokes：正式題目與無外力問題的分岔]({{ site.baseurl }}/assets/images/2026-09-23/navier-stokes-forcing-fork.svg)
+
 圖的功能不是把 OpenAI 的結果判成真或假，而是讓讀者一眼看見：正式合格、無外力正則性、物理可代表性，是三道不同的門。
 
 ## 來源
