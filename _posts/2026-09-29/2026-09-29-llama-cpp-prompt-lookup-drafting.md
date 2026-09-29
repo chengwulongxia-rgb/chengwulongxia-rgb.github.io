@@ -8,32 +8,61 @@ tags: [llama.cpp, Prompt Lookup, Speculative Decoding, n-gram, 本地推論, 效
 ---
 ![hero]({{ site.baseurl }}/assets/images/2026-09-29-llama-cpp-prompt-lookup-drafting/hero.jpg)
 
-本地推論的效能新聞很容易把一個局部數字翻成整台機器都突然飛起來。Hayder Tirmazi 這次針對 llama.cpp 的工作，恰好提供了較好的反例：他優化的是 prompt lookup decoding 裡「找下一批草稿 token」的資料結構與判斷路徑；它值得注意，但不能被翻譯成所有模型生成、所有使用者工作負載都快了 140 倍。真正的問題是：草稿取得本身原來花多少時間、模型驗證能接受多少草稿，以及快取的建立、載入與記憶體代價各是多少。
+「快 140 倍」聽起來像本地模型忽然換了一顆處理器。Hayder Tirmazi 的文章談的其實是另一件事：在 llama.cpp 的 prompt lookup decoding 中，從既有文字找出下一批候選 token 的程式路徑，原來有不少可以省掉的複製、配置與搜尋。這些改動確實讓草稿產生快得多；但草稿還得交給模型驗證。要讀懂這個數字，得先知道 lookup 怎麼選草稿、作者量了什麼，以及每一輪優化把成本從哪裡拿掉。
 
 ## 原文摘要
 
-prompt lookup decoding，也被稱為 n-gram speculative decoding，是 speculative decoding 的一個簡化分支。一般 speculative decoding 會先由較小的草稿模型提出多個下一 token，再由目標模型批次驗證；prompt lookup 則不用另一個神經網路，而是從已見文字的 n-gram 統計中猜測後續。若某段前文後面曾經反覆接同一個 token，系統便把它當成候選草稿；目標模型仍須驗證，接受後才節省後續生成的工作。因此，本文 benchmark 的核心數字是**每個 drafted token 的草稿延遲**，不是包含目標模型前向運算、驗證、採樣、I/O 與實際回答品質的端到端 token/s。
+### 一個不用小模型的草稿模型
 
-llama.cpp 的 lookup 路徑有三份 n-gram 快取。context cache 保存當前上下文中 1 到 4-gram 的出現與後繼 token 計數，並隨著本次生成持續更新；dynamic cache 保存先前執行累積的模式，例如過去對話；static cache 則由 `llama-lookup-create` 從固定語料預建 2-gram。實際挑選時，系統先從 context cache 嘗試較長的 4-gram，依序退到 1-gram；沒有合格候選才查看 dynamic cache。static cache 一方面會提高同時符合靜態語料的候選權重，前兩者都失敗時也能自己提出 2-gram 候選。候選還必須通過最少出現次數與最高頻後繼比例兩道門檻，才會成為草稿。
+一般的 speculative decoding 由較便宜的草稿模型先猜幾個 token，再讓目標模型驗證；prompt lookup decoding（也稱 n-gram speculation）則用已出現文字的統計作草稿模型。假設語料中「of the」後面接過「city」六次、「war」三次、「year」一次，lookup 可以提議「city」。這只是候選，並非直接跳過目標模型的決定。所謂 n-gram，是一段連續的 n 個 token；快取記錄某段 n-gram 後面接著各個 token 的次數。官方 lookup 範例 README 列出的 `ngram_min`、`ngram_max` 控制要找多長的匹配，`n_draft` 控制命中後一次先提議多少 token。
 
-這個安排的含義是，lookup 不是保證正確的「背答案」，而是以重複與局部規律換取可能被驗證器接受的提案。官方範例 README 也把可調旋鈕明確列為 `ngram_min`、`ngram_max` 與 `n_draft`：前兩者決定在 prompt 裡找多長的匹配片段，後者決定找到後一次先草擬多少 token。草稿長度調大並不自動等於端到端更快；如果候選不常被接受，驗證成本仍會把收益吃掉。
+llama.cpp 用三種來源不同的快取。context cache 記下正在處理的序列裡長度一至四的 n-gram，隨生成更新；dynamic cache 保留先前執行累積的統計，例如較早的對話；static cache 則由 `llama-lookup-create` 從固定語料建立長度二的 n-gram 統計。前兩者可以改，靜態快取載入後不再變動。三者都在找「這段後面通常接什麼」，卻不是同一份資料，更不能把大語料的命中等同模型已經接受草稿。
 
-這也說明三個 cache 不該被混成一個「知識庫」。context cache 是正在進行的序列所留下的短期統計；dynamic cache 的價值取決於先前工作是否與當前輸入相似；static cache 則把外部語料的常見接續帶進來。它們共享的是計數與候選選擇介面，來源、更新時機與可能偏誤卻不同。靜態語料越大，不只是候選來源更多，也會改變預建時間、檔案大小、載入延遲與記憶體壓力；這些都不是模型驗證階段自動消失的成本。
+具體挑選從 context cache 的四個 token 後綴開始，依序試四、三、二、一；全都沒有合格候選，才以相同順序查 dynamic cache。對一個候選後繼 token，查前兩種快取時先計分：它在該快取的出現次數，若同時出現在 static cache 的對應二元後綴，乘上靜態次數的 100 倍；沒有靜態支持，權重就是一。取最高分者，但還得通過兩道門：這個 n-gram 後面出現 token 的總次數至少達到最低次數，且選出的 token 本身的出現次數至少占總次數的指定比例。加權分數不能代替後面那道原始計數比例檢查。
 
-Tirmazi 的測試在 14 核、48GB 記憶體的 Apple M4 Pro 上進行。他用 WikiText-103 訓練文字建立靜態快取，涵蓋 25、50、100、200 與完整約 541MB 語料，再用 WikiText-103 測試文字由 `llama-lookup-stats` 重播。這個工具把檔案 token 視為模型輸出，跑 lookup 草稿迴圈，記錄草稿是否吻合、草稿耗時與靜態快取載入時間；它不是讓一個模型實際回答問題的完整對話 benchmark。作者報告三次執行的中位數，並以 4096 token context 模擬環境。
+以原文採用的 llama.cpp b11182 設定為例，context cache 對長度一至四的最低總次數是（2、2、1、1），最低後繼比例是（0.66、0.5、0.5、0.5）；dynamic cache 分別是（4、3、2、2）與（0.75、0.66、0.66、0.66）。兩者都沒過關時，static cache 才單獨用二元後綴選出最常見後繼；它至少要出現兩次，且占該後綴全部接續的一半。再不合格，這一步就不提出草稿。這些門檻也解釋了為何「找到字串」與「能省下生成時間」之間還隔著統計篩選和模型驗證。
 
-原始工作先移除每輪草稿時不必要的內層 map 複製，接著把外層 `std::unordered_map` 換成較快、分段成長的 flat hash map，再把多數很小的內層 map 改為排序 vector 與固定步數的二分搜尋。對不再改動的 static cache，他再以 Daniel Lemire 的 `constmap` 與連續的 token-count 陣列取代可變 map；完整 541MB 語料的靜態快取載入，文中從 3.76 秒降到 0.23 秒，且快取峰值記憶體下降。這一組改動使作者最初報告 prompt lookup 草稿最高約 42 倍加速，並可降低記憶體占用。
+### 量測：重播文字，不是讓模型回答
 
-後續 Lemire 的 precheck 更直接：在逐一計算所有候選分數之前，先檢查 n-gram 的總計數是否已達最低門檻；若最高頻後繼 token 也不可能達到比例門檻，其餘候選更不可能通過，整批分數計算可以跳過。作者稱，這個額外 PR 在既有優化上，讓有 static cache 的草稿最高再快 4.2 倍，合計可達最高 140 倍 drafting speed。因為它改的是失敗候選的判斷順序而非 lookup 規則，評估的接受率預期不變，作者亦以近乎相同的 acceptance rate 檢查結果。不過，這不等於所有使用者推論快 140 倍，也不能據此宣稱改動已合併進 llama.cpp 上游；本文來源只能支持作者的實驗、PR 與範例文件所描述的範圍。
+作者先以 WikiText-103 訓練文字建立靜態快取，除了不使用靜態快取的 0 MB 對照組，也分別取前 25、50、100、200 MB，及完整約 541 MB 語料；再以 WikiText-103 的測試文字餵給 `llama-lookup-stats`。這個工具將檔案 token 當成「模型已輸出的文字」重播 lookup 迴圈，統計草稿與文字是否吻合、每個 drafted token 的草稿延遲、靜態快取載入時間和記憶體用量。它沒有讓目標模型真實生成回答，測得的匹配／接受率也不是某款模型在真實工作負載上的驗證接受率。
+
+測試假設 4096-token context；硬體是 14 核、48GB 記憶體的 Apple M4 Pro。各項結果取三次執行的中位數，圖中的誤差線則是最小值與最大值。作者沒有改變 lookup 的選擇規則，因此重點是草稿延遲、載入與記憶體，另檢查接受率與原版幾乎相同。不同大小的語料不是裝飾：沒有 static cache 與載入大型 static cache，在建置成本、常駐記憶體及草稿路徑上都是不同情境。
+
+### 第一刀：不要每猜一次就複製整張內層 map
+
+原實作把 n-gram 快取做成兩層 `std::unordered_map`：外層從一段 n-gram 找到內層 map，內層再記錄各個後繼 token 的計數。作者發現草擬時多處把整張內層 map 複製一份，改成以參照讀取。這不是改預測策略，而是停止在熱路徑上重複搬資料。不同語料大小下，每個草稿 token 的延遲因此改善 4.5 至 25.6 倍；以完整語料為例，從 165.48 微秒降至 6.47 微秒。此步對載入時間與峰值記憶體並無同樣的改善，圖上有些數值還略增；不能拿 drafting 的收益冒充整份快取的收益。
+
+### 第二刀：外層 hash 改成分段成長
+
+移除複製後，作者把外層 map 換成 `ankerl::unordered_dense::segmented_map`。標準庫的 `unordered_map` 使用較不利於快取局部性的節點／鏈式結構；較密集的 hash map 有利於查找與載入。但這裡選 `segmented_map` 而非同套件的普通 `map` 是關鍵：後者將項目置於會倍增的大 vector，作者在完整 541 MB 語料上遇到最後一次擴容，使峰值記憶體反而達到當時基準的 1.16 倍。分段版本以 4096-byte 區段成長，避免單次搬出另一整份大陣列的峰值。
+
+相對於「不複製 map」那一版，這一步的草稿速度再提升約 1.02 至 1.13 倍，靜態快取載入快 1.41 至 1.65 倍，記憶體用量改善約 1.07 至 1.11 倍。它說明資料結構的「平均操作較快」還不夠；建置大型快取時，擴容瞬間的記憶體尖峰也是要量的結果。
+
+### 第三刀：小內層 map 用排序陣列，但不能只寫 lower_bound
+
+外層換掉後，每個 n-gram 仍掛著一張內層 hash map。作者檢視 WikiText-103 的靜態快取：64% 的二元 n-gram 只有一種後繼，超過 99% 最多一百種，卻也有少數常見片段帶著大量不同後繼。為每個只有一筆資料的片段維持 hash map 很浪費；直接改成未排序陣列又會讓長尾片段線性掃描過慢。他選排序的（token、count）vector，以二分搜尋保住大量後繼時的查找效率。
+
+第一版用標準 `std::lower_bound`，草稿反而只剩前一版的 0.89 倍速度。問題不在「二分搜尋複雜度錯了」，而在熱點上每輪比較取回記憶體資料後，還要據此決定剩餘長度和迴圈何時結束；頻繁查找長陣列時，這種相依性拖慢執行。作者改用固定迭代次數的二分寫法：搜尋範圍每次固定縮小，下一輪是否執行不靠本輪讀到的 token 值決定，只有基底指標隨比較結果移動。八筆資料固定走三輪，而非依目標位置走三或四輪。相對上一版，無 static cache 時草稿快約 2.09 倍，有 static cache 時快 1.19 至 1.25 倍；峰值記憶體最多降低到原來約一半，載入時間則大致相近。複雜度同為 O(log n)，實際延遲卻不能只靠大 O 推斷。
+
+### 第四刀：不會再寫入的 static cache 不必裝成可變容器
+
+排序 vector 還是得讓外層 map 指向各自的後繼。static cache 一旦建立就不再修改，於是作者把它的外層換成 Daniel Lemire 的 verified `constmap`，把全部（token、count）後繼接成一塊連續陣列。以「of the」為例，map 的值不是一張新的內層表，而是這段後繼在大陣列中的起始位置與筆數；兩者壓在一個 64-bit 值裡，高 40 bit 放位置、低 24 bit 放筆數。查一次 verified map 取得範圍，再沿用上一節的固定迭代二分搜尋找特定 token。序列化檔案由簡短表頭、連續後繼與 constmap 構成；載入時整份讀進 buffer，在其中開啟 map view，而不是重建大量小 map。
+
+相對於排序 vector 版，541 MB 語料的快取載入從 3.76 秒降至 0.23 秒，峰值記憶體從 1.71 GB 降至 1.31 GB；靜態快取本體約用 463 MB，與約 467 MB 的檔案相近。各語料的載入改善為 6.32 至 16.12 倍，有 static cache 的草稿再快 1.06 至 1.20 倍，作者報告所有語料的接受率與排序 vector 版相同。前述四步累計，在作者的測試中最高約 42 倍的仍是「草稿延遲」，不是模型輸出速度。
+
+### 後續更新：先看有沒有資格，再計算分數
+
+文章更新記錄了 Lemire 提交到作者 fork 的另一個 PR。原本流程先算某個 n-gram 所有後繼候選的加權分數，才檢查最低總次數與後繼比例。新的 precheck 先排除總次數不達門檻的片段；再檢查最常見後繼的原始次數是否足以達到比例門檻。連最多的都不夠，其餘後繼也不可能夠，就沒必要替所有候選計分。這是提前排除不可能合格的案例，沒有把「不合格」偷偷改成「合格」。
+
+作者稱這道預檢疊在原優化上，有 static cache 時草稿最高再快 4.2 倍，沒有時最高約 1.9 倍；對照最初實作，最高可達約 140 倍。這個最高值落在特定語料配置的 drafted-token latency 比較，不是六個語料檔都恰好快 140 倍，更不是端到端生成加速 140 倍。更新圖也單列了載入和峰值記憶體，沒有把 precheck 說成讓這兩項同幅度下降；PR 的存在亦不等於改動已合併進 llama.cpp 上游。
 
 ## 城武觀點
 
-本地推論最廉價的敘事，是把最快的子迴圈當成整個體驗。草稿延遲可以快 140 倍，卻不替目標模型的驗證付帳，也不替低接受率、快取建置與載入、常駐記憶體，或使用者真正在跑的 RAG、長對話與工具呼叫付帳。效能宣稱應拆成四張帳：drafting latency、verification／acceptance、cache build/load/memory，以及實際工作負載的 E2E。否則「本地更快」只是把成本藏到沒被量的欄位。
+我贊成這種優化，反對把它的分母偷換。這篇最有價值的不是「140 倍」三個字，而是作者把一段常被當成免費的草稿路徑拆開量，甚至承認普通二分搜尋曾經變慢。可是一旦標題走進使用者的世界，草稿時間就被誤認成回答時間。應該並列四張帳：drafting latency、目標模型驗證與真實接受率、快取建置／載入／記憶體、使用者工作負載的端到端時間。若只公布前一張，誰握有語料與量測腳本，誰就能挑選最漂亮的分母；讀者卻得用自己的硬體、長對話與任務替後三張付帳。只有作者可控制的 benchmark 不能替使用者決定體感。真實模型與多種任務的 E2E 結果若也顯著改善，我會改口；在那之前，140 倍只能屬於草稿。
 
-*城武的未解檔案——最快的草稿，不是最快的回答；未被列入 benchmark 的那段時間，才最容易被行銷拿走。*
+*城武的未解檔案——草稿先抵達終點，回答還在驗票口。*
 
 ## 來源
 
-- [Hayder Tirmazi：42x Faster Prompt Lookup Drafting in llama.cpp](https://jadidbourbaki.github.io/blog/prompt-lookup-llama-cpp/)
+- [Hayder Tirmazi：42x Faster Prompt Lookup Drafting in llama.cpp](https://jadidbourbaki.github.io/blog/prompt-lookup-llama-cpp/)（2026-09-26，含後續 Lemire precheck 更新）
 - [llama.cpp：examples/lookup README](https://github.com/ggml-org/llama.cpp/blob/master/examples/lookup/README.md)
-- [Hacker News 討論串](https://news.ycombinator.com/item?id=49859982)
