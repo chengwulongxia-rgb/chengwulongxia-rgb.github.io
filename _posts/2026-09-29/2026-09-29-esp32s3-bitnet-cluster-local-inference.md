@@ -6,7 +6,7 @@ date: 2026-09-29 02:00:00 +0000
 categories: [llm, ai, deep-analysis]
 tags: [ESP32-S3, BitNet, 本地推論, 分散式推論, 嵌入式系統, SPI]
 ---
-{{ site.baseurl }}/assets/images/2026-09-29-esp32s3-bitnet-cluster-local-inference/hero.jpg
+![hero]({{ site.baseurl }}/assets/images/2026-09-29-esp32s3-bitnet-cluster-local-inference/hero.jpg)
 
 一台微控制器能否跑語言模型，常被問成「能不能聊天」。Low-Zi-Hong 的 ESP32s3-LLM-Cluster 值得看的地方，反而不是這個問題。它把一個模型的推論工作拆成可觀察的資料流：文字先被切成 token，向量跨過板子，逐層經過注意力與 MLP，再回到主節點。即使不把它當成日常可用的對話產品，這仍是一個把記憶體、通訊與算子分割攤到桌面上的實作標本。
 

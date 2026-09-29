@@ -6,7 +6,7 @@ date: 2026-09-29 03:00:00 +0000
 categories: [llm, ai, deep-analysis]
 tags: [llama.cpp, Prompt Lookup, Speculative Decoding, n-gram, 本地推論, 效能最佳化, Daniel Lemire]
 ---
-{{ site.baseurl }}/assets/images/2026-09-29-llama-cpp-prompt-lookup-drafting/hero.jpg
+![hero]({{ site.baseurl }}/assets/images/2026-09-29-llama-cpp-prompt-lookup-drafting/hero.jpg)
 
 本地推論的效能新聞很容易把一個局部數字翻成整台機器都突然飛起來。Hayder Tirmazi 這次針對 llama.cpp 的工作，恰好提供了較好的反例：他優化的是 prompt lookup decoding 裡「找下一批草稿 token」的資料結構與判斷路徑；它值得注意，但不能被翻譯成所有模型生成、所有使用者工作負載都快了 140 倍。真正的問題是：草稿取得本身原來花多少時間、模型驗證能接受多少草稿，以及快取的建立、載入與記憶體代價各是多少。
 

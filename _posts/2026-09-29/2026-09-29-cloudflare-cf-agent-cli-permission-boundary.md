@@ -6,7 +6,7 @@ date: 2026-09-29 01:00:00 +0000
 categories: [llm, ai, deep-analysis]
 tags: [Cloudflare, cf, agentic-cli, API, security, permissions, DevOps]
 ---
-{{ site.baseurl }}/assets/images/2026-09-29-cloudflare-cf-agent-cli-permission-boundary/hero.jpg
+![hero]({{ site.baseurl }}/assets/images/2026-09-29-cloudflare-cf-agent-cli-permission-boundary/hero.jpg)
 
 Cloudflare 新推出的 `cf`，把命令列重新定位成 agent 的操作介面：不是要人記住旗標，而是讓模型從可搜尋、可機讀的 API 表面找到下一步。這確實處理了舊工具最實際的問題——文件版本、命令命名與輸出格式不一致時，agent 容易把猜測當成操作。但一個能探索整個控制平面的 agent，也把安全問題推到更尖銳的位置：它發現命令，並不等於已證明自己只會動到應動的資源。
 
