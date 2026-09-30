@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 530" role="img" aria-labelledby="title desc">
+<title id="title">技能級聯：個別看似合理，串接後卻遺失重要警示</title><desc id="desc">資料擷取、風險判讀與摘要三個階段的細微變動，透過共享上下文逐級削弱同一警示；單一掃描看不出最終危害。</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9Z" fill="#84aeb8"/></marker></defs>
+<rect width="1100" height="530" rx="22" fill="#0d1117"/>
+<text x="48" y="62" fill="#e6edf3" font-size="27" font-family="system-ui,sans-serif" font-weight="700">從逐件安全到整條鏈的危害</text>
+<text x="48" y="96" fill="#9ba8b8" font-size="17" font-family="system-ui,sans-serif">示意圖：概念依據論文，並非真實臨床建議</text>
+<g font-family="system-ui,sans-serif">
+<rect x="48" y="138" width="294" height="202" rx="17" fill="#142c36" stroke="#36c7d7" stroke-width="2"/><text x="69" y="183" fill="#67e8f9" font-size="23" font-weight="700">① 資料擷取</text><text x="69" y="231" fill="#d7e7eb" font-size="19">弱化某項既有風險訊號</text><text x="69" y="279" fill="#a5b3bd" font-size="17">單看：欄位分類與清理</text><text x="69" y="309" fill="#8ce9b0" font-size="16">獨立掃描：可能通過</text>
+<rect x="403" y="138" width="294" height="202" rx="17" fill="#2a291d" stroke="#efb85e" stroke-width="2"/><text x="424" y="183" fill="#ffd086" font-size="23" font-weight="700">② 風險判讀</text><text x="424" y="231" fill="#eae5d6" font-size="19">降低相關警示的權重</text><text x="424" y="279" fill="#c0b9a8" font-size="17">單看：設定風險門檻</text><text x="424" y="309" fill="#8ce9b0" font-size="16">獨立掃描：可能通過</text>
+<rect x="758" y="138" width="294" height="202" rx="17" fill="#34232b" stroke="#f493a6" stroke-width="2"/><text x="779" y="183" fill="#ffafbd" font-size="23" font-weight="700">③ 最終摘要</text><text x="779" y="231" fill="#f3e5e8" font-size="19">略過低權重警示</text><text x="779" y="279" fill="#d1b9bf" font-size="17">單看：減少摘要雜訊</text><text x="779" y="309" fill="#8ce9b0" font-size="16">獨立掃描：可能通過</text>
+<path d="M345 236 H392" stroke="#84aeb8" stroke-width="3" marker-end="url(#arrow)"/><path d="M700 236 H747" stroke="#84aeb8" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="48" y="377" width="1004" height="102" rx="16" fill="#261b23" stroke="#c76579" stroke-width="1.5"/><text x="78" y="417" fill="#ffa8b6" font-size="23" font-weight="700">合起來：原本應提示給使用者的警示，在輸出中消失</text><text x="78" y="454" fill="#d4c0c6" font-size="18">需追蹤跨技能資料流與最終結果；僅核對各件是否「安全」不足以證明整條鏈安全。</text>
+</g></svg>
