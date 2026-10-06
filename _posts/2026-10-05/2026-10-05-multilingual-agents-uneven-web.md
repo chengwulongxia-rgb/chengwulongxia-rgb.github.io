@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "【深度分析】會說波斯語，不等於讀得到伊朗：AI agent 的不平等網路"
+title: "【深度分析】AI 會說波斯語，卻查不到可靠資料"
 date: 2026-10-05 02:00:00 +0000
 categories: [llm, ai, deep-analysis]
 image: /assets/images/2026-10-05/multilingual-agents-uneven-web.jpg
