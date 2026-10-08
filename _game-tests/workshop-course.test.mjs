@@ -4,7 +4,8 @@ import {bases,pits,createGame,place,tick,input,RUN} from '../obstacle-workshop/l
 test('factory has three real lethal gaps; walking without jumps is eliminated',()=>{
  const floor=bases.filter(b=>b.y===380).sort((a,b)=>a.x-b.x);
  assert.equal(floor.length,4);assert.deepEqual(bases.filter(b=>b.y<380).map(b=>b.y),[320,280,320]);
- assert.ok(floor.slice(1).every((b,i)=>b.x-floor[i].x-floor[i].w>=120));
+ assert.deepEqual(pits,[{x:300,w:180},{x:600,w:180},{x:900,w:180}]);
+ assert.deepEqual(floor.slice(1).map((b,i)=>b.x-floor[i].x-floor[i].w),[180,180,180]);
  let s={...createGame(['1','2']),phase:'running'};
  for(let i=0;i<600&&s.players[0].alive;i++){
   s=input(s,'1',{type:'input',round:1,seq:i+1,action:'right',pressed:true});s=tick(s);

@@ -1,7 +1,8 @@
 export const W=1200,H=440,GROUND=380,BUILD=25000,RUN=22000,ROUNDS=5;
-// 斷橋工廠: three 140px shafts, four lower docks and staggered overhead girders.
-export const pits=[{x:300,w:140},{x:600,w:140},{x:900,w:140}];
-export const bases=[{x:0,y:380,w:300,h:60},{x:440,y:380,w:160,h:60},{x:740,y:380,w:160,h:60},{x:1040,y:380,w:160,h:60},{x:360,y:320,w:80,h:16},{x:640,y:280,w:80,h:16},{x:960,y:320,w:80,h:16}];
+// 斷橋工廠: three 180px shafts, narrower landing docks and unchanged overhead girders.
+// Start/finish remain safe; ordinary jumps need no tools or physics boosts.
+export const pits=[{x:300,w:180},{x:600,w:180},{x:900,w:180}];
+export const bases=[{x:0,y:380,w:300,h:60},{x:480,y:380,w:120,h:60},{x:780,y:380,w:120,h:60},{x:1080,y:380,w:120,h:60},{x:360,y:320,w:80,h:16},{x:640,y:280,w:80,h:16},{x:960,y:320,w:80,h:16}];
 const clone=s=>structuredClone(s);
 const swept=o=>o.type==='platform'?{...o,x:o.x-40,w:o.w+80}:o.type==='saw'?{...o,x:Math.max(200,o.x-40),w:Math.min(1000,o.x+o.w+40)-Math.max(200,o.x-40)}:o;
 const intersects=(a,b,gap=0)=>a.x<b.x+b.w+gap&&a.x+a.w+gap>b.x&&a.y<b.y+b.h+gap&&a.y+a.h+gap>b.y;
