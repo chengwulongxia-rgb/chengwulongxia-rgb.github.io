@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827"><meta name="description" content="不用註冊，分享連結就能與朋友玩兩人連線井字棋。使用 PeerJS 與 WebRTC。">
+<title>連線井字棋 · 兩個人，九個格子</title>
+<link rel="stylesheet" href="./style.css">
+<script defer src="./vendor/peerjs-1.5.5.min.js"></script>
+<script type="module" src="./app.mjs"></script>
+</head>
+<body data-phase="idle">
+<main>
+<header><span class="eyebrow">TWO PLAYERS / ONE CONNECTION</span><h1>兩個人，<br>九個格子<span class="dot">。</span></h1><p class="intro">把連結傳給朋友。下一步，換你了。</p></header>
+<section class="lobby" aria-label="連線房間">
+<div class="status-row"><span class="signal" aria-hidden="true"></span><p id="status" role="status" aria-live="polite">建立房間，邀請一位朋友加入。</p></div>
+<div class="actions"><button id="create" class="primary">建立房間</button><button id="leave" disabled>離開房間</button></div>
+<div id="share-panel" hidden><label for="share">邀請連結 <span>只傳給你想一起玩的朋友</span></label><div class="share-row"><input id="share" readonly autocomplete="off" aria-label="邀請連結"><button id="copy">複製連結</button></div><p id="copy-status" class="hint" role="status"></p></div>
+</section>
+<section class="game" aria-label="井字棋棋盤">
+<div class="game-meta"><span id="role">尚未連線</span><span id="round">第 1 局</span></div>
+<h2 id="turn" aria-live="polite">朋友就位，對局開始。</h2>
+<div class="board" role="group" aria-label="三乘三棋盤">
+<button class="cell" data-index="0" aria-label="第 1 列第 1 格，空白" disabled></button><button class="cell" data-index="1" aria-label="第 1 列第 2 格，空白" disabled></button><button class="cell" data-index="2" aria-label="第 1 列第 3 格，空白" disabled></button>
+<button class="cell" data-index="3" aria-label="第 2 列第 1 格，空白" disabled></button><button class="cell" data-index="4" aria-label="第 2 列第 2 格，空白" disabled></button><button class="cell" data-index="5" aria-label="第 2 列第 3 格，空白" disabled></button>
+<button class="cell" data-index="6" aria-label="第 3 列第 1 格，空白" disabled></button><button class="cell" data-index="7" aria-label="第 3 列第 2 格，空白" disabled></button><button class="cell" data-index="8" aria-label="第 3 列第 3 格，空白" disabled></button>
+</div>
+<button id="rematch" class="rematch" disabled>再來一局</button><p class="hint">X 先手 · 三格連線獲勝 · 雙方同意才能重開</p>
+</section>
+<footer><p>不用帳號，也沒有戰績伺服器。房主維護棋盤，對手傳送落子請求；這不是具身分驗證或防作弊保證的競技平台。連結持有者可加入，請勿公開分享。</p><details><summary>連不上？關於連線與隱私</summary><p>使用公共 PeerJS 訊號伺服器協助建立 WebRTC 連線；不自架後端，也不保證任何網路都能連通。嚴格 NAT、防火牆、VPN 或公共服務中斷都可能造成失敗。試著換網路、關閉 VPN，並建立新房間重新邀請。兩人都要保持頁面開啟；斷線後停止對局，不支援恢復舊局。</p><p>訊號服務會接觸連線資訊；WebRTC 對等連線可能向對手透露網路位址。這不是匿名服務。背景分頁或手機鎖屏也可能中斷連線。</p></details><span class="footer-mark">一局很短，陪伴不必。</span></footer>
+</main>
+</body></html>
