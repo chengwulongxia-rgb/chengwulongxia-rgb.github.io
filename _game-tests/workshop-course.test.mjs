@@ -15,7 +15,9 @@ test('factory has three real lethal gaps; walking without jumps is eliminated',(
 test('unassisted normal jumping completes all three gaps before run deadline',()=>{
  let s={...createGame(['1','2']),phase:'running'};
  for(let i=0;i<900&&!s.players[0].finished&&s.players[0].alive;i++){
-  for(const [j,action] of ['right','jump'].entries())s=input(s,'1',{type:'input',round:1,seq:i*2+j+1,action,pressed:true});
+  s=input(s,'1',{type:'input',round:1,seq:i*2+1,action:'right',pressed:true});
+  const x=s.players[0].x,jump=[285,585,885].some(edge=>x>=edge&&x<edge+160);
+  s=input(s,'1',{type:'input',round:1,seq:i*2+2,action:'jump',pressed:jump});
   s=tick(s);
  }
  assert.equal(s.players[0].finished,true,JSON.stringify(s.players[0]));assert.equal(s.scores['1'],3);assert.ok(s.now<RUN);console.log('Normal-input completion milliseconds:',s.now);

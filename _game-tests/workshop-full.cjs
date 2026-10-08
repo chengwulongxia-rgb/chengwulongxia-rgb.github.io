@@ -1,5 +1,6 @@
 const {chromium}=require('/tmp/ttt-browser/node_modules/playwright');
 const assert=require('node:assert/strict');
+const {completeCourse}=require('./workshop-keyboard.cjs');
 const total=Number(process.env.TEST_ROUNDS||5);
 (async()=>{
  const browser=await chromium.launch({args:['--no-sandbox']});
@@ -19,8 +20,8 @@ const total=Number(process.env.TEST_ROUNDS||5);
    await place(host,'fan',965,205);await guest.waitForFunction(()=>document.querySelector('#result').dataset.obstacles==='1');
    await place(guest,'demolish',975,210);
    for(const p of [host,guest]){await p.waitForFunction(()=>document.body.dataset.phase==='running');assert.equal(await p.locator('#result').getAttribute('data-obstacles'),'0');}
-   await host.keyboard.down('ArrowRight');await host.keyboard.down('Space');
-   await guest.keyboard.down('ArrowRight');if(round>1)await guest.keyboard.down('Space');
+   if(round===1)await guest.keyboard.down('ArrowRight');
+   await Promise.all([completeCourse(host,'1'),...(round>1?[completeCourse(guest,'2')]:[])]);
    await host.waitForFunction(()=>document.body.dataset.phase==='result',null,{timeout:30000});
    await host.keyboard.up('ArrowRight');await host.keyboard.up('Space');await guest.keyboard.up('ArrowRight');await guest.keyboard.up('Space');
    await guest.waitForFunction(()=>document.body.dataset.phase==='result');
