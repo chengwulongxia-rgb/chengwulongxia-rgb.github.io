@@ -1,0 +1,94 @@
+Local test run at /floor-frenzy/ (public PeerJS + real WebRTC; not a mock).
+Command: node --test _game-tests/*.test.mjs; node _game-tests/floor-browser.cjs
+TAP version 13
+# Subtest: round spawns 2–4 unique players and rejects invalid counts
+ok 1 - round spawns 2–4 unique players and rejects invalid counts
+  ---
+  duration_ms: 0.854817
+  type: 'test'
+  ...
+# Subtest: host validates movement intents, cooldown, replay, round and no position injection
+ok 2 - host validates movement intents, cooldown, replay, round and no position injection
+  ---
+  duration_ms: 0.324497
+  type: 'test'
+  ...
+# Subtest: prototype names and non-string actions never crash host input validation
+ok 3 - prototype names and non-string actions never crash host input validation
+  ---
+  duration_ms: 0.24615
+  type: 'test'
+  ...
+# Subtest: collapse eliminates, simultaneous deaths draw, finite timeout ends campers
+ok 4 - collapse eliminates, simultaneous deaths draw, finite timeout ends campers
+  ---
+  duration_ms: 0.86132
+  type: 'test'
+  ...
+# Subtest: shove moves adjacent opponent two cells, respects cooldown, disconnect eliminates
+ok 5 - shove moves adjacent opponent two cells, respects cooldown, disconnect eliminates
+  ---
+  duration_ms: 0.389589
+  type: 'test'
+  ...
+# Subtest: host accepts intent, rejects replay, stale round, wrong turn and board injection
+ok 6 - host accepts intent, rejects replay, stale round, wrong turn and board injection
+  ---
+  duration_ms: 0.832065
+  type: 'test'
+  ...
+# Subtest: moves reject noninteger, occupied, out of range and finished positions
+ok 7 - moves reject noninteger, occupied, out of range and finished positions
+  ---
+  duration_ms: 0.249867
+  type: 'test'
+  ...
+# Subtest: every win line and a draw are recognized
+ok 8 - every win line and a draw are recognized
+  ---
+  duration_ms: 0.805516
+  type: 'test'
+  ...
+# Subtest: rematch requires both consents after finish and stale consent is rejected
+ok 9 - rematch requires both consents after finish and stale consent is rejected
+  ---
+  duration_ms: 0.635929
+  type: 'test'
+  ...
+# Subtest: snapshot and room validators reject malformed data
+ok 10 - snapshot and room validators reject malformed data
+  ---
+  duration_ms: 0.483744
+  type: 'test'
+  ...
+# Subtest: raw wire decoder rejects null, malformed JSON and oversized or nontext data without throwing
+ok 11 - raw wire decoder rejects null, malformed JSON and oversized or nontext data without throwing
+  ---
+  duration_ms: 0.164939
+  type: 'test'
+  ...
+# Subtest: X opens a new immutable game
+ok 12 - X opens a new immutable game
+  ---
+  duration_ms: 0.618616
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 52.077538
+PASS fourth player accepted, fifth refused, lobby slot freed
+PASS midround join refused
+PASS public PeerJS/WebRTC three-player lobby and start
+PASS desktop keyboard and mobile touch movement/shove synchronized across browsers
+PASS delayed tile collapse
+PASS last survivor win
+PASS host-controlled rematch resets every client
+PASS actual guest tab-close and disconnect elimination
+PASS host leave stops room and invalid invite notice
+PASS no browser exceptions
