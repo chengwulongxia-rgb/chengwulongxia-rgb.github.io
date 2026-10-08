@@ -43,6 +43,6 @@ PeerJS **1.5.5**, npm 官方 registry 的 `peerjs` 套件：
 - metadata: `https://registry.npmjs.org/peerjs/1.5.5`
 - tarball: `https://registry.npmjs.org/peerjs/-/peerjs-1.5.5.tgz`
 - npm metadata `dist.integrity`: `sha512-viMUCPDL6CSfOu0ZqVcFqbWRXNHIbv2lPqNbrBIjbFYrflebOjItJ4hPfhjnuUCstqciHVu9vVJ7jFqqKi/EuQ==`
-- 下載後驗證完整 tarball SHA-512 與 `package.json` 的 name/version，再複製原始 `dist/peerjs.min.js`（未修改）及 MIT LICENSE 到 `games/tic-tac-toe/vendor/`。
+- 下載後驗證完整 tarball SHA-512 與 `package.json` 的 name/version，再複製原始 `dist/peerjs.min.js`（未修改）及 MIT LICENSE 到 `games/tic-tac-toe/lib/`。
 
 網站不需 CDN 載入 JS、不需 Node build；只需要靜態檔案以及可用的公共 broker/WebRTC 網路。
