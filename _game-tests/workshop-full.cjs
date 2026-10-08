@@ -1,16 +1,18 @@
 const {chromium}=require('/tmp/ttt-browser/node_modules/playwright');
 const assert=require('node:assert/strict');
+const total=Number(process.env.TEST_ROUNDS||5);
 (async()=>{
  const browser=await chromium.launch({args:['--no-sandbox']});
  try{
   const host=await browser.newPage();const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const guest=await mobile.newPage();
   const errors=[];for(const p of [host,guest])p.on('pageerror',e=>errors.push(e.message));
   await host.goto(process.env.GAME_URL||'http://127.0.0.1:8765/obstacle-workshop/');
+  await host.locator('#rounds').selectOption(String(total));
   await host.locator('#create').click();await host.waitForFunction(()=>document.querySelector('#share').value.includes('#room='),null,{timeout:45000});
-  await guest.goto(await host.locator('#share').inputValue());await host.waitForFunction(()=>document.querySelector('#players').children.length===2,null,{timeout:45000});await host.locator('#start').click();
+  await guest.goto(await host.locator('#share').inputValue());await host.waitForFunction(()=>document.querySelector('#players').children.length===2,null,{timeout:45000});await guest.waitForFunction(n=>document.body.dataset.totalRounds===String(n),total);assert.equal(await guest.locator('#rounds').isDisabled(),true);await host.locator('#start').click();
   async function place(p,type,x,y){await p.locator(`[data-type=${type}]`).click();const b=await p.locator('canvas').boundingBox();await p.locator('canvas').click({position:{x:x/1200*b.width,y:y/440*b.height}});}
   const cdp=await mobile.newCDPSession(guest);
-  for(let round=1;round<=5;round++){
+  for(let round=1;round<=total;round++){
    for(const p of [host,guest])await p.waitForFunction(r=>document.body.dataset.phase==='build'&&document.body.dataset.round===String(r),round,{timeout:40000});
    if(round===1)await host.screenshot({path:'/tmp/workshop-factory-build.png',fullPage:true});
    // Consume both construction actions by creating then demolishing: truly no tools remain during the race.
@@ -33,6 +35,11 @@ const assert=require('node:assert/strict');
   }
   for(const p of [host,guest])await p.waitForFunction(()=>document.body.dataset.phase==='ended',null,{timeout:10000});
   const scores=async p=>(await p.locator('#players').innerText()).replaceAll('（你）','');assert.equal(await scores(host),await scores(guest));assert.deepEqual(errors,[]);
-  console.log('PASS five real PeerJS rounds; empty factory course; host keyboard and guest keyboard + multitouch completion; walking pit death; synchronized scores 15 / 12');
+  await host.locator('#start').click();await guest.waitForFunction(n=>document.body.dataset.phase==='build'&&document.body.dataset.totalRounds===String(n),total);assert.match(await guest.locator('#clock').innerText(),new RegExp('1/'+total+' 回合'));
+  await host.locator('#leave').click();await guest.waitForFunction(()=>document.body.dataset.phase==='stopped');
+  await host.locator('#rounds').selectOption('20');await host.locator('#create').click();await host.waitForFunction(()=>document.body.dataset.phase==='lobby'&&document.body.dataset.totalRounds==='20'&&!document.querySelector('#share-panel').hidden);
+  const late=await browser.newPage();await late.goto(await host.locator('#share').inputValue());await late.waitForFunction(()=>document.body.dataset.totalRounds==='20'&&document.body.dataset.phase==='lobby',null,{timeout:45000});
+  await host.locator('#start').click();await late.waitForFunction(()=>document.body.dataset.phase==='build');assert.match(await late.locator('#clock').innerText(),/1\/20 回合/);
+  console.log(`PASS ${total} real PeerJS rounds, factory keyboard/multitouch completion, pit death, scores, rematch preserves setting, new 20-round room sync`);
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
