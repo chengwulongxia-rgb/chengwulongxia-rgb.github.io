@@ -1,4 +1,4 @@
-export const W=1200,H=440,GROUND=380,BUILD=25000,RUN=22000,ROUNDS=5;
+export const W=1200,H=440,GROUND=380,DRAFT=15000,BUILD=25000,RUN=22000,ROUNDS=5;
 // 斷橋工廠: three 180px shafts, narrower landing docks and unchanged overhead girders.
 // Start/finish remain safe; ordinary jumps need no tools or physics boosts.
 export const pits=[{x:300,w:180},{x:600,w:180},{x:900,w:180}];
@@ -7,9 +7,25 @@ const clone=s=>structuredClone(s);
 const swept=o=>o.type==='platform'?{...o,x:o.x-40,w:o.w+80}:o.type==='saw'?{...o,x:Math.max(200,o.x-40),w:Math.min(1000,o.x+o.w+40)-Math.max(200,o.x-40)}:o;
 const intersects=(a,b,gap=0)=>a.x<b.x+b.w+gap&&a.x+a.w+gap>b.x&&a.y<b.y+b.h+gap&&a.y+a.h+gap>b.y;
 const pawn=id=>({id,x:45+Number(id)*24,y:350,vx:0,vy:0,alive:true,finished:false,grounded:false,jumpActive:false,jumpQueuedAt:null,groundedAt:null,seq:0,input:{left:false,right:false,jump:false},inputAt:0});
-export function createGame(ids,now=0,totalRounds=ROUNDS){if(!Number.isInteger(totalRounds)||totalRounds<5||totalRounds>20)throw new RangeError('回合數必須是 5–20 的整數');return {phase:'build',round:1,totalRounds,now,phaseAt:now,players:ids.map(pawn),scores:Object.fromEntries(ids.map(id=>[id,0])),obstacles:[],placed:[]};}
+export function createGame(ids,now=0,totalRounds=ROUNDS,seed=1){if(!Number.isInteger(totalRounds)||totalRounds<5||totalRounds>20)throw new RangeError('回合數必須是 5–20 的整數');return startDraft({phase:'draft',round:1,totalRounds,now,phaseAt:now,seed:seed>>>0,players:ids.map(pawn),scores:Object.fromEntries(ids.map(id=>[id,0])),obstacles:[],placed:[]});}
+
+export function generatePool(count,round,seed,hasTargets=false){
+ const types=['spike','spring','platform','conveyor','ice','collapse','saw','fan',...(hasTargets?['demolish']:[])];
+ let value=(seed^Math.imul(round,0x9e3779b9))>>>0;
+ return Array.from({length:count+1},(_,i)=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return {id:`${round}-${i}`,type:types[Math.floor(value/4294967296*types.length)],owner:null};});
+}
+function startDraft(s){s.phase='draft';s.phaseAt=s.now;s.placed=[];s.selections={};s.pool=generatePool(s.players.length,s.round,s.seed,s.obstacles.length>0);return s;}
+function startBuild(s){s.phase='build';s.phaseAt=s.now;return s;}
+export function claim(state,id,m){
+ if(!state||state.phase!=='draft'||!m||Object.keys(m).sort().join(',')!=='action,card,round,type'||m.type!=='draft'||m.action!=='claim'||m.round!==state.round||typeof m.card!=='string'||!state.players.some(p=>p.id===id)||state.selections[id])return state;
+ const card=state.pool.find(c=>c.id===m.card);if(!card||card.owner!==null)return state;
+ const s=clone(state);s.pool.find(c=>c.id===m.card).owner=id;s.selections[id]=m.card;
+ if(s.players.every(p=>s.selections[p.id]))startBuild(s);return s;
+}
+export function autoassign(state){if(!state||state.phase!=='draft')return state;const s=clone(state);for(const p of s.players)if(!s.selections[p.id]){const c=s.pool.find(c=>c.owner===null);if(c){c.owner=p.id;s.selections[p.id]=c.id;}}return startBuild(s);}
+export function selectedType(state,id){return state?.pool?.find(c=>c.id===state.selections?.[id]&&c.owner===id)?.type;}
 function begin(s){s.phase='running';s.phaseAt=s.now;s.players=s.players.map(p=>pawn(p.id));return s;}
-export function place(state,id,m){if(m?.type==='demolish'){if(!state||state.phase!=='build'||state.placed.includes(id)||!state.players.some(p=>p.id===id)||Object.keys(m).sort().join(',')!=='type,x,y'||!Number.isInteger(m.x)||!Number.isInteger(m.y)||m.x<200||m.x>=1000||m.y<200||m.y>=380)return state;const index=state.obstacles.findIndex(o=>m.x>=o.x&&m.x<o.x+o.w&&m.y>=o.y&&m.y<o.y+o.h);if(index<0)return state;const s=clone(state);s.obstacles.splice(index,1);s.placed.push(id);if(s.players.every(p=>s.placed.includes(p.id)))begin(s);return s;}if(!state||!m||state.phase!=='build'||state.placed.includes(id)||!state.players.some(p=>p.id===id)||!['spike','spring','platform','conveyor','ice','collapse','saw','fan'].includes(m.type)||Object.keys(m).some(k=>!['type','x','y','direction'].includes(k))||!Number.isInteger(m.x)||!Number.isInteger(m.y)||m.x%40||m.y%20||m.x<200||m.x>960||m.y<200||m.y>360||('direction' in m&&(!['conveyor','fan'].includes(m.type)||!(m.type==='fan'?['up','left','right']:['left','right']).includes(m.direction))))return state;
+export function place(state,id,m){if(!state||!m||selectedType(state,id)!==m.type)return state;if(m?.type==='demolish'){if(!state||state.phase!=='build'||state.placed.includes(id)||!state.players.some(p=>p.id===id)||Object.keys(m).sort().join(',')!=='type,x,y'||!Number.isInteger(m.x)||!Number.isInteger(m.y)||m.x<200||m.x>=1000||m.y<200||m.y>=380)return state;const index=state.obstacles.findIndex(o=>m.x>=o.x&&m.x<o.x+o.w&&m.y>=o.y&&m.y<o.y+o.h);if(index<0)return state;const s=clone(state);s.obstacles.splice(index,1);s.placed.push(id);if(s.players.every(p=>s.placed.includes(p.id)))begin(s);return s;}if(!state||!m||state.phase!=='build'||state.placed.includes(id)||!state.players.some(p=>p.id===id)||!['spike','spring','platform','conveyor','ice','collapse','saw','fan'].includes(m.type)||Object.keys(m).some(k=>!['type','x','y','direction'].includes(k))||!Number.isInteger(m.x)||!Number.isInteger(m.y)||m.x%40||m.y%20||m.x<200||m.x>960||m.y<200||m.y>360||('direction' in m&&(!['conveyor','fan'].includes(m.type)||!(m.type==='fan'?['up','left','right']:['left','right']).includes(m.direction))))return state;
  const o={type:m.type,x:m.x,y:m.y,w:['platform','conveyor','ice','collapse'].includes(m.type)?80:40,h:20,owner:id,...(m.type==='collapse'?{collapseAt:null}:{}),...(['conveyor','fan'].includes(m.type)?{direction:m.direction??(m.type==='fan'?'up':'right')}:{})};if(swept(o).x<200||swept(o).x+swept(o).w>1000||state.obstacles.some(b=>intersects(swept(o),swept(b),20))||bases.some(b=>intersects(swept(o),b))||(['spike','spring'].includes(o.type)&&!bases.some(b=>o.y+o.h===b.y&&o.x>=b.x&&o.x+o.w<=b.x+b.w)))return state;
  const s=clone(state);s.obstacles.push(o);s.placed.push(id);if(s.players.every(p=>s.placed.includes(p.id)))begin(s);return s;}
 export function input(state,id,m){if(!state||state.phase!=='running'||!m||Object.keys(m).sort().join(',')!=='action,pressed,round,seq,type'||m.type!=='input'||m.round!==state.round||!Number.isSafeInteger(m.seq)||m.seq<1||!['left','right','jump'].includes(m.action)||typeof m.pressed!=='boolean')return state;const p=state.players.find(p=>p.id===id);if(!p||!p.alive||p.finished||m.seq<=p.seq||m.seq>p.seq+1000)return state;const s=clone(state),q=s.players.find(p=>p.id===id);q.seq=m.seq;if(m.action==='jump'){if(m.pressed&&!q.input.jump)q.jumpQueuedAt=s.now;if(!m.pressed&&q.jumpActive){if(q.vy<0)q.vy=Math.max(q.vy,-220);q.jumpActive=false;}}q.input[m.action]=m.pressed;q.inputAt=s.now;return s;}
@@ -17,9 +33,10 @@ export function fanArea(o){return o.direction==='up'?{x:o.x,y:Math.max(0,o.y-140
 export function sawX(o,now){return Math.max(200,Math.min(1000-o.w,o.x+Math.sin(now/900)*40));}
 export function platformX(o,now){return o.x+Math.sin(now/900)*40;}
 const overlap=(p,o)=>p.x<o.x+o.w&&p.x+22>o.x&&p.y<o.y+o.h&&p.y+30>o.y;
-export function tick(state,dt=1/60){if(!state||!['build','running','result'].includes(state.phase))return state;const s=clone(state);dt=Math.min(.033,Math.max(0,dt));s.now+=dt*1000;
+export function tick(state,dt=1/60){if(!state||!['draft','build','running','result'].includes(state.phase))return state;const s=clone(state);dt=Math.min(.033,Math.max(0,dt));s.now+=dt*1000;
+ if(s.phase==='draft'){return s.now-s.phaseAt>=DRAFT?autoassign(s):s;}
  if(s.phase==='build'){if(s.now-s.phaseAt>=BUILD)begin(s);return s;}
- if(s.phase==='result'){if(s.now-s.phaseAt>3000){if(s.round>=s.totalRounds||s.players.length<2)s.phase='ended';else {s.round++;s.phase='build';s.phaseAt=s.now;s.placed=[];for(const o of s.obstacles)if(o.type==='collapse')o.collapseAt=null;s.players=s.players.map(p=>pawn(p.id));}}return s;}
+ if(s.phase==='result'){if(s.now-s.phaseAt>3000){if(s.round>=s.totalRounds||s.players.length<2)s.phase='ended';else {s.round++;startDraft(s);for(const o of s.obstacles)if(o.type==='collapse')o.collapseAt=null;s.players=s.players.map(p=>pawn(p.id));}}return s;}
  for(const p of s.players){if(!p.alive||p.finished)continue;if(s.now-p.inputAt>800)p.input={left:false,right:false,jump:false};const prevY=p.y,oldNow=s.now-dt*1000;
  for(const o of s.obstacles.filter(o=>o.type==='platform'))if(Math.abs(p.y+30-o.y)<2&&p.x+22>platformX(o,oldNow)&&p.x<platformX(o,oldNow)+o.w)p.x+=platformX(o,s.now)-platformX(o,oldNow);
  const surface=s.obstacles.find(o=>['conveyor','ice'].includes(o.type)&&Math.abs(p.y+30-o.y)<2&&p.x+22>o.x&&p.x<o.x+o.w);
@@ -29,4 +46,4 @@ export function tick(state,dt=1/60){if(!state||!['build','running','result'].inc
  for(const o of s.obstacles){if(o.type==='platform'||!overlap(p,o.type==='saw'?{...o,x:sawX(o,s.now)}:o))continue;if(o.type==='spring'&&p.vy>=0){p.vy=-760;p.grounded=false;p.groundedAt=null;p.jumpActive=false;}if(o.type==='spike'||o.type==='saw'){p.alive=false;if(o.owner!==p.id&&s.scores[o.owner]!=null)s.scores[o.owner]++;break;}}
  if(p.grounded&&p.jumpQueuedAt!=null&&s.now-p.jumpQueuedAt<=120){p.vy=p.input.jump?-510:-220;p.grounded=false;p.groundedAt=null;p.jumpActive=p.input.jump;p.jumpQueuedAt=null;}if(p.y>H+50)p.alive=false;if(p.alive&&p.x>=1100){p.finished=true;s.scores[p.id]+=3;}}
  if(s.now-s.phaseAt>=RUN||s.players.every(p=>!p.alive||p.finished)){s.phase='result';s.phaseAt=s.now;}return s;}
-export function disconnect(state,id){if(!state)return state;const s=clone(state);s.players=s.players.filter(p=>p.id!==id);if(s.players.length<2){s.phase='ended';return s;}if(s.phase==='build'&&s.players.every(p=>s.placed.includes(p.id)))begin(s);return s;}
+export function disconnect(state,id){if(!state)return state;const s=clone(state);s.players=s.players.filter(p=>p.id!==id);if(s.phase==='draft'){delete s.selections[id];for(const c of s.pool)if(c.owner===id)c.owner=null;}if(s.players.length<2){s.phase='ended';return s;}if(s.phase==='draft'&&s.players.every(p=>s.selections[p.id]))startBuild(s);if(s.phase==='build'&&s.players.every(p=>s.placed.includes(p.id)))begin(s);return s;}

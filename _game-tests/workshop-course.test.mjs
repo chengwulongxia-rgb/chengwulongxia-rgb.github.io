@@ -1,6 +1,7 @@
+import {createGame,placeWithSelection} from './workshop-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {bases,pits,createGame,place,tick,input,RUN} from '../obstacle-workshop/logic.mjs';
+import {bases,pits,place as rawPlace,tick,input,RUN} from '../obstacle-workshop/logic.mjs';
 test('factory has three real lethal gaps; walking without jumps is eliminated',()=>{
  const floor=bases.filter(b=>b.y===380).sort((a,b)=>a.x-b.x);
  assert.equal(floor.length,4);assert.deepEqual(bases.filter(b=>b.y<380).map(b=>b.y),[320,280,320]);
@@ -40,3 +41,5 @@ test('every shaft eliminates falls and collapse platforms over shafts are conseq
  let s=createGame(['1','2']);s=place(s,'1',{type:'collapse',x:320,y:360});s={...s,phase:'running'};s.players[0].x=325;s.players[0].y=330;
  s=tick(s);assert.ok(s.obstacles[0].collapseAt);for(let i=0;i<150&&s.players[0].alive;i++)s=tick(s);assert.equal(s.players[0].alive,false);
 });
+
+function place(s,id,m){return placeWithSelection(rawPlace,s,id,m);}

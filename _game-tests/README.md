@@ -1,5 +1,18 @@
 # 連線井字棋
 
+## 跑酷工坊目前的瀏覽器測試
+
+工坊已加入必經的公共搶選階段，請執行：
+
+```sh
+node _game-tests/workshop-draft-browser.cjs
+node _game-tests/workshop-draft-full.cjs
+```
+
+前者驗證三人搶同張卡、重選、逾時分配、指定道具建造與鍵盤通關；後者驗證容量、斷線、完整六回合與重賽。兩者支援 `GAME_URL` 指向部署後 HTTPS。純規則測試仍用 `node --test _game-tests/*.test.mjs`。
+
+`workshop-{browser,desktop,full,mechanics-browser}.cjs` 是搶選機制加入前的歷史測試，假設能自由選所有道具，並非目前版本可執行的驗收入口；目前驗收以以上兩支 draft 測試為準。`workshop-keyboard.cjs` 為共用真實鍵盤路線 helper。
+
 獨立靜態頁面：`/games/tic-tac-toe/`。沒有 Jekyll front matter、部落格 layout、帳號或自架後端。
 
 ## 執行與測試

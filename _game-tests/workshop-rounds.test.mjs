@@ -12,7 +12,7 @@ test('custom rounds continue past five and end exactly at selected round',()=>{
   for(let round=1;round<=total;round++){
    assert.equal(s.round,round);assert.equal(s.totalRounds,total);
    s={...s,phase:'result',phaseAt:0,now:3000};s=tick(s);
-   assert.equal(s.phase,round===total?'ended':'build');
+   assert.equal(s.phase,round===total?'ended':'draft');
   }
  }
 });
