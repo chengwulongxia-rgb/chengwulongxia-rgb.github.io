@@ -1,4 +1,4 @@
-import { W, H, FLOOR, aimVector, MAX_VOLLEY } from "./game-logic.mjs";
+import { W, H, FLOOR, aimPreview, MAX_VOLLEY } from "./game-logic.mjs";
 import { createController } from "./game-controller.mjs";
 const $ = (id) => document.getElementById(id),
   canvas = $("arena"),
@@ -108,6 +108,9 @@ canvas.addEventListener("keydown", (e) => {
     }
   }
 });
+const itemNames = {blast:"爆破彈",double:"雙倍傷害",precision:"精準瞄準"};
+const itemIcons = {blast:"◆",double:"×2",precision:"◎"};
+for (const type of Object.keys(itemNames)) $("item-" + type).addEventListener("click", () => game.selectItem(type));
 $("restart").addEventListener("click", () => {
   cancelAim();
   manualPause = false;
@@ -163,37 +166,22 @@ function circle(x, y, r, color) {
   ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.fill();
 }
-function preview(origin, target) {
-  const v = aimVector(target.x - origin, target.y - FLOOR);
-  let x = origin,
-    y = FLOOR,
-    vx = v.x,
-    vy = v.y;
+function preview(s, target) {
+  const path = aimPreview(s, target.x - s.origin, target.y - FLOOR);
+  canvas.dataset.previewDistance = path.distance.toFixed(2);
+  canvas.dataset.previewBounces = path.bounces;
+  canvas.dataset.previewStop = path.stop;
+  canvas.dataset.previewBrick = path.brickId ?? "";
+  canvas.dataset.previewEnd = JSON.stringify(path.points.at(-1));
   ctx.beginPath();
-  ctx.moveTo(x, y);
-  for (let i = 0; i < 180; i++) {
-    x += vx * 4;
-    y += vy * 4;
-    if (x < 4) {
-      x = 8 - x;
-      vx = -vx;
-    }
-    if (x > W - 4) {
-      x = 2 * (W - 4) - x;
-      vx = -vx;
-    }
-    if (y < 4) {
-      y = 8 - y;
-      vy = -vy;
-    }
-    ctx.lineTo(x, y);
-  }
-  ctx.strokeStyle = "#a9efd4aa";
+  ctx.moveTo(path.points[0].x, path.points[0].y);
+  for (const point of path.points.slice(1)) ctx.lineTo(point.x,point.y);
+  ctx.strokeStyle = s.selected === "precision" ? "#f6cd73" : "#a9efd4aa";
   ctx.lineWidth = 1.8;
-  ctx.setLineDash([3, 8]);
-  ctx.stroke();
-  ctx.setLineDash([]);
-  circle(origin, FLOOR, 7, "#a9efd4");
+  ctx.setLineDash([3, 8]); ctx.stroke(); ctx.setLineDash([]);
+  const end = path.points.at(-1);
+  if (path.stop === "brick") circle(end.x,end.y,5,"#f6cd73");
+  circle(s.origin,FLOOR,7,"#a9efd4");
 }
 function draw(s, time) {
   ctx.setTransform(canvas.width / W, 0, 0, canvas.height / H, 0, 0);
@@ -237,6 +225,7 @@ function draw(s, time) {
       b.hp > 99 ? 15 : 19,
       850,
     );
+    if (b.reward) text(itemIcons[b.reward], b.x + 10, b.y + 9, "#173638", 11, 900);
     if (b.kind === "bomb")
       text("✳", b.x + b.w - 7, b.y + 8, "#633d35", 10, 800);
   }
@@ -266,7 +255,7 @@ function draw(s, time) {
     const t = 1 - e.life / 0.5;
     ctx.globalAlpha = e.life / 0.5;
     const color =
-      e.kind === "bomb"
+      (e.kind === "bomb" || e.kind === "blast")
         ? "#ff866e"
         : e.kind === "extra"
           ? "#a9efd4"
@@ -277,7 +266,7 @@ function draw(s, time) {
       ctx.strokeStyle = color;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(e.x, e.y, (e.kind === "bomb" ? 65 : 22) * t + 4, 0, Math.PI * 2);
+      ctx.arc(e.x, e.y, (e.kind === "blast" ? 75 : e.kind === "bomb" ? 65 : 22) * t + 4, 0, Math.PI * 2);
       ctx.stroke();
       if (!reduced)
         for (let j = 0; j < 8; j++) {
@@ -302,7 +291,7 @@ function draw(s, time) {
       "#a9efd4",
       11,
     );
-    if (aim) preview(s.origin, aim);
+    if (aim) preview(s, aim);
     else {
       ctx.strokeStyle = "#a9efd45c";
       ctx.lineWidth = 1.5;
@@ -346,6 +335,27 @@ function updateHUD() {
         ? `${s.message} · ${Math.max(0, Math.ceil(MAX_VOLLEY - s.elapsed))} 秒後自動收回`
         : s.message,
   );
+  for (const type of Object.keys(itemNames)) {
+    put("item-" + type + "-count",s.inventory[type]);
+    $("item-" + type).disabled = s.phase !== "ready" || game.paused || s.inventory[type] === 0;
+    $("item-" + type).setAttribute("aria-pressed",String(s.selected === type));
+    $("item-" + type).setAttribute("aria-label",`${itemNames[type]}，庫存 ${s.inventory[type]}，上限 3${s.selected === type ? "，已選取，再點取消" : ""}`);
+  }
+  put("item-status",s.active ? `${itemNames[s.active]}生效${s.active === "blast" && s.blastSpent ? " · 已引爆" : ""}` : s.selected ? `${itemNames[s.selected]}已裝備 · 發射才扣 1` : "點選裝備 · 再點取消 · 上限 3");
+  canvas.dataset.selected = s.selected ?? "";
+  canvas.dataset.active = s.active ?? "";
+  canvas.dataset.lastDamage = s.lastDamage;
+  canvas.dataset.firstImpactBrick = s.firstImpactBrick ?? "";
+  canvas.dataset.blastCount = s.blastCount;
+  canvas.dataset.blastTargets = s.blastTargets;
+  canvas.dataset.bricks = JSON.stringify(s.bricks.map(({id,x,y,w,h,hp,reward})=>({id,x,y,w,h,hp,reward})));
+  if (!aim) {
+    canvas.dataset.previewDistance = "0";
+    canvas.dataset.previewBounces = "0";
+    canvas.dataset.previewStop = "";
+    canvas.dataset.previewBrick = "";
+    canvas.dataset.previewEnd = "null";
+  }
   canvas.dataset.phase = s.phase;
   canvas.dataset.hits = s.hits;
   canvas.dataset.origin = s.origin;

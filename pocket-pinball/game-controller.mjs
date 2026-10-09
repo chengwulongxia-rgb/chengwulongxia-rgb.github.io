@@ -1,4 +1,4 @@
-import { createGame, launch, step, recall } from "./game-logic.mjs";
+import { createGame, launch, step, recall, selectItem } from "./game-logic.mjs";
 export const RECORD_KEY = "pocket-pinball-best-v1";
 export function createController(storage) {
   let state = createGame(),
@@ -27,6 +27,9 @@ export function createController(storage) {
     },
     get paused() {
       return paused;
+    },
+    selectItem(type) {
+      if (!paused) update(selectItem(state, type));
     },
     launch(x, y) {
       if (!paused) update(launch(state, x, y));

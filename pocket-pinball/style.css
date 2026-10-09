@@ -355,6 +355,22 @@ dialog button {
     border-radius: 16px;
   }
 }
+.items { flex-shrink: 0; background: #102c30; border: 1px solid #456761; border-radius: 13px; padding: 8px; }
+.items-heading { display:flex; justify-content:space-between; gap:4px; color:var(--muted); font-size:10px; margin-bottom:7px; }
+.items-heading > span:first-child { color:var(--yellow); font-weight:800; white-space:nowrap; }
+.item-buttons { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:6px; }
+.item-buttons button { font-size:11px; padding:4px 3px; border-radius:9px; white-space:nowrap; }
+.item-buttons b { color:var(--yellow); font-size:14px; }
+.item-buttons button > span { display:inline-block; min-width:15px; margin-left:2px; color:var(--mint); font:800 12px ui-monospace,monospace; }
+.item-buttons button[aria-pressed="true"] { border-color:var(--yellow); background:#4d5139; box-shadow: inset 0 0 0 1px var(--yellow); }
+#item-blast b { color:var(--coral); }
+#item-precision b { color:var(--mint); }
+@media (max-height:700px) {
+  .items { padding:6px; }
+  .items-heading { margin-bottom:4px; }
+  main { gap:6px; }
+  .legend { gap:6px; font-size:9px; }
+}
 @media (prefers-reduced-motion: reduce) {
   button:active {
     transform: none;

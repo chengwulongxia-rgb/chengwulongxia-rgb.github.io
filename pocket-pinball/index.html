@@ -30,6 +30,14 @@
         <div><span>回合</span><strong id="round">1</strong></div>
         <div><span>彈珠</span><strong id="balls">6</strong></div>
       </section>
+      <section class="items" aria-label="消耗道具：每輪限選一種">
+        <div class="items-heading"><span>本輪裝備</span><span id="item-status" role="status">點選裝備 · 再點取消 · 上限 3</span></div>
+        <div class="item-buttons">
+          <button id="item-blast" aria-pressed="false"><b>◆</b> 爆破彈 <span id="item-blast-count">1</span></button>
+          <button id="item-double" aria-pressed="false"><b>×2</b> 雙倍傷害 <span id="item-double-count">1</span></button>
+          <button id="item-precision" aria-pressed="false"><b>◎</b> 精準瞄準 <span id="item-precision-count">1</span></button>
+        </div>
+      </section>
       <div class="cabinet">
         <div class="screws" aria-hidden="true">
           <i></i><span>一指瞄準 · 連發挑戰</span><i></i>
@@ -63,7 +71,7 @@
         <p class="legend">
           <span><b class="extra">＋</b> 加球</span
           ><span><b class="split">⋔</b> 分裂</span
-          ><span><b class="bomb">✳</b> 爆破</span><span>別讓磚塊碰到底線</span>
+          ><span><b class="bomb">✳</b> 連鎖炸彈</span><span>別讓磚塊碰到底線</span>
         </p>
       </footer>
     </main>
@@ -82,6 +90,10 @@
         可以提前收回彈珠，但磚塊仍會下移。每輪最多 24
         秒，時間到自動收回。離開頁面會暫停；最高紀錄儲存在此瀏覽器。
       </p>
+      <p><strong>道具磚 ◆ / ×2 / ◎：</strong>擊碎對應圖示的數字磚獲得該道具 1 個（連鎖也算，每磚僅一次），每種最多 3 個；新局各送 1 個。發射前點選一種，再點取消或換裝皆免費；只有成功發射才扣 1。飛行中不能換裝，收回或回合結束即失效。</p>
+      <p><strong>◆ 爆破彈：</strong>第一顆發射球首次撞磚時引爆一次，撞擊中心半徑 75 內傷害 3（最多 128 磚）；與「✳」連鎖炸彈磚不同，可引發它的連鎖。</p>
+      <p><strong>×2 雙倍傷害：</strong>下一輪所有球每次碰磚傷害 2，包含分裂球，整輪有效。</p>
+      <p><strong>◎ 精準瞄準：</strong>將短預覽延長至首次碰磚，支援多次牆壁反彈。用實際球半徑與物理步長預測第一球；到回到底線或 24 秒上限停止。不預測碰磚後的路徑、分裂球或後續球造成的磚塊變化。</p>
       <p class="keyboard-note">鍵盤：← → 瞄準，空白鍵發射。</p>
       <button id="close-help">知道了，來一局</button>
     </dialog>

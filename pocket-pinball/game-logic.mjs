@@ -29,9 +29,28 @@ export function circleRect(x, y, r, b) {
   return { nx: sides[0].nx, ny: sides[0].ny, depth: r + sides[0].d };
 }
 
+// Same fixed distance and wall clamps as the first launched ball. No future
+// brick changes or split trajectories are predicted; stop at first contact.
+export function aimPreview(s, dx, dy, precision = s.selected === "precision") {
+  const v = aimVector(dx, dy), stride = SPEED * STEP;
+  let x = s.origin, y = FLOOR, vx = v.x, vy = v.y, bounces = 0, distance = 0;
+  const points = [{x,y}], limit = precision ? Math.ceil(MAX_VOLLEY / STEP) : 74;
+  for (let i = 0; i < limit; i++) {
+    x += vx * stride; y += vy * stride; distance += stride;
+    if (x < R) { x = R; vx = Math.abs(vx); bounces++; }
+    if (x > W - R) { x = W - R; vx = -Math.abs(vx); bounces++; }
+    if (y < R) { y = R; vy = Math.abs(vy); bounces++; }
+    points.push({x,y});
+    const brick = s.bricks.find(b => circleRect(x,y,R,b));
+    if (brick) return {points,distance,bounces,stop:"brick",brickId:brick.id};
+    if (y >= FLOOR && vy > 0) return {points,distance,bounces,stop:"floor",brickId:null};
+  }
+  return {points,distance,bounces,stop:precision ? "limit" : "short",brickId:null};
+}
 function clone(s) {
   return {
     ...s,
+    inventory: { ...s.inventory },
     bricks: s.bricks.map((b) => ({ ...b })),
     pickups: s.pickups.map((p) => ({ ...p })),
     balls: s.balls.map((b) => ({ ...b, contacts: [...b.contacts] })),
@@ -43,6 +62,7 @@ function random(s) {
   return s.seed / 4294967296;
 }
 function row(s, y) {
+  const first = s.bricks.length;
   const gap = Math.floor(random(s) * 7);
   for (let c = 0; c < 7; c++) {
     if (c === gap) continue;
@@ -57,6 +77,7 @@ function row(s, y) {
       kind: random(s) < 0.15 ? "bomb" : "brick",
     });
   }
+  if (s.bricks.length > first) s.bricks[first].reward = ["blast", "double", "precision"][(s.round + Math.floor(y / 45)) % 3];
   s.pickups.push({
     id: s.nextId++,
     x: 40 + gap * 45,
@@ -67,6 +88,15 @@ function row(s, y) {
 export function createGame() {
   const s = {
     phase: "ready",
+    inventory: { blast: 1, double: 1, precision: 1 },
+    selected: null,
+    active: null,
+    firstBall: null,
+    blastSpent: false,
+    blastCount: 0,
+    blastTargets: 0,
+    lastDamage: 0,
+    firstImpactBrick: null,
     round: 1,
     score: 0,
     hits: 0,
@@ -98,10 +128,25 @@ export function createGame() {
   });
   return s;
 }
+export const ITEM_TYPES = ["blast", "double", "precision"];
+export const ITEM_CAP = 3;
+export function selectItem(s, type) {
+  if (s.phase !== "ready" || !ITEM_TYPES.includes(type) || !s.inventory[type]) return s;
+  return { ...s, selected: s.selected === type ? null : type };
+}
 export function launch(s, dx, dy) {
-  if (s.phase !== "ready") return s;
+  if (s.phase !== "ready" || !Number.isFinite(dx) || !Number.isFinite(dy) || dy > 0 || (dx === 0 && dy === 0)) return s;
   const n = clone(s);
   n.phase = "volley";
+  n.active = n.selected;
+  if (n.active) n.inventory[n.active]--;
+  n.selected = null;
+  n.firstBall = null;
+  n.blastSpent = false;
+  n.blastCount = 0;
+  n.blastTargets = 0;
+  n.lastDamage = 0;
+  n.firstImpactBrick = null;
   n.direction = aimVector(dx, dy);
   n.pending = n.ballCount;
   n.launchClock = 0;
@@ -115,10 +160,10 @@ function effect(s, x, y, kind) {
   s.effects.push({ x, y, kind, life: 0.5 });
   if (s.effects.length > 80) s.effects.shift();
 }
-function hurt(s, id) {
+function hurt(s, id, amount = 1) {
   const b = s.bricks.find((b) => b.id === id);
   if (!b) return;
-  b.hp--;
+  b.hp -= amount;
   s.hits++;
   s.score += 1;
   effect(s, b.x + b.w / 2, b.y + b.h / 2, "hit");
@@ -130,6 +175,10 @@ function hurt(s, id) {
     if (visited.has(dead.id)) continue;
     visited.add(dead.id);
     s.bricks = s.bricks.filter((v) => v.id !== dead.id);
+    if (ITEM_TYPES.includes(dead.reward)) {
+      s.inventory[dead.reward] = Math.min(ITEM_CAP, s.inventory[dead.reward] + 1);
+      effect(s, dead.x + dead.w / 2, dead.y + dead.h / 2, "reward");
+    }
     s.score += dead.id === id ? 9 : 10;
     effect(
       s,
@@ -187,6 +236,8 @@ export function collect(s, id, ball) {
   return n;
 }
 function nextRound(s) {
+  s.active = null;
+  s.selected = null;
   s.balls = [];
   s.pending = 0;
   s.origin = Math.max(12, Math.min(W - 12, s.nextOrigin ?? s.origin));
@@ -219,6 +270,7 @@ function tick(s) {
   s.elapsed += STEP;
   s.launchClock -= STEP;
   if (s.pending > 0 && s.launchClock <= 0) {
+    if (s.firstBall === null) s.firstBall = s.nextId;
     s.balls.push({
       id: s.nextId++,
       x: s.origin,
@@ -256,7 +308,21 @@ function tick(s) {
       if (dot < 0) {
         b.vx -= 2 * dot * hit.nx;
         b.vy -= 2 * dot * hit.ny;
-        if (!b.contacts.includes(brick.id)) hurt(s, brick.id);
+        if (!b.contacts.includes(brick.id)) {
+          if (s.firstImpactBrick === null) s.firstImpactBrick = brick.id;
+          s.lastDamage = s.active === "double" ? 2 : 1;
+          hurt(s, brick.id, s.lastDamage);
+          if (s.active === "blast" && b.id === s.firstBall && !s.blastSpent) {
+            s.blastSpent = true;
+            s.blastCount++;
+            const x = brick.x + brick.w / 2, y = brick.y + brick.h / 2;
+            const targets = s.bricks.filter(v => Math.hypot(v.x + v.w / 2 - x, v.y + v.h / 2 - y) <= 75).slice(0,128);
+            s.blastTargets = targets.length;
+            effect(s, x, y, "blast");
+            for (const target of targets) hurt(s, target.id, 3);
+            s.message = "爆破彈！半徑 75 內傷害 3 · 本輪已引爆";
+          }
+        }
       }
     }
     b.contacts = contacts;
