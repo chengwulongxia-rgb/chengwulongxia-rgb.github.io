@@ -100,7 +100,7 @@ test('precision shares real hex collision and records identical first impact and
   let s=L.launch(L.selectItem(board,'precision'),dx,-280);
   for(let i=0;i<4320&&!s.firstImpact;i++) s=L.step(s,L.STEP);
   assert.ok(s.firstImpact); assert.equal(s.firstImpact.brickId,p.brickId);
-  assert.deepEqual(s.firstImpact.point,p.points.at(-1));
+  assert.deepEqual(s.firstImpact.point,p.firstImpact.point);
   assert.deepEqual(s.firstImpact.normal,p.normal); assert.deepEqual(s.firstImpact.reflection,p.reflection);
   const v=s.firstImpact.reflection; assert.ok(Math.abs(Math.hypot(v.x,v.y)-L.SPEED)<1e-8);
  }

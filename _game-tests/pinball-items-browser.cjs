@@ -33,8 +33,8 @@ const url = process.env.GAME_URL || 'http://127.0.0.1:8765/pocket-pinball/';
    if(type==='precision') {
     await page.locator('#item-precision').click();await drag(160,-43,null);const short=await read();await touch('touchCancel',0,0);
     await page.locator('#item-precision').click();await drag(160,-43,null);const long=await read();
-    assert.ok(Number(long.previewDistance)>Number(short.previewDistance)*2);assert.ok(Number(long.previewBounces)>=2);assert.equal(long.previewStop,'brick');
-    const end=JSON.parse(long.previewEnd),bricks=JSON.parse(long.bricks),brick=bricks.find(b=>b.id===Number(long.previewBrick));
+    assert.ok(Number(long.previewDistance)>Number(short.previewDistance)*2);assert.ok(Number(long.previewBounces)>=2);assert.equal(long.previewFirstStop,'brick');
+    const end=JSON.parse(long.previewFirstPoint),bricks=JSON.parse(long.bricks),brick=bricks.find(b=>b.id===Number(long.previewBrick));
     const qx=Math.max(brick.x,Math.min(end.x,brick.x+brick.w)),qy=Math.max(brick.y,Math.min(end.y,brick.y+brick.h));assert.ok(Math.hypot(end.x-qx,end.y-qy)<4);
     predicted=long.previewBrick;
     results.push({preview:{short:short.previewDistance,long:long.previewDistance,bounces:long.previewBounces,stop:long.previewStop}});

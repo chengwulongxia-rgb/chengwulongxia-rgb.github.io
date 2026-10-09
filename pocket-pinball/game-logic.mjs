@@ -59,13 +59,56 @@ export function brickCollision(x,y,r,b) {
 export function hexBrick(cx,y,props={}) {
   return {x:cx-HEX_WIDTH/2,y,w:HEX_WIDTH,h:HEX_RADIUS*2,shape:"hex",...props};
 }
-// Same fixed distance and wall clamps as the first launched ball. No future
-// brick changes or split trajectories are predicted; stop at first contact.
+// Reflection is shared by real collisions and the forecast.
 export function reflect(vx,vy,hit) {
   const dot=vx*hit.nx+vy*hit.ny;
   return dot < 0 ? {x:vx-2*dot*hit.nx,y:vy-2*dot*hit.ny} : {x:vx,y:vy};
 }
+export const PREVIEW_IMPACT_CAP = 12;
+// One-entry cache, not a growing collection of pointermove paths. Ready ticks
+// clone state, so key the stable board values rather than object identity.
+export function createPreviewCache() {
+  let key, path;
+  return (s,dx,dy) => {
+    const v=aimVector(dx,dy), next=JSON.stringify([v,s.origin,s.selected,s.mode,s.round,s.bricks,s.inventory,s.nextId,s.bombCount]);
+    if(next!==key) {path=aimPreview(s,dx,dy);key=next;}
+    return path;
+  };
+}
+// Only the first ball: damage and bomb queues use the production tick on a
+// private clone. No later launch, split pickup, round advancement or live write.
+function precisionPreview(s, dx, dy) {
+  const v=aimVector(dx,dy);
+  const n = launch({...s, phase:"ready", ballCount:1, selected:null}, v.x, v.y);
+  n.direction = v; // Do not re-clamp a normalized vector (aimVector's minimum dy is 1).
+  n.pickups = []; n.balls = []; n.effects = []; n.impactHistory = [];
+  const points = [{x:s.origin,y:FLOOR}], impacts = [];
+  let bounces = 0, distance = 0, iterations = 0, stop = "limit";
+  const push = p => { const last=points.at(-1); if(last.x!==p.x || last.y!==p.y) points.push({...p}); };
+  const observer = {
+    forecast:true,
+    wall: b => { bounces++; push({x:b.x,y:b.y}); },
+    impact: hit => { if(impacts.length<PREVIEW_IMPACT_CAP) {impacts.push({...hit,number:impacts.length+1}); push(hit.point);} },
+  };
+  for(; iterations < Math.ceil(MAX_VOLLEY / STEP);) {
+    tick(n, observer); iterations++; distance += SPEED * STEP;
+    const ball = n.balls[0];
+    // Sample every six ticks, retaining all corners/contacts and the endpoint.
+    if(ball && (iterations%6===0 || impacts.length>=PREVIEW_IMPACT_CAP)) push({x:ball.x,y:ball.y});
+    if(impacts.length>=PREVIEW_IMPACT_CAP) {stop="impacts";break;}
+    if(!ball) {stop="floor";push({x:n.nextOrigin,y:FLOOR});break;}
+    if(iterations===Math.ceil(MAX_VOLLEY/STEP)) push({x:ball.x,y:ball.y});
+    n.effects = []; // Forecast does not animate effects.
+  }
+  const firstImpact=impacts[0]??null;
+  return {points,impacts,firstImpact,distance,bounces,iterations,stop,
+    brickId:firstImpact?.brickId??null,normal:firstImpact?.normal??null,
+    reflection:firstImpact?.reflection??null,firstStop:firstImpact?"brick":stop,
+    elapsed:iterations*STEP,bombCount:n.bombCount-s.bombCount,
+    remainingBricks:n.bricks.map(b=>({...b})),firstBallOnly:true,ignoresSplits:true};
+}
 export function aimPreview(s, dx, dy, precision = s.selected === "precision") {
+  if(precision) return precisionPreview(s, dx, dy);
   const v = aimVector(dx, dy), stride = SPEED * STEP;
   let x = s.origin, y = FLOOR, vx = v.x * SPEED, vy = v.y * SPEED, bounces = 0, distance = 0;
   const points = [{x,y}], limit = precision ? Math.ceil(MAX_VOLLEY / STEP) : 74;
@@ -87,6 +130,7 @@ export function aimPreview(s, dx, dy, precision = s.selected === "precision") {
 function clone(s) {
   return {
     ...s,
+    impactHistory: [...(s.impactHistory ?? [])],
     inventory: { ...s.inventory },
     bricks: s.bricks.map((b) => ({ ...b })),
     pickups: s.pickups.map((p) => ({ ...p })),
@@ -138,6 +182,7 @@ export function createGame(mode = "honeycomb") {
     lastDamage: 0,
     firstImpactBrick: null,
     firstImpact: null,
+    impactHistory: [],
     bombCount: 0,
     lastBomb: null,
     round: 1,
@@ -194,6 +239,7 @@ export function launch(s, dx, dy) {
   n.lastDamage = 0;
   n.firstImpactBrick = null;
   n.firstImpact = null;
+  n.impactHistory = [];
   n.direction = aimVector(dx, dy);
   n.pending = n.ballCount;
   n.launchClock = 0;
@@ -314,7 +360,7 @@ export function recall(s) {
   n.message = n.phase === "over" ? "磚塊碰到底線了！" : "已收回彈珠 · 新的一輪";
   return n;
 }
-function tick(s) {
+function tick(s, observer = null) {
   s.elapsed += STEP;
   s.launchClock -= STEP;
   if (s.pending > 0 && s.launchClock <= 0) {
@@ -336,14 +382,17 @@ function tick(s) {
     if (b.x < R) {
       b.x = R;
       b.vx = Math.abs(b.vx);
+      observer?.wall(b);
     }
     if (b.x > W - R) {
       b.x = W - R;
       b.vx = -Math.abs(b.vx);
+      observer?.wall(b);
     }
     if (b.y < R) {
       b.y = R;
       b.vy = Math.abs(b.vy);
+      observer?.wall(b);
     }
     const contacts = [];
     for (const brick of [...s.bricks]) {
@@ -358,6 +407,9 @@ function tick(s) {
         const reflection=reflect(b.vx,b.vy,hit);
         b.vx=reflection.x; b.vy=reflection.y;
         if (!b.contacts.includes(brick.id)) {
+          const impact={brickId:brick.id,ballId:b.id,point,normal:{nx:hit.nx,ny:hit.ny},reflection,time:s.elapsed};
+          if(b.id===s.firstBall && s.impactHistory.length<PREVIEW_IMPACT_CAP) s.impactHistory.push(impact);
+          observer?.impact(impact);
           if (s.firstImpactBrick === null) {
             s.firstImpactBrick = brick.id;
             s.firstImpact={brickId:brick.id,point,normal:{nx:hit.nx,ny:hit.ny},reflection};
@@ -391,7 +443,7 @@ function tick(s) {
       s.balls = s.balls.filter((v) => v.id !== b.id);
     }
   }
-  if ((s.pending === 0 && s.balls.length === 0) || s.elapsed >= MAX_VOLLEY) {
+  if (!observer?.forecast && ((s.pending === 0 && s.balls.length === 0) || s.elapsed >= MAX_VOLLEY)) {
     const auto = s.elapsed >= MAX_VOLLEY;
     nextRound(s);
     if (auto && s.phase === "ready") s.message = "時間到，彈珠已自動收回";

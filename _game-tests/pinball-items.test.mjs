@@ -57,7 +57,7 @@ test('precision traces many walls, stops at true circle/brick collision or retur
  const s=L.createGame("square"); const saved=JSON.stringify(s);
  const basic=L.aimPreview(s,300,-80,false); const precise=L.aimPreview(s,300,-80,true);
  assert.ok(precise.distance>basic.distance*2); assert.ok(precise.bounces>=2);
- assert.equal(precise.stop,'brick'); const end=precise.points.at(-1);
+ assert.equal(precise.firstStop,'brick'); const end=precise.firstImpact.point;
  assert.ok(L.circleRect(end.x,end.y,L.R,s.bricks.find(b=>b.id===precise.brickId)));
  const straight=L.aimPreview(s,0,-1,true); assert.equal(straight.brickId,s.bricks.at(-1).id); assert.ok(straight.points.at(-1).y>190);
  s.bricks=[]; const empty=L.aimPreview(s,300,-80,true); assert.equal(empty.stop,'floor'); assert.ok(empty.bounces>=4); assert.ok(empty.distance<=L.SPEED*L.MAX_VOLLEY);

@@ -410,7 +410,7 @@ header .hud div { display:block; padding:0 4px; }
 header .hud span { font-size:8px; }
 header .hud strong { font-size:15px; }
 header .modes { gap:2px; }
-header .modes button { padding:0 8px; }
+header .modes button { padding:0 8px; min-width:44px; }
 header .round-button { flex-shrink:0; }
 .items { border:0; padding:0 3px; }
 .cabinet, .playfield, canvas { border-radius:0; }

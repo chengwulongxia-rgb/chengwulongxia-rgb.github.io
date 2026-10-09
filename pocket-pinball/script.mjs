@@ -1,4 +1,4 @@
-import { W, H, FLOOR, aimPreview, MAX_VOLLEY, brickVertices, BOMB_RADIUS } from "./game-logic.mjs";
+import { W, H, FLOOR, createPreviewCache, MAX_VOLLEY, brickVertices, BOMB_RADIUS } from "./game-logic.mjs";
 import { createController } from "./game-controller.mjs";
 const $ = (id) => document.getElementById(id),
   canvas = $("arena"),
@@ -15,6 +15,7 @@ let aim = null,
   lastTime = 0,
   keyboardAngle = 0;
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cachedPreview = createPreviewCache();
 function syncPause() {
   game.pause(
     manualPause || document.hidden || $("help-title").closest("dialog").open,
@@ -177,7 +178,7 @@ function circle(x, y, r, color) {
   ctx.fill();
 }
 function preview(s, target) {
-  const path = aimPreview(s, target.x - s.origin, target.y - FLOOR);
+  const path = cachedPreview(s, target.x - s.origin, target.y - FLOOR);
   canvas.dataset.previewDistance = path.distance.toFixed(2);
   canvas.dataset.previewBounces = path.bounces;
   canvas.dataset.previewStop = path.stop;
@@ -185,6 +186,34 @@ function preview(s, target) {
   canvas.dataset.previewEnd = JSON.stringify(path.points.at(-1));
   canvas.dataset.previewNormal = JSON.stringify(path.normal ?? null);
   canvas.dataset.previewReflection = JSON.stringify(path.reflection ?? null);
+  canvas.dataset.previewFirstStop = path.firstStop ?? path.stop;
+  canvas.dataset.previewFirstImpact = JSON.stringify(path.firstImpact ?? null);
+  canvas.dataset.previewFirstPoint = JSON.stringify(path.firstImpact?.point ?? (path.stop === "brick" ? path.points.at(-1) : null));
+  canvas.dataset.previewImpacts = JSON.stringify(path.impacts ?? []);
+  canvas.dataset.previewMarkers = JSON.stringify((path.impacts ?? []).map(h=>({number:h.number,...h.point})));
+  canvas.dataset.previewPoints = JSON.stringify(path.points);
+  canvas.dataset.previewIterations = path.iterations ?? 74;
+  if(s.selected === "precision") {
+    ctx.lineWidth=2.4; ctx.lineCap="round";
+    for(let i=1;i<path.points.length;i++) {
+      ctx.globalAlpha=1-.65*(i/path.points.length);
+      ctx.beginPath();ctx.moveTo(path.points[i-1].x,path.points[i-1].y);
+      ctx.lineTo(path.points[i].x,path.points[i].y);
+      ctx.strokeStyle="#fff1a0";ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+    for(const hit of path.impacts) {
+      // Offset repeated contact labels while retaining an exact contact dot.
+      const x=Math.max(12,Math.min(W-12,hit.point.x+((hit.number%3)-1)*12));
+      const y=Math.max(12,Math.min(FLOOR-12,hit.point.y+(hit.number%2? -12:12)));
+      circle(hit.point.x,hit.point.y,3,"#fff6c8");
+      ctx.beginPath();ctx.moveTo(hit.point.x,hit.point.y);ctx.lineTo(x,y);
+      ctx.strokeStyle="#fff1a0";ctx.lineWidth=1;ctx.stroke();
+      circle(x,y,8,"#102d32");ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);
+      ctx.strokeStyle="#fff1a0";ctx.stroke();text(String(hit.number),x,y,"#fff6c8",10,900);
+    }
+    text("首球預測 · 最多 12 次碰磚 · 不含後續球／分裂",W/2,FLOOR+17,"#ffe9a1",9,600);
+  } else {
   ctx.beginPath();
   ctx.moveTo(path.points[0].x, path.points[0].y);
   for (const point of path.points.slice(1)) ctx.lineTo(point.x,point.y);
@@ -193,6 +222,7 @@ function preview(s, target) {
   ctx.setLineDash([3, 8]); ctx.stroke(); ctx.setLineDash([]);
   const end = path.points.at(-1);
   if (path.stop === "brick") circle(end.x,end.y,5,"#f6cd73");
+  }
   circle(s.origin,FLOOR,7,"#a9efd4");
 }
 function draw(s, time) {
@@ -371,6 +401,7 @@ function updateHUD() {
   for(const mode of ["square","honeycomb"]) $("mode-"+mode).setAttribute("aria-pressed", String(s.mode === mode));
   canvas.dataset.mode = s.mode;
   canvas.dataset.firstImpact = JSON.stringify(s.firstImpact);
+  canvas.dataset.impactHistory = JSON.stringify(s.impactHistory);
   canvas.dataset.bombCount = s.bombCount;
   canvas.dataset.lastBomb = JSON.stringify(s.lastBomb);
   canvas.dataset.reducedMotion = String(reduced);
@@ -389,6 +420,13 @@ function updateHUD() {
     canvas.dataset.previewEnd = "null";
     canvas.dataset.previewNormal = "null";
     canvas.dataset.previewReflection = "null";
+    canvas.dataset.previewFirstStop = "";
+    canvas.dataset.previewFirstImpact = "null";
+    canvas.dataset.previewFirstPoint = "null";
+    canvas.dataset.previewImpacts = "[]";
+    canvas.dataset.previewMarkers = "[]";
+    canvas.dataset.previewPoints = "[]";
+    canvas.dataset.previewIterations = "0";
   }
   canvas.dataset.phase = s.phase;
   canvas.dataset.hits = s.hits;
