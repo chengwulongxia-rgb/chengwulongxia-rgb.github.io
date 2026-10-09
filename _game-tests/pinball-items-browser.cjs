@@ -45,7 +45,7 @@ const url = process.env.GAME_URL || 'http://127.0.0.1:8765/pocket-pinball/';
    for(const t of ['blast','double','precision'])assert.ok(await page.locator(`#item-${t}`).isDisabled());
    await page.locator('#pause').click();await page.waitForTimeout(80);const paused=await read();await page.waitForTimeout(200);assert.equal((await read()).elapsed,paused.elapsed);assert.equal((await read()).active,type);await page.locator('#pause').click();
    await page.waitForFunction(()=>Number(document.querySelector('#arena').dataset.hits)>0,{}, {timeout:8000});
-   const impact=await read();if(predicted)assert.equal(impact.firstImpactBrick,predicted);assert.equal(Number(impact.lastDamage),type==='double'?2:1);if(type==='blast'){assert.equal(impact.blastCount,'1');assert.ok(Number(impact.blastTargets)>0);}
+   const impact=await read();if(predicted)assert.equal(impact.firstImpactBrick,predicted);assert.equal(Number(impact.lastDamage),type==='double'?2:1);if(type==='blast'){assert.ok(Number(impact.blastCount)>=1);assert.ok(Number(impact.blastTargets)>0);}
    results.push({item:type,count:await page.locator(`#item-${type}-count`).textContent(),active:impact.active,hits:impact.hits,damage:impact.lastDamage,blastCount:impact.blastCount,blastTargets:impact.blastTargets,firstImpactBrick:impact.firstImpactBrick,predictedBrick:predicted});
    await page.locator('#recall').click();await page.waitForFunction(()=>document.querySelector('#arena').dataset.phase==='ready');assert.equal((await read()).active,'');
   }

@@ -131,6 +131,7 @@ function clone(s) {
   return {
     ...s,
     impactHistory: [...(s.impactHistory ?? [])],
+    blastEvents: [...(s.blastEvents ?? [])],
     inventory: { ...s.inventory },
     bricks: s.bricks.map((b) => ({ ...b })),
     pickups: s.pickups.map((p) => ({ ...p })),
@@ -176,8 +177,8 @@ export function createGame(mode = "honeycomb") {
     selected: null,
     active: null,
     firstBall: null,
-    blastSpent: false,
     blastCount: 0,
+    blastEvents: [],
     blastTargets: 0,
     lastDamage: 0,
     firstImpactBrick: null,
@@ -233,8 +234,8 @@ export function launch(s, dx, dy) {
   if (n.active) n.inventory[n.active]--;
   n.selected = null;
   n.firstBall = null;
-  n.blastSpent = false;
   n.blastCount = 0;
+  n.blastEvents = [];
   n.blastTargets = 0;
   n.lastDamage = 0;
   n.firstImpactBrick = null;
@@ -318,6 +319,7 @@ function pickup(s, id, ball) {
         vx: ball.vx * ca - ball.vy * sa,
         vy: ball.vx * sa + ball.vy * ca,
         contacts: [...ball.contacts],
+        blastSpent: false,
       });
     }
     s.message = "分裂！本輪多兩顆彈珠";
@@ -372,6 +374,7 @@ function tick(s, observer = null) {
       vx: s.direction.x * SPEED,
       vy: s.direction.y * SPEED,
       contacts: [],
+      blastSpent: false,
     });
     s.pending--;
     s.launchClock += 0.075;
@@ -396,6 +399,8 @@ function tick(s, observer = null) {
     }
     const contacts = [];
     for (const brick of [...s.bricks]) {
+      // An earlier hit/blast/bomb may have removed this snapshot entry.
+      if (!s.bricks.some(v => v.id === brick.id)) continue;
       const hit = brickCollision(b.x, b.y, R, brick);
       if (!hit) continue;
       const point={x:b.x,y:b.y};
@@ -416,15 +421,23 @@ function tick(s, observer = null) {
           }
           s.lastDamage = s.active === "double" ? 2 : 1;
           hurt(s, brick.id, s.lastDamage);
-          if (s.active === "blast" && b.id === s.firstBall && !s.blastSpent) {
-            s.blastSpent = true;
+          if (s.active === "blast" && !b.blastSpent) {
+            b.blastSpent = true;
             s.blastCount++;
             const x = brick.x + brick.w / 2, y = brick.y + brick.h / 2;
             const targets = s.bricks.filter(v => Math.hypot(v.x + v.w / 2 - x, v.y + v.h / 2 - y) <= 75).slice(0,128);
-            s.blastTargets = targets.length;
+            // Cumulative actual radius-damage targets across this volley;
+            // a bomb chain may delete later candidates before their turn.
+            let damaged = 0;
             effect(s, x, y, "blast");
-            for (const target of targets) hurt(s, target.id, 3);
-            s.message = "爆破彈！半徑 75 內傷害 3 · 本輪已引爆";
+            for (const target of targets) {
+              if (!s.bricks.some(v => v.id === target.id)) continue;
+              hurt(s, target.id, 3); damaged++;
+            }
+            s.blastTargets += damaged;
+            s.blastEvents.push({ballId:b.id,brickId:brick.id,time:s.elapsed,targets:damaged});
+            if (s.blastEvents.length > 128) s.blastEvents.shift();
+            s.message = `爆破彈！半徑 75 內傷害 3 · 已引爆${s.blastCount}次`;
           }
         }
       }
