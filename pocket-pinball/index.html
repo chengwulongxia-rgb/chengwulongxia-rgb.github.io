@@ -18,19 +18,15 @@
   <body>
     <main>
       <header>
-        <div>
-          <p class="eyebrow">POCKET ARCADE <span>● 單人</span></p>
-          <h1>口袋彈珠台<span class="badge">01</span></h1>
-        </div>
-        <div class="modes" role="group" aria-label="磚塊模式"><button id="mode-square" aria-pressed="false">方塊</button><button id="mode-honeycomb" aria-pressed="true">蜂巢</button></div>
-        <button id="help" class="round-button" aria-label="玩法說明">?</button>
-      </header>
-      <section class="hud" aria-label="遊戲資訊">
+        <section class="hud" aria-label="遊戲資訊">
         <div><span>本局得分</span><strong id="score">0</strong></div>
         <div><span>最高紀錄</span><strong id="best">0</strong></div>
         <div><span>回合</span><strong id="round">1</strong></div>
         <div><span>彈珠</span><strong id="balls">6</strong></div>
       </section>
+        <div class="modes" role="group" aria-label="磚塊模式"><button id="mode-square" aria-pressed="false">方塊</button><button id="mode-honeycomb" aria-pressed="true">蜂巢</button></div>
+        <button id="help" class="round-button" aria-label="玩法說明">?</button>
+      </header>
       <section class="items" aria-label="消耗道具：每輪限選一種">
         <div class="items-heading"><span id="item-status" role="status">點選裝備 · 再點取消 · 上限 3</span></div>
         <div class="item-buttons">

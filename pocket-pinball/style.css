@@ -401,3 +401,19 @@ h1 { font-size:17px; letter-spacing:0; white-space:nowrap; }
 #status { margin:0 0 3px; font-size:11px; min-height:16px; }
 .controls { gap:5px; }
 @media (max-width:380px) { .hud div { padding:0 5px; gap:3px; } .hud strong { font-size:16px; } h1 { font-size:16px; } }
+
+/* Edge-to-edge arena with a single compact score/mode row. */
+main { padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); gap:3px; max-width:640px; }
+header { padding:0 3px; gap:3px; }
+header .hud { flex:1; min-width:0; padding:0; border:0; background:none; }
+header .hud div { display:block; padding:0 4px; }
+header .hud span { font-size:8px; }
+header .hud strong { font-size:15px; }
+header .modes { gap:2px; }
+header .modes button { padding:0 8px; }
+header .round-button { flex-shrink:0; }
+.items { border:0; padding:0 3px; }
+.cabinet, .playfield, canvas { border-radius:0; }
+.cabinet { border:0; }
+footer { padding:0 3px 3px; }
+#status { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
