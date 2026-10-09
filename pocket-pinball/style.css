@@ -382,3 +382,22 @@ dialog button {
     transform: none;
   }
 }
+
+/* Arena-first layout: controls stay usable without shrinking the board. */
+main { max-width:560px; padding:calc(6px + env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left)); gap:5px; }
+header { min-height:44px; gap:6px; }
+header .eyebrow, .badge { display:none; }
+h1 { font-size:17px; letter-spacing:0; white-space:nowrap; }
+.hud { padding:4px 0; border-radius:8px; }
+.hud div { padding:0 8px; display:flex; align-items:baseline; gap:5px; }
+.hud span { font-size:10px; }
+.hud strong { font-size:18px; }
+.items { padding:3px; border-radius:9px; }
+.items-heading { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.item-buttons button { min-height:44px; }
+.cabinet { padding:0; border-radius:10px; box-shadow:none; }
+.screws, .cabinet-foot, .legend { display:none; }
+.playfield { border-radius:8px; }
+#status { margin:0 0 3px; font-size:11px; min-height:16px; }
+.controls { gap:5px; }
+@media (max-width:380px) { .hud div { padding:0 5px; gap:3px; } .hud strong { font-size:16px; } h1 { font-size:16px; } }

@@ -22,6 +22,7 @@
           <p class="eyebrow">POCKET ARCADE <span>● 單人</span></p>
           <h1>口袋彈珠台<span class="badge">01</span></h1>
         </div>
+        <div class="modes" role="group" aria-label="磚塊模式"><button id="mode-square" aria-pressed="false">方塊</button><button id="mode-honeycomb" aria-pressed="true">蜂巢</button></div>
         <button id="help" class="round-button" aria-label="玩法說明">?</button>
       </header>
       <section class="hud" aria-label="遊戲資訊">
@@ -31,7 +32,7 @@
         <div><span>彈珠</span><strong id="balls">6</strong></div>
       </section>
       <section class="items" aria-label="消耗道具：每輪限選一種">
-        <div class="items-heading"><div class="modes" role="group" aria-label="磚塊模式"><button id="mode-square" aria-pressed="false">方塊</button><button id="mode-honeycomb" aria-pressed="true">蜂巢</button></div><span id="item-status" role="status">點選裝備 · 再點取消 · 上限 3</span></div>
+        <div class="items-heading"><span id="item-status" role="status">點選裝備 · 再點取消 · 上限 3</span></div>
         <div class="item-buttons">
           <button id="item-blast" aria-pressed="false"><b>◆</b> 爆破彈 <span id="item-blast-count">1</span></button>
           <button id="item-double" aria-pressed="false"><b>×2</b> 雙倍傷害 <span id="item-double-count">1</span></button>
