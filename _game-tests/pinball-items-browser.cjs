@@ -7,6 +7,7 @@ const url = process.env.GAME_URL || 'http://127.0.0.1:8765/pocket-pinball/';
   const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:3,isMobile:true,hasTouch:true});
   const page=await context.newPage(); page.on('pageerror',e=>errors.push(e.message)); page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   await page.goto(url); const arena=page.locator('#arena'); await arena.waitFor();
+  await page.locator("#mode-square").click(); await page.waitForFunction(()=>document.querySelector("#arena").dataset.mode==="square");
   const cdp=await context.newCDPSession(page);
   const touch=(type,x,y)=>cdp.send('Input.dispatchTouchEvent',{type,touchPoints:['touchEnd','touchCancel'].includes(type)?[]:[{x,y,id:0,radiusX:3,radiusY:3,force:1}]});
   async function drag(dx=0,dy=-280,finish='touchEnd') {

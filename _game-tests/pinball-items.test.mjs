@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import * as L from '../pocket-pinball/game-logic.mjs';
 import {createController} from '../pocket-pinball/game-controller.mjs';
 test('starter inventory, free exclusive switch/cancel, valid launch charge and expiry',()=>{
- let s=L.createGame(); assert.deepEqual(s.inventory,{blast:1,double:1,precision:1});
+ let s=L.createGame("square"); assert.deepEqual(s.inventory,{blast:1,double:1,precision:1});
  s=L.selectItem(s,'blast'); assert.equal(s.selected,'blast');
  s=L.selectItem(s,'double'); assert.equal(s.selected,'double');
  s=L.selectItem(s,'double'); assert.equal(s.selected,null);
@@ -17,7 +17,7 @@ test('starter inventory, free exclusive switch/cancel, valid launch charge and e
 });
 
 test('marked reward destruction caps at three and chain rewards once',()=>{
- let s=L.createGame(); assert.ok(s.bricks.some(b=>L.ITEM_TYPES.includes(b.reward)));
+ let s=L.createGame("square"); assert.ok(s.bricks.some(b=>L.ITEM_TYPES.includes(b.reward)));
  s.inventory={blast:2,double:2,precision:2};
  s.bricks=[{id:90,x:0,y:0,w:42,h:39,hp:1,kind:'bomb'},...['blast','double','precision'].map((reward,i)=>({id:91+i,x:45,y:i*10,w:42,h:39,hp:1,kind:'bomb',reward}))];
  const n=L.damage(s,90); assert.deepEqual(n.inventory,{blast:3,double:3,precision:3});
@@ -27,7 +27,7 @@ test('marked reward destruction caps at three and chain rewards once',()=>{
 });
 
 function fixture(type) {
- let s=L.launch(L.selectItem(L.createGame(),type),0,-1);
+ let s=L.launch(L.selectItem(L.createGame("square"),type),0,-1);
  s.pending=0; s.firstBall=700; s.pickups=[];
  s.balls=[{id:700,x:175,y:202,vx:0,vy:-440,contacts:[]}];
  s.bricks=[{id:90,x:154,y:155,w:42,h:39,hp:10,kind:'brick'}];
@@ -54,7 +54,7 @@ test('blast is first launched ball first impact only with bounded center radius'
 });
 
 test('precision traces many walls, stops at true circle/brick collision or return, never mutates',()=>{
- const s=L.createGame(); const saved=JSON.stringify(s);
+ const s=L.createGame("square"); const saved=JSON.stringify(s);
  const basic=L.aimPreview(s,300,-80,false); const precise=L.aimPreview(s,300,-80,true);
  assert.ok(precise.distance>basic.distance*2); assert.ok(precise.bounces>=2);
  assert.equal(precise.stop,'brick'); const end=precise.points.at(-1);
@@ -65,18 +65,18 @@ test('precision traces many walls, stops at true circle/brick collision or retur
 });
 
 test('precision first predicted brick matches real fixed-step first ball impact',()=>{
- let s=L.createGame(); const preview=L.aimPreview(s,160,-43,true);
+ let s=L.createGame("square"); const preview=L.aimPreview(s,160,-43,true);
  s=L.launch(L.selectItem(s,'precision'),160,-43);
  for(let i=0;i<600&&!s.firstImpactBrick;i++)s=L.step(s,1/60);
  assert.equal(s.firstImpactBrick,preview.brickId);
 });
 
 test('each reward type appears over rows and all effects expire on natural completion',()=>{
- let board=L.createGame(); const types=new Set(board.bricks.map(b=>b.reward).filter(Boolean));
+ let board=L.createGame("square"); const types=new Set(board.bricks.map(b=>b.reward).filter(Boolean));
  for(let i=0;i<3;i++){board=L.advance(board);board.bricks.forEach(b=>{if(b.reward)types.add(b.reward);});}
  assert.deepEqual([...types].sort(),[...L.ITEM_TYPES].sort());
  for(const type of L.ITEM_TYPES){
-  let s=L.launch(L.selectItem(L.createGame(),type),0,-1);
+  let s=L.launch(L.selectItem(L.createGame("square"),type),0,-1);
   for(let i=0;i<1500&&s.phase==='volley';i++)s=L.step(s,1/60);
   assert.notEqual(s.phase,'volley');assert.equal(s.active,null);assert.equal(s.selected,null);
  }

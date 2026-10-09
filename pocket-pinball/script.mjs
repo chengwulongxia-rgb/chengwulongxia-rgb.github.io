@@ -1,4 +1,4 @@
-import { W, H, FLOOR, aimPreview, MAX_VOLLEY } from "./game-logic.mjs";
+import { W, H, FLOOR, aimPreview, MAX_VOLLEY, brickVertices, BOMB_RADIUS } from "./game-logic.mjs";
 import { createController } from "./game-controller.mjs";
 const $ = (id) => document.getElementById(id),
   canvas = $("arena"),
@@ -111,6 +111,16 @@ canvas.addEventListener("keydown", (e) => {
 const itemNames = {blast:"爆破彈",double:"雙倍傷害",precision:"精準瞄準"};
 const itemIcons = {blast:"◆",double:"×2",precision:"◎"};
 for (const type of Object.keys(itemNames)) $("item-" + type).addEventListener("click", () => game.selectItem(type));
+for (const mode of ["square", "honeycomb"]) $("mode-" + mode).addEventListener("click", () => {
+  const s = game.state;
+  if (s.mode === mode) return;
+  cancelAim();
+  game.pause(true);
+  const progress = s.phase !== "ready" || s.round > 1 || s.score > 0;
+  if (progress && !window.confirm("切換模式會結束本局並開新局，確定切換？")) { syncPause(); return; }
+  manualPause = false; keyboardAngle = 0;
+  game.setMode(mode); syncPause();
+});
 $("restart").addEventListener("click", () => {
   cancelAim();
   manualPause = false;
@@ -173,6 +183,8 @@ function preview(s, target) {
   canvas.dataset.previewStop = path.stop;
   canvas.dataset.previewBrick = path.brickId ?? "";
   canvas.dataset.previewEnd = JSON.stringify(path.points.at(-1));
+  canvas.dataset.previewNormal = JSON.stringify(path.normal ?? null);
+  canvas.dataset.previewReflection = JSON.stringify(path.reflection ?? null);
   ctx.beginPath();
   ctx.moveTo(path.points[0].x, path.points[0].y);
   for (const point of path.points.slice(1)) ctx.lineTo(point.x,point.y);
@@ -188,6 +200,11 @@ function draw(s, time) {
   ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = "#0b2429";
   ctx.fillRect(0, 0, W, H);
+  const explosion=s.effects.find(e=>e.kind === "bomb" && e.life > .34);
+  if (!reduced && explosion) {
+    const t=(.5-explosion.life)/.16, strength=1.4*(1-t);
+    ctx.translate(Math.sin(t*24)*strength,Math.cos(t*21)*strength*.6);
+  }
   // A quiet dot-grid and a brass rail give the table its own cabinet identity.
   ctx.fillStyle = "#214044";
   for (let x = 17; x < W; x += 22)
@@ -214,9 +231,17 @@ function draw(s, time) {
           : b.hp >= 3
             ? "#f6cd73"
             : "#a9efd4";
-    rounded(b.x, b.y + 3, b.w, b.h, 6, "#030f1666");
-    rounded(b.x, b.y, b.w, b.h, 6, color);
-    rounded(b.x + 3, b.y + 3, b.w - 6, 2, 1, "#ffffff44");
+    if (b.shape === "hex") {
+      const vs=brickVertices(b); ctx.beginPath();
+      ctx.moveTo(vs[0].x,vs[0].y);
+      for(const v of vs.slice(1)) ctx.lineTo(v.x,v.y);
+      ctx.closePath(); ctx.fillStyle=color; ctx.fill();
+      ctx.strokeStyle="#ffffff44"; ctx.lineWidth=1; ctx.stroke();
+    } else {
+      rounded(b.x, b.y + 3, b.w, b.h, 6, "#030f1666");
+      rounded(b.x, b.y, b.w, b.h, 6, color);
+      rounded(b.x + 3, b.y + 3, b.w - 6, 2, 1, "#ffffff44");
+    }
     text(
       String(b.hp),
       b.x + b.w / 2,
@@ -225,9 +250,9 @@ function draw(s, time) {
       b.hp > 99 ? 15 : 19,
       850,
     );
-    if (b.reward) text(itemIcons[b.reward], b.x + 10, b.y + 9, "#173638", 11, 900);
+    if (b.reward) text(itemIcons[b.reward], b.x + 11, b.y + 12, "#173638", 11, 900);
     if (b.kind === "bomb")
-      text("✳", b.x + b.w - 7, b.y + 8, "#633d35", 10, 800);
+      text("✳", b.x + b.w - 10, b.y + 12, "#633d35", 10, 800);
   }
   for (const p of s.pickups) {
     const color = p.kind === "extra" ? "#a9efd4" : "#f6cd73";
@@ -261,19 +286,20 @@ function draw(s, time) {
           ? "#a9efd4"
           : "#f6cd73";
     if (e.kind === "hit") {
-      rounded(e.x - 22, e.y - 20, 44, 40, 5, "#fff4");
+      ctx.strokeStyle="#f6cd7370"; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.arc(e.x,e.y,9+8*t,0,Math.PI*2);ctx.stroke();
     } else {
       ctx.strokeStyle = color;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(e.x, e.y, (e.kind === "blast" ? 75 : e.kind === "bomb" ? 65 : 22) * t + 4, 0, Math.PI * 2);
+      ctx.arc(e.x, e.y, (e.kind === "blast" ? 75 : e.kind === "bomb" ? BOMB_RADIUS : 22) * (reduced ? 1 : t) + 4, 0, Math.PI * 2);
       ctx.stroke();
       if (!reduced)
         for (let j = 0; j < 8; j++) {
           const a = (j * Math.PI) / 4;
           circle(
-            e.x + Math.cos(a) * t * 27,
-            e.y + Math.sin(a) * t * 27,
+            e.x + Math.cos(a) * t * (e.kind === "bomb" ? 64 : 27),
+            e.y + Math.sin(a) * t * (e.kind === "bomb" ? 64 : 27),
             2,
             color,
           );
@@ -342,19 +368,27 @@ function updateHUD() {
     $("item-" + type).setAttribute("aria-label",`${itemNames[type]}，庫存 ${s.inventory[type]}，上限 3${s.selected === type ? "，已選取，再點取消" : ""}`);
   }
   put("item-status",s.active ? `${itemNames[s.active]}生效${s.active === "blast" && s.blastSpent ? " · 已引爆" : ""}` : s.selected ? `${itemNames[s.selected]}已裝備 · 發射才扣 1` : "點選裝備 · 再點取消 · 上限 3");
+  for(const mode of ["square","honeycomb"]) $("mode-"+mode).setAttribute("aria-pressed", String(s.mode === mode));
+  canvas.dataset.mode = s.mode;
+  canvas.dataset.firstImpact = JSON.stringify(s.firstImpact);
+  canvas.dataset.bombCount = s.bombCount;
+  canvas.dataset.lastBomb = JSON.stringify(s.lastBomb);
+  canvas.dataset.reducedMotion = String(reduced);
   canvas.dataset.selected = s.selected ?? "";
   canvas.dataset.active = s.active ?? "";
   canvas.dataset.lastDamage = s.lastDamage;
   canvas.dataset.firstImpactBrick = s.firstImpactBrick ?? "";
   canvas.dataset.blastCount = s.blastCount;
   canvas.dataset.blastTargets = s.blastTargets;
-  canvas.dataset.bricks = JSON.stringify(s.bricks.map(({id,x,y,w,h,hp,reward})=>({id,x,y,w,h,hp,reward})));
+  canvas.dataset.bricks = JSON.stringify(s.bricks.map(({id,x,y,w,h,hp,reward,shape,kind})=>({id,x,y,w,h,hp,reward,shape,kind})));
   if (!aim) {
     canvas.dataset.previewDistance = "0";
     canvas.dataset.previewBounces = "0";
     canvas.dataset.previewStop = "";
     canvas.dataset.previewBrick = "";
     canvas.dataset.previewEnd = "null";
+    canvas.dataset.previewNormal = "null";
+    canvas.dataset.previewReflection = "null";
   }
   canvas.dataset.phase = s.phase;
   canvas.dataset.hits = s.hits;

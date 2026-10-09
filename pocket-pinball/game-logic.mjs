@@ -29,20 +29,57 @@ export function circleRect(x, y, r, b) {
   return { nx: sides[0].nx, ny: sides[0].ny, depth: r + sides[0].d };
 }
 
+export const HEX_RADIUS = 23, HEX_WIDTH = Math.sqrt(3) * HEX_RADIUS, HEX_PITCH = 38;
+export const MODES = ["square", "honeycomb"];
+export function brickVertices(b) {
+  if (b.shape !== "hex") return [{x:b.x,y:b.y},{x:b.x+b.w,y:b.y},{x:b.x+b.w,y:b.y+b.h},{x:b.x,y:b.y+b.h}];
+  return Array.from({length:6}, (_,i) => {
+    const a = -Math.PI/2 + i*Math.PI/3;
+    return {x:b.x+b.w/2+Math.cos(a)*HEX_RADIUS,y:b.y+b.h/2+Math.sin(a)*HEX_RADIUS};
+  });
+}
+// Closest boundary point gives true radial vertex normals; signed half-plane
+// tests distinguish interior from empty corners of the hex's bounding box.
+export function brickCollision(x,y,r,b) {
+  if (b.shape !== "hex") return circleRect(x,y,r,b);
+  const vs = brickVertices(b); let inside = true, nearest = null;
+  for(let i=0;i<vs.length;i++) {
+    const a=vs[i],c=vs[(i+1)%vs.length],ex=c.x-a.x,ey=c.y-a.y,len=Math.hypot(ex,ey);
+    const nx=ey/len,ny=-ex/len;
+    if((x-a.x)*nx+(y-a.y)*ny>1e-9) inside=false;
+    const t=Math.max(0,Math.min(1,((x-a.x)*ex+(y-a.y)*ey)/(len*len)));
+    const dx=x-a.x-t*ex,dy=y-a.y-t*ey,d=Math.hypot(dx,dy);
+    if(!nearest||d<nearest.d) nearest={d,dx,dy,nx,ny};
+  }
+  const q=nearest;
+  if(inside) return {nx:q.nx,ny:q.ny,depth:r+q.d};
+  if(q.d>=r) return null;
+  return {nx:q.d ? q.dx/q.d:q.nx,ny:q.d ? q.dy/q.d:q.ny,depth:r-q.d};
+}
+export function hexBrick(cx,y,props={}) {
+  return {x:cx-HEX_WIDTH/2,y,w:HEX_WIDTH,h:HEX_RADIUS*2,shape:"hex",...props};
+}
 // Same fixed distance and wall clamps as the first launched ball. No future
 // brick changes or split trajectories are predicted; stop at first contact.
+export function reflect(vx,vy,hit) {
+  const dot=vx*hit.nx+vy*hit.ny;
+  return dot < 0 ? {x:vx-2*dot*hit.nx,y:vy-2*dot*hit.ny} : {x:vx,y:vy};
+}
 export function aimPreview(s, dx, dy, precision = s.selected === "precision") {
   const v = aimVector(dx, dy), stride = SPEED * STEP;
-  let x = s.origin, y = FLOOR, vx = v.x, vy = v.y, bounces = 0, distance = 0;
+  let x = s.origin, y = FLOOR, vx = v.x * SPEED, vy = v.y * SPEED, bounces = 0, distance = 0;
   const points = [{x,y}], limit = precision ? Math.ceil(MAX_VOLLEY / STEP) : 74;
   for (let i = 0; i < limit; i++) {
-    x += vx * stride; y += vy * stride; distance += stride;
+    x += vx * STEP; y += vy * STEP; distance += stride;
     if (x < R) { x = R; vx = Math.abs(vx); bounces++; }
     if (x > W - R) { x = W - R; vx = -Math.abs(vx); bounces++; }
     if (y < R) { y = R; vy = Math.abs(vy); bounces++; }
     points.push({x,y});
-    const brick = s.bricks.find(b => circleRect(x,y,R,b));
-    if (brick) return {points,distance,bounces,stop:"brick",brickId:brick.id};
+    const brick = s.bricks.find(b => brickCollision(x,y,R,b));
+    if (brick) {
+      const hit=brickCollision(x,y,R,brick);
+      return {points,distance,bounces,stop:"brick",brickId:brick.id,normal:{nx:hit.nx,ny:hit.ny},reflection:reflect(vx,vy,hit)};
+    }
     if (y >= FLOOR && vy > 0) return {points,distance,bounces,stop:"floor",brickId:null};
   }
   return {points,distance,bounces,stop:precision ? "limit" : "short",brickId:null};
@@ -61,7 +98,8 @@ function random(s) {
   s.seed = (Math.imul(s.seed, 1664525) + 1013904223) >>> 0;
   return s.seed / 4294967296;
 }
-function row(s, y) {
+function row(s, y, parity = (s.round + 1) % 2) {
+  const hex = s.mode === "honeycomb";
   const first = s.bricks.length;
   const gap = Math.floor(random(s) * 7);
   for (let c = 0; c < 7; c++) {
@@ -73,6 +111,7 @@ function row(s, y) {
       y,
       w: 42,
       h: 39,
+      ...(hex ? hexBrick(38 + c * 42 + (parity % 2) * 21, y) : {}),
       hp: Math.max(1, Math.ceil(s.round * (0.65 + random(s) * 0.8))),
       kind: random(s) < 0.15 ? "bomb" : "brick",
     });
@@ -80,13 +119,14 @@ function row(s, y) {
   if (s.bricks.length > first) s.bricks[first].reward = ["blast", "double", "precision"][(s.round + Math.floor(y / 45)) % 3];
   s.pickups.push({
     id: s.nextId++,
-    x: 40 + gap * 45,
-    y: y + 20,
+    x: hex ? 38 + gap * 42 + (parity % 2) * 21 : 40 + gap * 45,
+    y: y + (hex ? HEX_RADIUS : 20),
     kind: s.round % 3 === 0 ? "split" : "extra",
   });
 }
-export function createGame() {
+export function createGame(mode = "honeycomb") {
   const s = {
+    mode: MODES.includes(mode) ? mode : "honeycomb",
     phase: "ready",
     inventory: { blast: 1, double: 1, precision: 1 },
     selected: null,
@@ -97,6 +137,9 @@ export function createGame() {
     blastTargets: 0,
     lastDamage: 0,
     firstImpactBrick: null,
+    firstImpact: null,
+    bombCount: 0,
+    lastBomb: null,
     round: 1,
     score: 0,
     hits: 0,
@@ -115,21 +158,24 @@ export function createGame() {
     launchClock: 0,
     message: "往上拖曳瞄準，放開發射",
   };
-  row(s, 65);
-  row(s, 110);
+  row(s, 65, 0);
+  row(s, s.mode === "honeycomb" ? 65 + HEX_PITCH : 110, 1);
   s.bricks.push({
     id: s.nextId++,
     x: 154,
     y: 155,
     w: 42,
     h: 39,
+    ...(s.mode === "honeycomb" ? hexBrick(164,65 + 2 * HEX_PITCH) : {}),
     hp: 1,
-    kind: "brick",
+    // A reachable opening chain teaches the new board; square keeps its layout.
+    kind: s.mode === "honeycomb" ? "bomb" : "brick",
   });
   return s;
 }
 export const ITEM_TYPES = ["blast", "double", "precision"];
 export const ITEM_CAP = 3;
+export const BOMB_RADIUS = 90, BOMB_DAMAGE = 4, BOMB_CHAIN_CAP = 32, DESTRUCTION_CAP = 128;
 export function selectItem(s, type) {
   if (s.phase !== "ready" || !ITEM_TYPES.includes(type) || !s.inventory[type]) return s;
   return { ...s, selected: s.selected === type ? null : type };
@@ -147,6 +193,7 @@ export function launch(s, dx, dy) {
   n.blastTargets = 0;
   n.lastDamage = 0;
   n.firstImpactBrick = null;
+  n.firstImpact = null;
   n.direction = aimVector(dx, dy);
   n.pending = n.ballCount;
   n.launchClock = 0;
@@ -168,36 +215,36 @@ function hurt(s, id, amount = 1) {
   s.score += 1;
   effect(s, b.x + b.w / 2, b.y + b.h / 2, "hit");
   if (b.hp > 0) return;
-  const queue = [b],
-    visited = new Set();
-  while (queue.length && visited.size < 128) {
-    const dead = queue.shift();
-    if (visited.has(dead.id)) continue;
-    visited.add(dead.id);
+  const queue = [b], scheduled = new Set([b.id]);
+  const event = {initial:id,radius:BOMB_RADIUS,damage:BOMB_DAMAGE,detonations:0,destroyed:0,rewards:[],targets:[]};
+  while (queue.length) {
+    const dead = queue.shift(), cx=dead.x+dead.w/2, cy=dead.y+dead.h/2;
     s.bricks = s.bricks.filter((v) => v.id !== dead.id);
+    event.destroyed++;
     if (ITEM_TYPES.includes(dead.reward)) {
       s.inventory[dead.reward] = Math.min(ITEM_CAP, s.inventory[dead.reward] + 1);
-      effect(s, dead.x + dead.w / 2, dead.y + dead.h / 2, "reward");
+      event.rewards.push({id:dead.id,type:dead.reward});
+      effect(s, cx, cy, "reward");
     }
     s.score += dead.id === id ? 9 : 10;
-    effect(
-      s,
-      dead.x + dead.w / 2,
-      dead.y + dead.h / 2,
-      dead.kind === "bomb" ? "bomb" : "break",
-    );
-    if (dead.kind === "bomb") {
-      for (const near of [...s.bricks]) {
-        if (
-          Math.hypot(near.x - dead.x, near.y - dead.y) <= 70 &&
-          !visited.has(near.id)
-        ) {
-          near.hp -= 3;
-          if (near.hp <= 0) queue.push(near);
-          else effect(s, near.x + 21, near.y + 20, "hit");
-        }
+    effect(s,cx,cy,dead.kind === "bomb" ? "bomb" : "break");
+    if (dead.kind === "bomb" && event.detonations < BOMB_CHAIN_CAP) {
+      event.detonations++; s.bombCount++;
+      const targets=s.bricks.filter(near => !scheduled.has(near.id) && Math.hypot(near.x+near.w/2-cx,near.y+near.h/2-cy)<=BOMB_RADIUS).slice(0,DESTRUCTION_CAP);
+      for (const near of targets) {
+        // Never leave unprocessed zero-HP bricks when the finite death budget fills.
+        if(near.hp<=BOMB_DAMAGE && scheduled.size>=DESTRUCTION_CAP) continue;
+        const before=near.hp;
+        near.hp -= BOMB_DAMAGE;
+        event.targets.push({source:dead.id,id:near.id,before,after:Math.max(0,near.hp)});
+        if (near.hp <= 0) { scheduled.add(near.id); queue.push(near); }
+        else effect(s,near.x+near.w/2,near.y+near.h/2,"hit");
       }
     }
+  }
+  if(event.detonations) {
+    s.lastBomb=event;
+    s.message=`✳ 連鎖 ${event.detonations} 爆 · 擊碎 ${event.destroyed} 磚 · 半徑 ${BOMB_RADIUS}／傷害 ${BOMB_DAMAGE}`;
   }
 }
 export function damage(s, id) {
@@ -244,8 +291,9 @@ function nextRound(s) {
   s.round++;
   s.elapsed = 0;
   s.accumulator = 0;
-  s.bricks.forEach((b) => (b.y += 45));
-  s.pickups.forEach((p) => (p.y += 45));
+  const pitch = s.mode === "honeycomb" ? HEX_PITCH : 45;
+  s.bricks.forEach((b) => (b.y += pitch));
+  s.pickups.forEach((p) => (p.y += pitch));
   s.pickups = s.pickups.filter((p) => p.y < FLOOR - 25);
   s.phase = s.bricks.some((b) => b.y + b.h >= FLOOR - 15) ? "over" : "ready";
   s.message =
@@ -299,17 +347,21 @@ function tick(s) {
     }
     const contacts = [];
     for (const brick of [...s.bricks]) {
-      const hit = circleRect(b.x, b.y, R, brick);
+      const hit = brickCollision(b.x, b.y, R, brick);
       if (!hit) continue;
+      const point={x:b.x,y:b.y};
       contacts.push(brick.id);
       b.x += hit.nx * (hit.depth + 0.02);
       b.y += hit.ny * (hit.depth + 0.02);
       const dot = b.vx * hit.nx + b.vy * hit.ny;
       if (dot < 0) {
-        b.vx -= 2 * dot * hit.nx;
-        b.vy -= 2 * dot * hit.ny;
+        const reflection=reflect(b.vx,b.vy,hit);
+        b.vx=reflection.x; b.vy=reflection.y;
         if (!b.contacts.includes(brick.id)) {
-          if (s.firstImpactBrick === null) s.firstImpactBrick = brick.id;
+          if (s.firstImpactBrick === null) {
+            s.firstImpactBrick = brick.id;
+            s.firstImpact={brickId:brick.id,point,normal:{nx:hit.nx,ny:hit.ny},reflection};
+          }
           s.lastDamage = s.active === "double" ? 2 : 1;
           hurt(s, brick.id, s.lastDamage);
           if (s.active === "blast" && b.id === s.firstBall && !s.blastSpent) {

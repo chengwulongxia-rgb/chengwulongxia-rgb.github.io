@@ -31,7 +31,7 @@
         <div><span>彈珠</span><strong id="balls">6</strong></div>
       </section>
       <section class="items" aria-label="消耗道具：每輪限選一種">
-        <div class="items-heading"><span>本輪裝備</span><span id="item-status" role="status">點選裝備 · 再點取消 · 上限 3</span></div>
+        <div class="items-heading"><div class="modes" role="group" aria-label="磚塊模式"><button id="mode-square" aria-pressed="false">方塊</button><button id="mode-honeycomb" aria-pressed="true">蜂巢</button></div><span id="item-status" role="status">點選裝備 · 再點取消 · 上限 3</span></div>
         <div class="item-buttons">
           <button id="item-blast" aria-pressed="false"><b>◆</b> 爆破彈 <span id="item-blast-count">1</span></button>
           <button id="item-double" aria-pressed="false"><b>×2</b> 雙倍傷害 <span id="item-double-count">1</span></button>
@@ -81,10 +81,10 @@
       <ol>
         <li>在球場往上拖曳瞄準，放開連續發射。虛線會預覽牆壁反彈。</li>
         <li>
-          每碰一次，磚塊數字減一；擊碎得分。炸彈會傷害周圍磚塊並連鎖引爆。
+          每碰一次，磚塊數字減一；擊碎得分。✳ 炸彈磚擊碎後，以磚心半徑 90 傷害 4，可擊碎低血量鄰磚並連鎖引爆（每次最多 32 爆、128 磚），每磚只結算一次。
         </li>
         <li>撿到「＋」下一輪加一球；「⋔」讓碰到它的球分裂成三顆。</li>
-        <li>所有球落下後，磚塊下移一排。碰到底線就結束。</li>
+        <li>所有球落下後，磚塊下移一排。碰到底線就結束。蜂巢是真正六角磚，斜邊與尖角會改變反彈；方塊保留原玩法。切換模式會開新局，有進度時先確認，新局各送 1 個道具。</li>
       </ol>
       <p>
         可以提前收回彈珠，但磚塊仍會下移。每輪最多 24

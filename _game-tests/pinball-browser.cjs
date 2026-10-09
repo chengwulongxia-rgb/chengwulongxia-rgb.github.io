@@ -20,6 +20,8 @@ const url = process.env.GAME_URL || "http://127.0.0.1:8765/pocket-pinball/";
     });
     await page.goto(url);
     await page.locator("#arena").waitFor();
+    await page.locator("#mode-square").click();
+    await page.waitForFunction(()=>document.querySelector("#arena").dataset.mode === "square");
     const cdp = await context.newCDPSession(page);
     async function touch(type, x, y) {
       await cdp.send("Input.dispatchTouchEvent", {
@@ -118,6 +120,8 @@ const url = process.env.GAME_URL || "http://127.0.0.1:8765/pocket-pinball/";
     assert.equal(await page.locator("#round").textContent(), "1");
     const best = await page.locator("#best").textContent();
     await page.reload();
+    await page.locator("#mode-square").click();
+    await page.waitForFunction(()=>document.querySelector("#arena").dataset.mode === "square");
     assert.equal(await page.locator("#best").textContent(), best);
     await page.setViewportSize({ width: 360, height: 640 });
     await page.waitForTimeout(150);
