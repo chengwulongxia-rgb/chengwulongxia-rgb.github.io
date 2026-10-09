@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f2e9"><meta name="description" content="安靜玩一局數獨。三種題量、筆記、提示與自動保存，為手機而設計。"><title>數獨 · 一格一格</title><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css"></head>
+<body><main class="app"><header><div><p class="eyebrow">POCKET · SUDOKU</p><h1>數獨 <span>一格一格，慢慢來。</span></h1></div><button id="help" class="round" aria-label="遊戲說明">?</button></header>
+<section class="topbar" aria-label="遊戲設定"><label class="difficulty-label">題量<select id="difficulty" aria-label="難度"><option value="easy">輕鬆 · 約 40 格</option><option value="normal" selected>日常 · 約 34 格</option><option value="hard">挑戰 · 約 28 格</option></select></label><button id="new">新題 ↗</button></section>
+<div class="stats"><span id="tier-label">日常</span><span><span id="progress">0</span> / 81</span><span class="clock"><time id="time">00:00</time><button id="pause" aria-label="暫停遊戲">Ⅱ</button></span></div>
+<section class="board-wrap" aria-label="數獨棋盤"><div id="grid" role="group" aria-label="九乘九數獨"></div><div id="cover" hidden><span class="cover-symbol">Ⅱ</span><h2>留一點空白</h2><p>已暫停，時間也停下了。</p><button id="resume" class="primary">繼續這一局</button></div></section>
+<p id="status" role="status" aria-live="polite">正在準備唯一解的題目…</p>
+<section class="tools" aria-label="操作"><button id="undo"><span>↶</span>復原</button><button id="erase"><span>⌫</span>擦除</button><button id="pencil" aria-pressed="false"><span>✎</span>筆記</button><button id="hint"><span>✧</span>提示 <small>0</small></button></section>
+<section id="pad" aria-label="數字鍵盤"></section>
+<footer><span id="save-status">自動保存 · 隨時回來</span><button id="reset">重置本題</button></footer>
+<section id="victory" hidden role="status"><p class="eyebrow">NICELY DONE</p><h2>完成了，做得好。</h2><p id="victory-detail"></p><button id="victory-new" class="primary">再來一題</button><button id="victory-close">看看棋盤</button></section>
+</main>
+<dialog id="confirm"><h2 id="confirm-title"></h2><p id="confirm-text"></p><div class="dialog-actions"><button id="confirm-cancel">保留這一局</button><button id="confirm-ok" class="primary">確定</button></div></dialog>
+<dialog id="help-dialog"><p class="eyebrow">HOW TO PLAY</p><h2>讓每個數字都有位置。</h2><p>每一列、每一行和每個粗線框出的 3 × 3 宮，都要填入 1–9，各出現一次。深色數字是題目，不能更改。</p><p>先點一格，再點數字。開啟「筆記」可記下候選數；擦除與復原也適用於筆記。紅色只表示行、列或宮有重複，不會偷看答案判錯。</p><p>「提示」會修正選取的錯格，或優先修正一個錯誤，再補一個空格，每次記一筆提示。完成需整盤正確。</p><p>輕鬆／日常／挑戰是依約 40／34／28 個已知數分級，不是進階解法難度評鑑；為保持唯一解，偶爾會多留幾格。</p><p>離開分頁會停表，暫停也會遮住棋盤。進度保存在此瀏覽器；無痕模式或清除網站資料可能讓它消失。</p><p class="muted">電腦：方向鍵選格、1–9 填數、N 筆記、Delete 擦除、Ctrl/⌘ Z 復原、空白鍵暫停。</p><button id="help-close" class="primary">知道了</button></dialog>
+<script type="module" src="./controller.mjs"></script></body></html>
