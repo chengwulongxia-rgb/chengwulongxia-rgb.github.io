@@ -94,7 +94,8 @@ canvas.addEventListener("keydown", (e) => {
   if (["ArrowLeft", "ArrowRight", " "].includes(e.key)) {
     e.preventDefault();
     if (e.key === " ") {
-      game.launch(Math.sin(keyboardAngle), -Math.cos(keyboardAngle));
+      const scale=game.state.selected === "shotgun" ? 300 : 1;
+      game.launch(Math.sin(keyboardAngle)*scale, -Math.cos(keyboardAngle)*scale);
       aim = null;
     } else {
       keyboardAngle = Math.max(
@@ -109,8 +110,8 @@ canvas.addEventListener("keydown", (e) => {
     }
   }
 });
-const itemNames = {blast:"爆破彈",double:"雙倍傷害",precision:"精準瞄準"};
-const itemIcons = {blast:"◆",double:"×2",precision:"◎"};
+const itemNames = {blast:"爆破彈",double:"雙倍傷害",precision:"精準瞄準",shotgun:"爆破散彈槍"};
+const itemIcons = {blast:"◆",double:"×2",precision:"◎",shotgun:"⋰"};
 for (const type of Object.keys(itemNames)) $("item-" + type).addEventListener("click", () => game.selectItem(type));
 for (const mode of ["square", "honeycomb"]) $("mode-" + mode).addEventListener("click", () => {
   const s = game.state;
@@ -193,7 +194,20 @@ function preview(s, target) {
   canvas.dataset.previewMarkers = JSON.stringify((path.impacts ?? []).map(h=>({number:h.number,...h.point})));
   canvas.dataset.previewPoints = JSON.stringify(path.points);
   canvas.dataset.previewIterations = path.iterations ?? 74;
-  if(s.selected === "precision") {
+  canvas.dataset.previewFanRendered = 0;
+  canvas.dataset.previewFan = JSON.stringify(path.lanes ?? []);
+  if(s.selected === "shotgun") {
+    for(let i=0;i<path.lanes.length;i++) {
+      const lane=path.lanes[i];
+      ctx.beginPath();ctx.moveTo(lane.points[0].x,lane.points[0].y);
+      for(const p of lane.points.slice(1))ctx.lineTo(p.x,p.y);
+      ctx.strokeStyle=i===2?"#f3dcff":"#ce92ffbb";
+      ctx.lineWidth=i===2?2.6:1.8;
+      ctx.setLineDash(i===2?[]:[4,5]);ctx.stroke();ctx.setLineDash([]);
+      canvas.dataset.previewFanRendered=i+1;
+    }
+    text("整輪扇形 · 每球首碰小爆 · 僅短程方向",W/2,FLOOR+17,"#d9a7ff",9,600);
+  } else if(s.selected === "precision") {
     ctx.lineWidth=2.4; ctx.lineCap="round";
     for(let i=1;i<path.points.length;i++) {
       ctx.globalAlpha=1-.65*(i/path.points.length);
@@ -280,7 +294,10 @@ function draw(s, time) {
       b.hp > 99 ? 15 : 19,
       850,
     );
-    if (b.reward) text(itemIcons[b.reward], b.x + 11, b.y + 12, "#173638", 11, 900);
+    if (b.reward) {
+      if(b.reward === "shotgun")circle(b.x+11,b.y+12,8,"#433659");
+      text(itemIcons[b.reward], b.x + 11, b.y + 12, b.reward === "shotgun" ? "#f3dcff" : "#173638", 11, 900);
+    }
     if (b.kind === "bomb")
       text("✳", b.x + b.w - 10, b.y + 12, "#633d35", 10, 800);
   }
@@ -295,6 +312,8 @@ function draw(s, time) {
   }
   for (const b of s.balls) {
     const charged = s.active === "blast" && b.blastCharged && !b.blastSpent;
+    const shotgunReady=s.active === "shotgun" && !b.shotgunSpent;
+    if(shotgunReady)circle(b.x,b.y,8,"#ce92ff50");
     if (charged) circle(b.x, b.y, 8, "#ff866e40");
     if (!reduced) {
       ctx.strokeStyle = "#f8eed335";
@@ -305,14 +324,14 @@ function draw(s, time) {
       ctx.lineTo(b.x, b.y);
       ctx.stroke();
     }
-    circle(b.x, b.y, 4, charged ? "#ff866e" : "#f8eed3");
+    circle(b.x, b.y, 4, shotgunReady ? "#d9a7ff" : charged ? "#ff866e" : "#f8eed3");
     circle(b.x - 1, b.y - 1, 1.2, "#fff");
   }
   for (const e of s.effects) {
     const t = 1 - e.life / 0.5;
     ctx.globalAlpha = e.life / 0.5;
     const color =
-      (e.kind === "bomb" || e.kind === "blast")
+      e.kind === "shotgun" ? "#d9a7ff" : (e.kind === "bomb" || e.kind === "blast")
         ? "#ff866e"
         : e.kind === "extra"
           ? "#a9efd4"
@@ -324,7 +343,7 @@ function draw(s, time) {
       ctx.strokeStyle = color;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(e.x, e.y, (e.kind === "blast" ? 75 : e.kind === "bomb" ? BOMB_RADIUS : 22) * (reduced ? 1 : t) + 4, 0, Math.PI * 2);
+      ctx.arc(e.x, e.y, (e.kind === "shotgun" ? 45 : e.kind === "blast" ? 75 : e.kind === "bomb" ? BOMB_RADIUS : 22) * (reduced ? 1 : t) + 4, 0, Math.PI * 2);
       ctx.stroke();
       if (!reduced)
         for (let j = 0; j < 8; j++) {
@@ -343,7 +362,7 @@ function draw(s, time) {
     circle(s.origin, FLOOR, 12, "#a9efd418");
     circle(s.origin, FLOOR, 5, "#f8eed3");
     text(
-      `×${s.ballCount}`,
+      s.selected === "shotgun" && aim ? "" : `×${s.ballCount}`,
       Math.max(25, Math.min(W - 25, s.origin)),
       FLOOR + 17,
       "#a9efd4",
@@ -399,7 +418,7 @@ function updateHUD() {
     $("item-" + type).setAttribute("aria-pressed",String(s.selected === type));
     $("item-" + type).setAttribute("aria-label",`${itemNames[type]}，庫存 ${s.inventory[type]}，上限 3${s.selected === type ? "，已選取，再點取消" : ""}`);
   }
-  put("item-status",s.active ? s.active === "blast" ? `爆破球已配 ${s.chargedTotal} 顆 · 已引爆${s.blastCount}次` : `${itemNames[s.active]}生效` : s.selected === "blast" ? `爆破球 ${Math.ceil(s.ballCount / 3)} 顆（分裂球也按比例）` : s.selected ? `${itemNames[s.selected]}已裝備 · 發射才扣 1` : "點選裝備 · 再點取消 · 上限 3");
+  put("item-status",s.active ? s.active === "shotgun" ? `整輪散射 · 小爆${s.shotgunCount}次 · 45／1` : s.active === "blast" ? `爆破球已配 ${s.chargedTotal} 顆 · 已引爆${s.blastCount}次` : `${itemNames[s.active]}生效` : s.selected === "shotgun" ? "整輪扇形 · 首碰小爆45／1 · 發射才扣1" : s.selected === "blast" ? `爆破球 ${Math.ceil(s.ballCount / 3)} 顆（分裂球也按比例）` : s.selected ? `${itemNames[s.selected]}已裝備 · 發射才扣 1` : "點選裝備 · 再點取消 · 上限 3");
   for(const mode of ["square","honeycomb"]) $("mode-"+mode).setAttribute("aria-pressed", String(s.mode === mode));
   canvas.dataset.mode = s.mode;
   canvas.dataset.firstImpact = JSON.stringify(s.firstImpact);
@@ -412,6 +431,8 @@ function updateHUD() {
   canvas.dataset.lastDamage = s.lastDamage;
   canvas.dataset.firstImpactBrick = s.firstImpactBrick ?? "";
   canvas.dataset.blastCount = s.blastCount;
+  canvas.dataset.shotgunCount = s.shotgunCount;
+  canvas.dataset.shotgunEvents = JSON.stringify(s.shotgunEvents);
   canvas.dataset.blastEvents = JSON.stringify(s.blastEvents);
   canvas.dataset.blastTargets = s.blastTargets;
   canvas.dataset.spawnedTotal = s.spawnSerial;
@@ -420,6 +441,8 @@ function updateHUD() {
   canvas.dataset.pickups = JSON.stringify(s.pickups.map(({id,x,y,kind})=>({id,x,y,kind})));
   canvas.dataset.bricks = JSON.stringify(s.bricks.map(({id,x,y,w,h,hp,reward,shape,kind})=>({id,x,y,w,h,hp,reward,shape,kind})));
   if (!aim) {
+    canvas.dataset.previewFan = "[]";
+    canvas.dataset.previewFanRendered = "0";
     canvas.dataset.previewDistance = "0";
     canvas.dataset.previewBounces = "0";
     canvas.dataset.previewStop = "";

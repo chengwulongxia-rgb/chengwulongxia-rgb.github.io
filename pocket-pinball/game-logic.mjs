@@ -12,6 +12,19 @@ export function aimVector(dx, dy) {
   const n = Math.hypot(dx, dy);
   return { x: dx / n, y: dy / n };
 }
+// Mirror paired originals over five fixed lanes (-18,-9,0,9,18 degrees).
+// Pair ordinal cycles outer/inner/center; an odd last middle ball is central.
+// This keeps every count exactly balanced without multiplying the volley.
+export function shotgunDirections(dx, dy, count = 5) {
+  const v=aimVector(dx,dy), spread=Math.PI/10;
+  const safe=Math.atan(1/.26)-spread;
+  const center=Math.max(-safe,Math.min(safe,Math.atan2(v.x,-v.y)));
+  return Array.from({length:count},(_,i)=> {
+    const pair=Math.min(i,count-1-i);
+    const offset=i===(count-1)/2 ? 0 : [spread,spread/2,0][pair%3]*(i<count/2?-1:1);
+    return {x:Math.sin(center+offset),y:-Math.cos(center+offset)};
+  });
+}
 export function circleRect(x, y, r, b) {
   const qx = Math.max(b.x, Math.min(x, b.x + b.w)),
     qy = Math.max(b.y, Math.min(y, b.y + b.h));
@@ -109,9 +122,17 @@ function precisionPreview(s, dx, dy) {
 }
 export function aimPreview(s, dx, dy, precision = s.selected === "precision") {
   if(precision) return precisionPreview(s, dx, dy);
-  const v = aimVector(dx, dy), stride = SPEED * STEP;
+  if(s.selected === "shotgun") {
+    const directions=shotgunDirections(dx,dy,5);
+    const lanes=directions.map(direction=>({...shortPreview(s,direction),direction}));
+    return {...lanes[2],lanes};
+  }
+  return shortPreview(s,aimVector(dx,dy));
+}
+function shortPreview(s, v) {
+  const stride = SPEED * STEP;
   let x = s.origin, y = FLOOR, vx = v.x * SPEED, vy = v.y * SPEED, bounces = 0, distance = 0;
-  const points = [{x,y}], limit = precision ? Math.ceil(MAX_VOLLEY / STEP) : 74;
+  const points = [{x,y}], limit = 74;
   for (let i = 0; i < limit; i++) {
     x += vx * STEP; y += vy * STEP; distance += stride;
     if (x < R) { x = R; vx = Math.abs(vx); bounces++; }
@@ -125,13 +146,14 @@ export function aimPreview(s, dx, dy, precision = s.selected === "precision") {
     }
     if (y >= FLOOR && vy > 0) return {points,distance,bounces,stop:"floor",brickId:null};
   }
-  return {points,distance,bounces,stop:precision ? "limit" : "short",brickId:null};
+  return {points,distance,bounces,stop:"short",brickId:null};
 }
 function clone(s) {
   return {
     ...s,
     impactHistory: [...(s.impactHistory ?? [])],
     blastEvents: [...(s.blastEvents ?? [])],
+    shotgunEvents: [...(s.shotgunEvents ?? [])],
     spawnEvents: [...(s.spawnEvents ?? [])],
     inventory: { ...s.inventory },
     bricks: s.bricks.map((b) => ({ ...b })),
@@ -162,7 +184,7 @@ function row(s, y, parity = (s.round + 1) % 2) {
       kind: random(s) < 0.15 ? "bomb" : "brick",
     });
   }
-  if (s.bricks.length > first) s.bricks[first].reward = ["blast", "double", "precision"][(s.round + Math.floor(y / 45)) % 3];
+  if (s.bricks.length > first) s.bricks[first].reward = ITEM_TYPES[(s.round + Math.floor(y / 45)) % ITEM_TYPES.length];
   s.pickups.push({
     id: s.nextId++,
     x: hex ? 38 + gap * 42 + (parity % 2) * 21 : 40 + gap * 45,
@@ -174,11 +196,13 @@ export function createGame(mode = "honeycomb") {
   const s = {
     mode: MODES.includes(mode) ? mode : "honeycomb",
     phase: "ready",
-    inventory: { blast: 1, double: 1, precision: 1 },
+    inventory: { blast: 1, double: 1, precision: 1, shotgun: 1 },
     selected: null,
     active: null,
     firstBall: null,
     blastCount: 0,
+    shotgunCount: 0,
+    shotgunEvents: [],
     spawnSerial: 0,
     chargedTotal: 0,
     spawnEvents: [],
@@ -223,8 +247,9 @@ export function createGame(mode = "honeycomb") {
   });
   return s;
 }
-export const ITEM_TYPES = ["blast", "double", "precision"];
+export const ITEM_TYPES = ["blast", "double", "precision", "shotgun"];
 export const ITEM_CAP = 3;
+export const SHOTGUN_RADIUS = 45, SHOTGUN_DAMAGE = 1;
 export const BOMB_RADIUS = 90, BOMB_DAMAGE = 4, BOMB_CHAIN_CAP = 32, DESTRUCTION_CAP = 128;
 export function selectItem(s, type) {
   if (s.phase !== "ready" || !ITEM_TYPES.includes(type) || !s.inventory[type]) return s;
@@ -239,6 +264,8 @@ export function launch(s, dx, dy) {
   n.selected = null;
   n.firstBall = null;
   n.blastCount = 0;
+  n.shotgunCount = 0;
+  n.shotgunEvents = [];
   n.spawnSerial = 0;
   n.chargedTotal = 0;
   n.spawnEvents = [];
@@ -249,6 +276,7 @@ export function launch(s, dx, dy) {
   n.firstImpact = null;
   n.impactHistory = [];
   n.direction = aimVector(dx, dy);
+  n.shotgunDirections = n.active === "shotgun" ? shotgunDirections(dx,dy,n.ballCount) : [];
   n.pending = n.ballCount;
   n.launchClock = 0;
   n.elapsed = 0;
@@ -266,10 +294,10 @@ function spawn(s, kind, props) {
   if (s.balls.length >= 120) return null;
   const serial = ++s.spawnSerial;
   const blastCharged = s.active === "blast" && (serial - 1) % 3 === 0;
-  const ball = {id:s.nextId++, ...props, blastCharged, blastSpent:false};
+  const ball = {id:s.nextId++, ...props, blastCharged, blastSpent:false, shotgunSpent:false};
   s.balls.push(ball);
   if (blastCharged) s.chargedTotal++;
-  s.spawnEvents.push({ballId:ball.id,serial,kind,blastCharged});
+  s.spawnEvents.push({ballId:ball.id,serial,kind,blastCharged,vx:ball.vx,vy:ball.vy});
   if (s.spawnEvents.length > 128) s.spawnEvents.shift();
   return ball;
 }
@@ -350,6 +378,7 @@ export function collect(s, id, ball) {
 function nextRound(s) {
   s.active = null;
   s.selected = null;
+  s.shotgunDirections = [];
   s.balls = [];
   s.pending = 0;
   s.origin = Math.max(12, Math.min(W - 12, s.nextOrigin ?? s.origin));
@@ -383,11 +412,12 @@ function tick(s, observer = null) {
   s.elapsed += STEP;
   s.launchClock -= STEP;
   if (s.pending > 0 && s.launchClock <= 0 && s.balls.length < 120) {
+    const direction = s.active === "shotgun" ? s.shotgunDirections[s.shotgunDirections.length-s.pending] : s.direction;
     const ball = spawn(s, "original", {
       x: s.origin,
       y: FLOOR,
-      vx: s.direction.x * SPEED,
-      vy: s.direction.y * SPEED,
+      vx: direction.x * SPEED,
+      vy: direction.y * SPEED,
       contacts: [],
     });
     if (s.firstBall === null) s.firstBall = ball.id;
@@ -436,6 +466,21 @@ function tick(s, observer = null) {
           }
           s.lastDamage = s.active === "double" ? 2 : 1;
           hurt(s, brick.id, s.lastDamage);
+          if (s.active === "shotgun" && !b.shotgunSpent) {
+            b.shotgunSpent = true;
+            s.shotgunCount++;
+            const x=brick.x+brick.w/2,y=brick.y+brick.h/2;
+            const targets=s.bricks.filter(v=>Math.hypot(v.x+v.w/2-x,v.y+v.h/2-y)<=SHOTGUN_RADIUS).slice(0,DESTRUCTION_CAP);
+            let damaged=0;
+            effect(s,x,y,"shotgun");
+            for(const target of targets) {
+              if(!s.bricks.some(v=>v.id===target.id)) continue;
+              hurt(s,target.id,SHOTGUN_DAMAGE);damaged++;
+            }
+            s.shotgunEvents.push({ballId:b.id,brickId:brick.id,time:s.elapsed,targets:damaged,radius:SHOTGUN_RADIUS,damage:SHOTGUN_DAMAGE});
+            if(s.shotgunEvents.length>128) s.shotgunEvents.shift();
+            s.message=`散彈小爆！半徑 45／傷害 1 · 已引爆${s.shotgunCount}次`;
+          }
           if (s.active === "blast" && b.blastCharged && !b.blastSpent) {
             b.blastSpent = true;
             s.blastCount++;

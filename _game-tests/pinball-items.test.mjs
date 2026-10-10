@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import * as L from '../pocket-pinball/game-logic.mjs';
 import {createController} from '../pocket-pinball/game-controller.mjs';
 test('starter inventory, free exclusive switch/cancel, valid launch charge and expiry',()=>{
- let s=L.createGame("square"); assert.deepEqual(s.inventory,{blast:1,double:1,precision:1});
+ let s=L.createGame("square"); assert.deepEqual(s.inventory,{blast:1,double:1,precision:1,shotgun:1});
  s=L.selectItem(s,'blast'); assert.equal(s.selected,'blast');
  s=L.selectItem(s,'double'); assert.equal(s.selected,'double');
  s=L.selectItem(s,'double'); assert.equal(s.selected,null);
@@ -13,7 +13,7 @@ test('starter inventory, free exclusive switch/cancel, valid launch charge and e
  assert.equal(s.inventory.precision,1); assert.equal(L.selectItem(n,'blast'),n);
  const end=L.recall(n); assert.equal(end.active,null); assert.equal(L.selectItem(end,'precision'),end);
  const c=createController(); c.selectItem('blast'); c.pause(true); c.launch(0,-1); c.selectItem('double'); assert.equal(c.state.selected,'blast'); assert.equal(c.state.inventory.blast,1);
- c.pause(false); c.launch(0,-1); c.recall(); c.restart(); assert.deepEqual(c.state.inventory,{blast:1,double:1,precision:1});
+ c.pause(false); c.launch(0,-1); c.recall(); c.restart(); assert.deepEqual(c.state.inventory,{blast:1,double:1,precision:1,shotgun:1});
 });
 
 test('marked reward destruction caps at three and chain rewards once',()=>{

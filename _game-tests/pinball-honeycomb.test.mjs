@@ -8,7 +8,7 @@ test('mode switch is validated fresh run, resets selection/stock, restart retain
  c.setMode('invalid'); assert.equal(c.state,old);
  c.setMode('square'); assert.equal(c.state.mode,'square'); assert.equal(c.state.phase,'ready');
  assert.equal(c.state.score,0); assert.equal(c.state.round,1); assert.equal(c.state.active,null);
- assert.deepEqual(c.state.inventory,{blast:1,double:1,precision:1}); assert.ok(c.state.bricks.every(b=>!b.shape));
+ assert.deepEqual(c.state.inventory,{blast:1,double:1,precision:1,shotgun:1}); assert.ok(c.state.bricks.every(b=>!b.shape));
  c.launch(0,-1); c.restart(); assert.equal(c.state.mode,'square');
  c.setMode('honeycomb'); assert.ok(c.state.bricks.every(b=>b.shape==='hex'));
 });
