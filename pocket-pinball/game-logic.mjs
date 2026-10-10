@@ -132,6 +132,7 @@ function clone(s) {
     ...s,
     impactHistory: [...(s.impactHistory ?? [])],
     blastEvents: [...(s.blastEvents ?? [])],
+    spawnEvents: [...(s.spawnEvents ?? [])],
     inventory: { ...s.inventory },
     bricks: s.bricks.map((b) => ({ ...b })),
     pickups: s.pickups.map((p) => ({ ...p })),
@@ -178,6 +179,9 @@ export function createGame(mode = "honeycomb") {
     active: null,
     firstBall: null,
     blastCount: 0,
+    spawnSerial: 0,
+    chargedTotal: 0,
+    spawnEvents: [],
     blastEvents: [],
     blastTargets: 0,
     lastDamage: 0,
@@ -235,6 +239,9 @@ export function launch(s, dx, dy) {
   n.selected = null;
   n.firstBall = null;
   n.blastCount = 0;
+  n.spawnSerial = 0;
+  n.chargedTotal = 0;
+  n.spawnEvents = [];
   n.blastEvents = [];
   n.blastTargets = 0;
   n.lastDamage = 0;
@@ -253,6 +260,18 @@ export function launch(s, dx, dy) {
 function effect(s, x, y, kind) {
   s.effects.push({ x, y, kind, life: 0.5 });
   if (s.effects.length > 80) s.effects.shift();
+}
+// Shared actual-creation cadence; cap rejections do not consume a serial.
+function spawn(s, kind, props) {
+  if (s.balls.length >= 120) return null;
+  const serial = ++s.spawnSerial;
+  const blastCharged = s.active === "blast" && (serial - 1) % 3 === 0;
+  const ball = {id:s.nextId++, ...props, blastCharged, blastSpent:false};
+  s.balls.push(ball);
+  if (blastCharged) s.chargedTotal++;
+  s.spawnEvents.push({ballId:ball.id,serial,kind,blastCharged});
+  if (s.spawnEvents.length > 128) s.spawnEvents.shift();
+  return ball;
 }
 function hurt(s, id, amount = 1) {
   const b = s.bricks.find((b) => b.id === id);
@@ -312,14 +331,12 @@ function pickup(s, id, ball) {
       if (s.balls.length >= 120) break;
       const ca = Math.cos(angle),
         sa = Math.sin(angle);
-      s.balls.push({
-        id: s.nextId++,
+      spawn(s, "split", {
         x: ball.x,
         y: ball.y,
         vx: ball.vx * ca - ball.vy * sa,
         vy: ball.vx * sa + ball.vy * ca,
         contacts: [...ball.contacts],
-        blastSpent: false,
       });
     }
     s.message = "分裂！本輪多兩顆彈珠";
@@ -365,17 +382,15 @@ export function recall(s) {
 function tick(s, observer = null) {
   s.elapsed += STEP;
   s.launchClock -= STEP;
-  if (s.pending > 0 && s.launchClock <= 0) {
-    if (s.firstBall === null) s.firstBall = s.nextId;
-    s.balls.push({
-      id: s.nextId++,
+  if (s.pending > 0 && s.launchClock <= 0 && s.balls.length < 120) {
+    const ball = spawn(s, "original", {
       x: s.origin,
       y: FLOOR,
       vx: s.direction.x * SPEED,
       vy: s.direction.y * SPEED,
       contacts: [],
-      blastSpent: false,
     });
+    if (s.firstBall === null) s.firstBall = ball.id;
     s.pending--;
     s.launchClock += 0.075;
   }
@@ -421,7 +436,7 @@ function tick(s, observer = null) {
           }
           s.lastDamage = s.active === "double" ? 2 : 1;
           hurt(s, brick.id, s.lastDamage);
-          if (s.active === "blast" && !b.blastSpent) {
+          if (s.active === "blast" && b.blastCharged && !b.blastSpent) {
             b.blastSpent = true;
             s.blastCount++;
             const x = brick.x + brick.w / 2, y = brick.y + brick.h / 2;

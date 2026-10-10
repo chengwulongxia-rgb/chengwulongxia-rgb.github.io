@@ -29,7 +29,8 @@ test('marked reward destruction caps at three and chain rewards once',()=>{
 function fixture(type) {
  let s=L.launch(L.selectItem(L.createGame("square"),type),0,-1);
  s.pending=0; s.firstBall=700; s.pickups=[];
- s.balls=[{id:700,x:175,y:202,vx:0,vy:-440,contacts:[]}];
+ s.balls=[{id:700,x:175,y:202,vx:0,vy:-440,contacts:[],blastCharged:type==='blast',blastSpent:false}];
+ s.spawnSerial=1; s.chargedTotal=type==='blast'?1:0;
  s.bricks=[{id:90,x:154,y:155,w:42,h:39,hp:10,kind:'brick'}];
  return s;
 }
@@ -41,7 +42,7 @@ test('double collision damage applies to original and split balls for whole voll
  let normal=fixture(null); normal=L.step(normal,1/60); assert.equal(normal.bricks[0].hp,9);
 });
 
-test('blast charges every launched ball independently once, with bounded radius and immutable flags',()=>{
+test('allocated blast charges act independently once, with bounded radius and immutable flags',()=>{
  let s=fixture('blast'); s.balls[0].blastSpent=false;
  s.bricks.push({id:91,x:199,y:155,w:42,h:39,hp:100,kind:'brick'},{id:92,x:244,y:155,w:42,h:39,hp:100,kind:'brick'});
  const saved=JSON.stringify(s), n=L.step(s,1/60);
@@ -50,7 +51,7 @@ test('blast charges every launched ball independently once, with bounded radius 
  assert.equal(JSON.stringify(s),saved); assert.equal(n.effects.filter(e=>e.kind==='blast').length,1);
  n.balls[0]={...n.balls[0],x:175,y:202,vx:0,vy:-440,contacts:[]};
  const again=L.step(n,1/60); assert.equal(again.blastCount,1); assert.equal(again.bricks.find(b=>b.id===91).hp,97);
- again.balls=[{id:701,x:175,y:202,vx:0,vy:-440,contacts:[],blastSpent:false}];
+ again.balls=[{id:701,x:175,y:202,vx:0,vy:-440,contacts:[],blastCharged:true,blastSpent:false}];
  const later=L.step(again,1/60); assert.equal(later.blastCount,2); assert.equal(later.balls[0].blastSpent,true);
  assert.equal(later.active,'blast'); assert.equal(later.inventory.blast,0);
  assert.equal(later.blastTargets,4); // cumulative actual targets: two per burst
@@ -58,10 +59,11 @@ test('blast charges every launched ball independently once, with bounded radius 
  let launched=L.launch(L.selectItem(L.createGame('square'),'blast'),0,-1);
  launched=L.step(launched,.05); launched=L.step(launched,.05);
  assert.equal(launched.balls.length,2); assert.ok(launched.balls.every(b=>b.blastSpent===false));
+ assert.deepEqual(launched.balls.map(b=>b.blastCharged),[true,false]);
  assert.equal(launched.inventory.blast,0);
 });
 
-test('spent splitter parents retain their flag while babies receive fresh capped charges',()=>{
+test('spent splitter parents retain flags while babies obey the shared capped cadence',()=>{
  for(const mode of L.MODES) {
   let s=fixture('blast'); s.mode=mode; s.balls[0].blastSpent=true;
   if(mode==='honeycomb'){s.bricks=[L.hexBrick(175,155,{id:90,hp:100,kind:'brick'})];s.balls[0].y=205;}
@@ -69,11 +71,13 @@ test('spent splitter parents retain their flag while babies receive fresh capped
   const saved=JSON.stringify(s), n=L.collect(s,80,s.balls[0]);
   assert.equal(JSON.stringify(s),saved); assert.equal(n.balls[0].blastSpent,true);
   assert.ok(n.balls.slice(1).every(b=>b.blastSpent===false));
+  assert.deepEqual(n.balls.slice(1).map(b=>b.blastCharged),[false,false]);
   n.balls.slice(1).forEach(b=>{b.vx=0;b.vy=-440;});
-  const hit=L.step(n,1/60); assert.equal(hit.blastCount,2);
-  assert.ok(hit.balls.every(b=>b.blastSpent)); assert.equal(hit.inventory.blast,0);
+  const hit=L.step(n,1/60); assert.equal(hit.blastCount,0);
+  assert.equal(hit.balls[0].blastSpent,true); assert.equal(hit.inventory.blast,0);
   s.balls=Array.from({length:119},(_,i)=>({...s.balls[0],id:700+i,contacts:[]}));
   const capped=L.collect(s,80,s.balls[0]); assert.equal(capped.balls.length,120); assert.equal(capped.balls.at(-1).blastSpent,false);
+  assert.equal(capped.spawnSerial,2); assert.equal(capped.balls.at(-1).blastCharged,false);
  }
 });
 test('deleted blast targets cannot reflect again through a stale collision snapshot',()=>{

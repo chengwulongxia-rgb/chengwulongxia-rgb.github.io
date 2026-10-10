@@ -294,7 +294,7 @@ function draw(s, time) {
     text(p.kind === "extra" ? "+" : "⋔", p.x, p.y, color, 18);
   }
   for (const b of s.balls) {
-    const charged = s.active === "blast" && !b.blastSpent;
+    const charged = s.active === "blast" && b.blastCharged && !b.blastSpent;
     if (charged) circle(b.x, b.y, 8, "#ff866e40");
     if (!reduced) {
       ctx.strokeStyle = "#f8eed335";
@@ -399,7 +399,7 @@ function updateHUD() {
     $("item-" + type).setAttribute("aria-pressed",String(s.selected === type));
     $("item-" + type).setAttribute("aria-label",`${itemNames[type]}，庫存 ${s.inventory[type]}，上限 3${s.selected === type ? "，已選取，再點取消" : ""}`);
   }
-  put("item-status",s.active ? `${itemNames[s.active]}生效${s.active === "blast" ? ` · 已引爆${s.blastCount}次` : ""}` : s.selected ? `${itemNames[s.selected]}已裝備 · 發射才扣 1` : "點選裝備 · 再點取消 · 上限 3");
+  put("item-status",s.active ? s.active === "blast" ? `爆破球已配 ${s.chargedTotal} 顆 · 已引爆${s.blastCount}次` : `${itemNames[s.active]}生效` : s.selected === "blast" ? `爆破球 ${Math.ceil(s.ballCount / 3)} 顆（分裂球也按比例）` : s.selected ? `${itemNames[s.selected]}已裝備 · 發射才扣 1` : "點選裝備 · 再點取消 · 上限 3");
   for(const mode of ["square","honeycomb"]) $("mode-"+mode).setAttribute("aria-pressed", String(s.mode === mode));
   canvas.dataset.mode = s.mode;
   canvas.dataset.firstImpact = JSON.stringify(s.firstImpact);
@@ -414,6 +414,10 @@ function updateHUD() {
   canvas.dataset.blastCount = s.blastCount;
   canvas.dataset.blastEvents = JSON.stringify(s.blastEvents);
   canvas.dataset.blastTargets = s.blastTargets;
+  canvas.dataset.spawnedTotal = s.spawnSerial;
+  canvas.dataset.chargedTotal = s.chargedTotal;
+  canvas.dataset.spawnEvents = JSON.stringify(s.spawnEvents);
+  canvas.dataset.pickups = JSON.stringify(s.pickups.map(({id,x,y,kind})=>({id,x,y,kind})));
   canvas.dataset.bricks = JSON.stringify(s.bricks.map(({id,x,y,w,h,hp,reward,shape,kind})=>({id,x,y,w,h,hp,reward,shape,kind})));
   if (!aim) {
     canvas.dataset.previewDistance = "0";

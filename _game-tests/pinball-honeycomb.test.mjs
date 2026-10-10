@@ -71,7 +71,7 @@ test('hex consumables preserve double damage including split balls and one-shot 
  for(const type of ['double','blast']) {
   let s=L.launch(L.selectItem(L.createGame(),type),0,-1);s.pending=0;s.pickups=[];s.firstBall=700;
   s.bricks=[L.hexBrick(175,155,{id:90,hp:10,kind:'brick'}),L.hexBrick(217,155,{id:91,hp:10,kind:'brick'}),L.hexBrick(259,155,{id:92,hp:10,kind:'brick'})];
-  s.balls=[{id:700,x:175,y:205,vx:0,vy:-440,contacts:[]}];
+  s.balls=[{id:700,x:175,y:205,vx:0,vy:-440,contacts:[],blastCharged:type==='blast',blastSpent:false}];
   if(type==='double'){s.pickups=[{id:80,x:175,y:205,kind:'split'}];s=L.collect(s,80,s.balls[0]);}
   const n=L.step(s,1/60);assert.equal(n.lastDamage,type==='double'?2:1);
   if(type==='double')assert.equal(n.bricks[0].hp,4);
