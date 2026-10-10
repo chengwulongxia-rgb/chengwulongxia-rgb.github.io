@@ -29,7 +29,7 @@ const url=process.env.GAME_URL||'http://127.0.0.1:8765/pocket-pinball/';
     await page.locator('#item-shotgun').click();await page.waitForFunction(()=>document.querySelector('#arena').dataset.selected==='shotgun');
     await aim();await end('touchEnd');await page.waitForFunction(()=>document.querySelector('#arena').dataset.phase==='volley');
     assert.equal(await page.locator('#item-shotgun-count').textContent(),'0');
-    await page.waitForFunction(()=>Number(document.querySelector('#arena').dataset.spawnedTotal)>=6);
+    await page.waitForFunction(()=>JSON.parse(document.querySelector('#arena').dataset.spawnEvents).filter(e=>e.kind==='original').length===6);
     await page.waitForFunction(()=>Number(document.querySelector('#arena').dataset.shotgunCount)>0,{}, {timeout:10000});
     await page.locator('#pause').click();await page.waitForFunction(()=>document.querySelector('#pause').textContent==='繼續');
     const shot=await read(),spawns=JSON.parse(shot.spawnEvents).filter(e=>e.kind==='original'),bursts=JSON.parse(shot.shotgunEvents);

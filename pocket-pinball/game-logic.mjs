@@ -154,6 +154,7 @@ function clone(s) {
     impactHistory: [...(s.impactHistory ?? [])],
     blastEvents: [...(s.blastEvents ?? [])],
     shotgunEvents: [...(s.shotgunEvents ?? [])],
+    shotgunSplitEvents: [...(s.shotgunSplitEvents ?? [])],
     spawnEvents: [...(s.spawnEvents ?? [])],
     inventory: { ...s.inventory },
     bricks: s.bricks.map((b) => ({ ...b })),
@@ -203,6 +204,7 @@ export function createGame(mode = "honeycomb") {
     blastCount: 0,
     shotgunCount: 0,
     shotgunEvents: [],
+    shotgunSplitEvents: [],
     spawnSerial: 0,
     chargedTotal: 0,
     spawnEvents: [],
@@ -250,6 +252,7 @@ export function createGame(mode = "honeycomb") {
 export const ITEM_TYPES = ["blast", "double", "precision", "shotgun"];
 export const ITEM_CAP = 3;
 export const SHOTGUN_RADIUS = 45, SHOTGUN_DAMAGE = 1;
+export const SHOTGUN_MAX_GENERATION = 3, BALL_CAP = 120;
 export const BOMB_RADIUS = 90, BOMB_DAMAGE = 4, BOMB_CHAIN_CAP = 32, DESTRUCTION_CAP = 128;
 export function selectItem(s, type) {
   if (s.phase !== "ready" || !ITEM_TYPES.includes(type) || !s.inventory[type]) return s;
@@ -266,6 +269,7 @@ export function launch(s, dx, dy) {
   n.blastCount = 0;
   n.shotgunCount = 0;
   n.shotgunEvents = [];
+  n.shotgunSplitEvents = [];
   n.spawnSerial = 0;
   n.chargedTotal = 0;
   n.spawnEvents = [];
@@ -291,15 +295,42 @@ function effect(s, x, y, kind) {
 }
 // Shared actual-creation cadence; cap rejections do not consume a serial.
 function spawn(s, kind, props) {
-  if (s.balls.length >= 120) return null;
+  if (s.balls.length >= BALL_CAP) return null;
   const serial = ++s.spawnSerial;
   const blastCharged = s.active === "blast" && (serial - 1) % 3 === 0;
-  const ball = {id:s.nextId++, ...props, blastCharged, blastSpent:false, shotgunSpent:false};
+  const ball = {id:s.nextId++, shotgunGeneration:0, ...props, blastCharged, blastSpent:false, shotgunSpent:false};
   s.balls.push(ball);
   if (blastCharged) s.chargedTotal++;
-  s.spawnEvents.push({ballId:ball.id,serial,kind,blastCharged,vx:ball.vx,vy:ball.vy});
+  s.spawnEvents.push({ballId:ball.id,serial,kind,blastCharged,vx:ball.vx,vy:ball.vy,shotgunGeneration:ball.shotgunGeneration,parentId:ball.parentId??null});
   if (s.spawnEvents.length > 128) s.spawnEvents.shift();
   return ball;
+}
+// Called only after the parent's entire contact pass. Babies never enter the
+// current tick's ball snapshot, and inherit birth overlaps until they separate.
+function shotgunChildren(s, ball) {
+  const generation = ball.shotgunGeneration + 1;
+  let created = 0, rejected = 0;
+  const childIds = [];
+  if (generation <= SHOTGUN_MAX_GENERATION) for (const angle of [-0.32, 0.32]) {
+    const ca=Math.cos(angle), sa=Math.sin(angle);
+    let vx=ball.vx*ca-ball.vy*sa, vy=ball.vx*sa+ball.vy*ca;
+    const speed=Math.hypot(vx,vy), distance=R*2+1;
+    // An outward birth next to a wall would collapse onto the parent under
+    // clamping. Apply its immediate wall bounce before placing the child.
+    if(ball.x+vx/speed*distance<R) vx=Math.abs(vx);
+    if(ball.x+vx/speed*distance>W-R) vx=-Math.abs(vx);
+    if(ball.y+vy/speed*distance<R) vy=Math.abs(vy);
+    const x=Math.max(R,Math.min(W-R,ball.x+vx/speed*distance));
+    const y=Math.max(R,ball.y+vy/speed*distance);
+    // Reserve slots for every not-yet-launched original; recursion cannot
+    // starve the fan or turn a full board into an unbounded creation queue.
+    if (s.balls.length + s.pending >= BALL_CAP) { rejected++; continue; }
+    const contacts=[...new Set([...ball.contacts,...s.bricks.filter(b=>brickCollision(x,y,R,b)).map(b=>b.id)])];
+    const child=spawn(s,"shotgun",{x,y,vx,vy,contacts,shotgunGeneration:generation,parentId:ball.id});
+    if(child) {created++;childIds.push(child.id);} else rejected++;
+  }
+  s.shotgunSplitEvents.push({source:"shotgun",parentId:ball.id,sourceGeneration:ball.shotgunGeneration,generation,created,rejected,depthLimited:generation>SHOTGUN_MAX_GENERATION,childIds,time:s.elapsed,cap:BALL_CAP});
+  if(s.shotgunSplitEvents.length>128) s.shotgunSplitEvents.shift();
 }
 function hurt(s, id, amount = 1) {
   const b = s.bricks.find((b) => b.id === id);
@@ -356,7 +387,7 @@ function pickup(s, id, ball) {
     s.message = "+1 彈珠 · 下一輪加入";
   } else {
     for (const angle of [-0.32, 0.32]) {
-      if (s.balls.length >= 120) break;
+      if (s.balls.length + (s.active === "shotgun" ? s.pending : 0) >= BALL_CAP) break;
       const ca = Math.cos(angle),
         sa = Math.sin(angle);
       spawn(s, "split", {
@@ -365,6 +396,8 @@ function pickup(s, id, ball) {
         vx: ball.vx * ca - ball.vy * sa,
         vy: ball.vx * sa + ball.vy * ca,
         contacts: [...ball.contacts],
+        shotgunGeneration: ball.shotgunGeneration ?? 0,
+        parentId: ball.id,
       });
     }
     s.message = "分裂！本輪多兩顆彈珠";
@@ -425,6 +458,7 @@ function tick(s, observer = null) {
     s.launchClock += 0.075;
   }
   for (const b of [...s.balls]) {
+    let shotgunSplit = false;
     b.x += b.vx * STEP;
     b.y += b.vy * STEP;
     if (b.x < R) {
@@ -467,6 +501,8 @@ function tick(s, observer = null) {
           s.lastDamage = s.active === "double" ? 2 : 1;
           hurt(s, brick.id, s.lastDamage);
           if (s.active === "shotgun" && !b.shotgunSpent) {
+            b.shotgunGeneration ??= 0;
+            shotgunSplit = true;
             b.shotgunSpent = true;
             s.shotgunCount++;
             const x=brick.x+brick.w/2,y=brick.y+brick.h/2;
@@ -477,9 +513,9 @@ function tick(s, observer = null) {
               if(!s.bricks.some(v=>v.id===target.id)) continue;
               hurt(s,target.id,SHOTGUN_DAMAGE);damaged++;
             }
-            s.shotgunEvents.push({ballId:b.id,brickId:brick.id,time:s.elapsed,targets:damaged,radius:SHOTGUN_RADIUS,damage:SHOTGUN_DAMAGE});
+            s.shotgunEvents.push({ballId:b.id,brickId:brick.id,time:s.elapsed,targets:damaged,radius:SHOTGUN_RADIUS,damage:SHOTGUN_DAMAGE,shotgunGeneration:b.shotgunGeneration,parentId:b.parentId??null});
             if(s.shotgunEvents.length>128) s.shotgunEvents.shift();
-            s.message=`散彈小爆！半徑 45／傷害 1 · 已引爆${s.shotgunCount}次`;
+            s.message=`散彈小爆！2 子球／三代 · 半徑 45／傷害 1 · 已引爆${s.shotgunCount}次`;
           }
           if (s.active === "blast" && b.blastCharged && !b.blastSpent) {
             b.blastSpent = true;
@@ -509,6 +545,7 @@ function tick(s, observer = null) {
       b.vx *= scale;
       b.vy *= scale;
     }
+    if (shotgunSplit) shotgunChildren(s, b);
     for (const p of [...s.pickups])
       if (Math.hypot(b.x - p.x, b.y - p.y) < R + 12) pickup(s, p.id, b);
     if (b.y >= FLOOR && b.vy > 0) {

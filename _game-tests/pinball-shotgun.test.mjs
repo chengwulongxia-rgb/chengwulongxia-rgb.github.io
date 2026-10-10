@@ -14,7 +14,7 @@ test('every original and split gets one independent radius45 damage1 burst only 
  assert.equal(n.balls[0].shotgunSpent,true);assert.equal(n.balls[0].blastSpent,false);assert.equal(n.blastCount,0);assert.equal(JSON.stringify(s),saved);
  assert.deepEqual(n.shotgunEvents.map(({radius,damage})=>({radius,damage})),[{radius:45,damage:1}]);assert.equal(n.effects.filter(e=>e.kind==='shotgun').length,1);
  n.balls[0]={...n.balls[0],x:175,y:202,vx:0,vy:-440,contacts:[]};n=L.step(n,1/60);assert.equal(n.shotgunCount,1);assert.equal(n.bricks[1].hp,9);
- n.pickups=[{id:80,x:175,y:202,kind:'split'}];const parent={...n.balls[0],x:175,y:202,vx:0,vy:-440};n.balls[0]=parent;
+ n.balls=n.balls.slice(0,1);n.pickups=[{id:80,x:175,y:202,kind:'split'}];const parent={...n.balls[0],x:175,y:202,vx:0,vy:-440};n.balls[0]=parent;
  const split=L.collect(n,80,parent);assert.equal(split.balls.length,3);assert.equal(split.balls[0].shotgunSpent,true);assert.ok(split.balls.slice(1).every(b=>b.shotgunSpent===false&&!b.blastCharged));
  assert.ok(split.balls[1].vx<0&&split.balls[2].vx>0);assert.equal(split.balls[1].vy, parent.vy*Math.cos(.32));
  split.balls.forEach(b=>{b.x=175;b.y=202;b.vx=0;b.vy=-440;b.contacts=[];});const hit=L.step(split,1/60);assert.equal(hit.shotgunCount,3);assert.equal(hit.bricks[1].hp,7);
@@ -39,7 +39,7 @@ test('shotgun pause recall automatic expiry restart and mode reset clear charges
 test('hex original and fresh split charges burst independently with bounded telemetry',()=>{
  let s=hitFixture('honeycomb');s.bricks=[L.hexBrick(175,155,{id:90,hp:100,kind:'brick'})];s.balls[0].y=205;
  s.pickups=[{id:80,x:175,y:205,kind:'split'}];s=L.collect(s,80,s.balls[0]);s.balls.forEach(b=>{b.vx=0;b.vy=-440;});
- const n=L.step(s,1/60);assert.equal(n.shotgunCount,3);assert.equal(n.bricks[0].hp,94);assert.ok(n.balls.every(b=>b.shotgunSpent));
+ const n=L.step(s,1/60);assert.equal(n.shotgunCount,3);assert.equal(n.bricks[0].hp,94);assert.ok(n.balls.slice(0,3).every(b=>b.shotgunSpent));assert.ok(n.balls.slice(3).every(b=>!b.shotgunSpent&&b.shotgunGeneration===1));
  s=hitFixture();s.shotgunEvents=Array.from({length:128},(_,i)=>({ballId:i}));s.bricks.push(...Array.from({length:150},(_,i)=>({id:1000+i,x:210,y:155,w:2,h:2,hp:100,kind:'brick'})));
  const bounded=L.step(s,1/60);assert.equal(bounded.shotgunEvents.length,128);assert.ok(bounded.effects.length<=80);assert.equal(bounded.shotgunEvents.at(-1).targets,128);assert.equal(s.shotgunEvents[0].ballId,0);
 });

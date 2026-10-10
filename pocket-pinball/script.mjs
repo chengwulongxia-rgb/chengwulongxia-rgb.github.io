@@ -206,7 +206,7 @@ function preview(s, target) {
       ctx.setLineDash(i===2?[]:[4,5]);ctx.stroke();ctx.setLineDash([]);
       canvas.dataset.previewFanRendered=i+1;
     }
-    text("整輪扇形 · 每球首碰小爆 · 僅短程方向",W/2,FLOOR+17,"#d9a7ff",9,600);
+    text("扇形 · 首碰小爆＋2 子球 · 三代 · 僅短程方向",W/2,FLOOR+17,"#d9a7ff",9,600);
   } else if(s.selected === "precision") {
     ctx.lineWidth=2.4; ctx.lineCap="round";
     for(let i=1;i<path.points.length;i++) {
@@ -313,7 +313,10 @@ function draw(s, time) {
   for (const b of s.balls) {
     const charged = s.active === "blast" && b.blastCharged && !b.blastSpent;
     const shotgunReady=s.active === "shotgun" && !b.shotgunSpent;
-    if(shotgunReady)circle(b.x,b.y,8,"#ce92ff50");
+    if(shotgunReady) {
+      circle(b.x,b.y,8,"#ce92ff50");
+      if(b.shotgunGeneration>0)text(String(b.shotgunGeneration),b.x+8,b.y-7,"#f3dcff",7);
+    }
     if (charged) circle(b.x, b.y, 8, "#ff866e40");
     if (!reduced) {
       ctx.strokeStyle = "#f8eed335";
@@ -386,7 +389,7 @@ function draw(s, time) {
     }
   } else if (s.phase === "volley") {
     text(
-      `場上 ${s.balls.length} · 待發 ${s.pending}`,
+      `${s.active === "shotgun" ? "2 子球／三代 · " : ""}場上 ${s.balls.length} · 待發 ${s.pending}`,
       W / 2,
       FLOOR + 16,
       "#a3bcb6",
@@ -418,7 +421,7 @@ function updateHUD() {
     $("item-" + type).setAttribute("aria-pressed",String(s.selected === type));
     $("item-" + type).setAttribute("aria-label",`${itemNames[type]}，庫存 ${s.inventory[type]}，上限 3${s.selected === type ? "，已選取，再點取消" : ""}`);
   }
-  put("item-status",s.active ? s.active === "shotgun" ? `整輪散射 · 小爆${s.shotgunCount}次 · 45／1` : s.active === "blast" ? `爆破球已配 ${s.chargedTotal} 顆 · 已引爆${s.blastCount}次` : `${itemNames[s.active]}生效` : s.selected === "shotgun" ? "整輪扇形 · 首碰小爆45／1 · 發射才扣1" : s.selected === "blast" ? `爆破球 ${Math.ceil(s.ballCount / 3)} 顆（分裂球也按比例）` : s.selected ? `${itemNames[s.selected]}已裝備 · 發射才扣 1` : "點選裝備 · 再點取消 · 上限 3");
+  put("item-status",s.active ? s.active === "shotgun" ? `2 子球／三代 · 小爆${s.shotgunCount}次 · 45／1` : s.active === "blast" ? `爆破球已配 ${s.chargedTotal} 顆 · 已引爆${s.blastCount}次` : `${itemNames[s.active]}生效` : s.selected === "shotgun" ? "首碰小爆＋2 子球／三代 · 45／1" : s.selected === "blast" ? `爆破球 ${Math.ceil(s.ballCount / 3)} 顆（分裂球也按比例）` : s.selected ? `${itemNames[s.selected]}已裝備 · 發射才扣 1` : "點選裝備 · 再點取消 · 上限 3");
   for(const mode of ["square","honeycomb"]) $("mode-"+mode).setAttribute("aria-pressed", String(s.mode === mode));
   canvas.dataset.mode = s.mode;
   canvas.dataset.firstImpact = JSON.stringify(s.firstImpact);
@@ -433,6 +436,8 @@ function updateHUD() {
   canvas.dataset.blastCount = s.blastCount;
   canvas.dataset.shotgunCount = s.shotgunCount;
   canvas.dataset.shotgunEvents = JSON.stringify(s.shotgunEvents);
+  canvas.dataset.shotgunSplitEvents = JSON.stringify(s.shotgunSplitEvents);
+  canvas.dataset.shotgunBalls = JSON.stringify(s.balls.slice(0,120).map(({id,parentId,shotgunGeneration,shotgunSpent})=>({id,parentId:parentId??null,shotgunGeneration,shotgunSpent})));
   canvas.dataset.blastEvents = JSON.stringify(s.blastEvents);
   canvas.dataset.blastTargets = s.blastTargets;
   canvas.dataset.spawnedTotal = s.spawnSerial;
