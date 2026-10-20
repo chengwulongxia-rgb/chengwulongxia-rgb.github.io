@@ -3,6 +3,7 @@ layout: page
 title: 搜尋
 permalink: /search/
 nav: true
+sitemap: false
 ---
 
 <!-- Pagefind Component UI（1.5.0+ 官方推薦，自包含、零 dynamic import 坑） -->
