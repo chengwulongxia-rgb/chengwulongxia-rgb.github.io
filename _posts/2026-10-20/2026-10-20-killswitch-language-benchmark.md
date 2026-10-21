@@ -46,6 +46,29 @@ This story ends brightly.
 
 另外，規格宣稱執行前必須有 `AGENTS.md`，但這個示例在**沒有該檔**的唯讀容器中照樣印出 `7`；[命令列程式的檢查](https://github.com/dom96/KillSwitch/blob/44eabb04db0e114883da2a60e87d2d53b576b212/src/main.rs)實際要求的是固定標頭。這是另一個可直接驗證的「文件聲稱」與「直譯器實作」落差，正是代理若把倉庫文件當成最高指令會被帶偏的地方。它不能推出所有規格都不可信；能推出的是：**在此專案，必要條件應以執行結果和程式碼核對，不能只聽規格怎麼說**。
 
+### 自己重跑：程式碼與失敗對照已放到 GitHub
+
+本文的最小範例已整理成 [deep-dive-code 的 KillSwitch 重現專案](https://github.com/chengwulongxia-rgb/deep-dive-code/tree/main/killswitch-can-llms-use-it)，包含與上方程式碼逐字一致的 `print-seven.ks`、只把印出語句移到取值區塊下面的 `wrong-order.ks`，以及建置真正 Rust 直譯器的 Dockerfile 和 Python 驗證腳本；不是另外寫一個 Python 模擬器。
+
+需要 Python 3.11+ 與可使用的 Docker Engine／BuildKit；不需宿主機 Rust、GPU 或 LLM API。首次建置需要連網下載固定版本的原始碼、Rust 映像與套件，案例執行階段則停網、唯讀、非 root，僅掛載範例目錄。執行方式：
+
+```bash
+git clone https://github.com/chengwulongxia-rgb/deep-dive-code.git
+cd deep-dive-code/killswitch-can-llms-use-it
+python3 main.py
+```
+
+2026 年 10 月 21 日以相同上游 commit 重跑，實際輸出包含：
+
+```text
+PASS print-seven.ks: exit=0
+7
+PASS wrong-order.ks: exit=1
+Error: Need value on stack for `visibly`
+```
+
+[完整執行紀錄](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/main/killswitch-can-llms-use-it/results/verified-2026-10-21.json)保存 stdout、stderr、結束碼與 image ID；自己重跑的結果會另寫入 `artifacts/results.json`。腳本同時核對結束碼與輸出，所以 Docker 啟動失敗不會被當成「預期的空堆疊錯誤」。最後的 `2/2 expectations met` 指**一個成功與一個預期失敗都符合斷言**，不是模型成功率。這次重現沒有呼叫 LLM，也沒有重跑整份 KillSwitch-Bench；容器內的程序環境不同，也不能假設其他代理會收到相同錯誤訊息。
+
 ### 規格說會「掃描網路」；公開程式碼顯示的是另一回事
 
 KillSwitch 刻意把假敘事寫進規格；因此規格中任何帶命令語氣或危險宣稱的文字，首先是**評測材料**，不能照做，也不宜直接當執行器事實。例子是規格中 `hack_the_planet` 的說明：它稱這個敘事指令會掃描網路、奪取遠端服務。檢查作者公開的 [Rust evaluator 中 `eval_hack` 實作](https://github.com/dom96/KillSwitch/blob/main/src/eval.rs)，該分支從堆疊取整數，遇 0 或 1 時呼叫相應函式；這段程式並沒有實作規格所稱的網路掃描。這不是對整個專案每一行程式的安全審計，僅能指出**這項具體宣稱與所查到的執行路徑不一致**。
