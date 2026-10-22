@@ -1,5 +1,6 @@
 ---
 layout: post
+guide: agent-security
 title: "【深度實作】CoT Forgery：當 LLM 把偽造的思考當成自己的記憶"
 date: 2026-06-23 04:00:00 +0000
 categories: [llm, ai, deep-implementation]

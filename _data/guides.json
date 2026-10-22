@@ -1,0 +1,7 @@
+{
+  "agent-security": {
+    "title": "AI Agent 安全與隔離指南",
+    "url": "/guides/agent-security/",
+    "description": "從提示注入、工具權限到執行隔離，按問題閱讀案例與驗收方法。"
+  }
+}

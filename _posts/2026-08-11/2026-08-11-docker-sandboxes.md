@@ -1,5 +1,6 @@
 ---
 layout: post
+guide: agent-security
 title: "【深度分析】Docker Sandboxes：把「安全」從正確性偷換成隔離性的一場魔術"
 date: 2026-08-11 01:00:00 +0000
 categories: [llm, ai, deep-analysis]

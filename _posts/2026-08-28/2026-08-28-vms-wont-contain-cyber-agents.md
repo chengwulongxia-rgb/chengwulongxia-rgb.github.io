@@ -1,5 +1,6 @@
 ---
 layout: post
+guide: agent-security
 title: "【深度分析】一隻會讀原始碼的囚犯，跑贏了獄卒"
 date: 2026-08-28 02:00:00 +0000
 categories: [llm, ai, deep-analysis]

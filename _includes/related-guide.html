@@ -1,0 +1,10 @@
+{%- if page.guide -%}
+  {%- assign related_guide = site.data.guides[page.guide] -%}
+  {%- if related_guide -%}
+<aside class="related-guide" aria-label="相關主題指南" data-pagefind-ignore>
+  <hr>
+  <p><strong>主題指南：</strong><a href="{{ related_guide.url | relative_url }}">{{ related_guide.title | escape }}</a><br>
+  {{ related_guide.description | escape }}</p>
+</aside>
+  {%- endif -%}
+{%- endif -%}

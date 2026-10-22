@@ -1,0 +1,130 @@
+{
+  "checked_at": "2026-10-22T03:46:05.023006+00:00",
+  "scope": "Reference metadata and a harmless Git config-sharing experiment; not a production-agent security assessment.",
+  "git_version": "git version 2.43.0",
+  "git_example_stdout": "main after worktree change: changed-in-worktree\nclone after clone change: changed-in-clone\nmain after clone change: changed-in-worktree\n",
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+      "title": "OWASP LLM Prompt Injection Prevention",
+      "accessed": "2026-10-22",
+      "quotes": [
+        {
+          "text": "Keep trusted instructions separate from untrusted data, but do not treat text labels or prompt wording as an enforcement boundary.",
+          "added": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency",
+      "title": "OWASP LLM06:2025 Excessive Agency",
+      "accessed": "2026-10-22",
+      "quotes": [
+        {
+          "text": "Implement authorization in downstream systems rather than relying on an LLM to decide if an action is allowed or not.",
+          "added": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "url": "https://git-scm.com/docs/git-worktree",
+      "title": "Git git-worktree Documentation",
+      "accessed": "2026-10-22",
+      "quotes": [
+        {
+          "text": "By default, the repository config file is shared across all worktrees.",
+          "added": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "url": "https://docs.docker.com/engine/security",
+      "title": "Docker Engine security",
+      "accessed": "2026-10-22",
+      "quotes": [
+        {
+          "text": "This daemon requires root privileges unless you opt-in to Rootless mode",
+          "added": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "url": "https://docs.docker.com/engine/containers/run",
+      "title": "Docker Running containers",
+      "accessed": "2026-10-22",
+      "quotes": [
+        {
+          "text": "The operator can also adjust the performance parameters of the container:",
+          "added": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "url": "https://docs.docker.com/engine/storage/bind-mounts",
+      "title": "Docker Bind mounts",
+      "accessed": "2026-10-22",
+      "quotes": [
+        {
+          "text": "Bind mounts have write access to files on the host by default.",
+          "added": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+      "title": "OWASP AI Agent Security",
+      "accessed": "2026-10-22",
+      "quotes": [
+        {
+          "text": "Enforce authorization in the execution component, outside the agent's context.",
+          "added": "2026-10-22"
+        }
+      ]
+    }
+  ],
+  "related_posts": [
+    {
+      "path": "_posts/2026-06-23/2026-06-23-cot-forgery.md",
+      "url": "/llm/ai/deep-implementation/2026/06/23/cot-forgery.html"
+    },
+    {
+      "path": "_posts/2026-07-31/2026-07-31-git-worktrees-isolation-coding-agents.md",
+      "url": "/llm/ai/deep-analysis/2026/07/31/git-worktrees-isolation-coding-agents.html"
+    },
+    {
+      "path": "_posts/2026-08-11/2026-08-11-docker-sandboxes.md",
+      "url": "/llm/ai/deep-analysis/2026/08/11/docker-sandboxes.html"
+    },
+    {
+      "path": "_posts/2026-08-28/2026-08-28-vms-wont-contain-cyber-agents.md",
+      "url": "/llm/ai/deep-analysis/2026/08/28/vms-wont-contain-cyber-agents.html"
+    },
+    {
+      "path": "_posts/2026-09-17/2026-09-17-agent-boundary-scanner.md",
+      "url": "/llm/ai/deep-implementation/2026/09/17/agent-boundary-scanner.html"
+    },
+    {
+      "path": "_posts/2026-09-29/2026-09-29-cloudflare-cf-agent-cli-permission-boundary.md",
+      "url": "/llm/ai/deep-analysis/2026/09/29/cloudflare-cf-agent-cli-permission-boundary.html"
+    },
+    {
+      "path": "_posts/2026-09-30/2026-09-30-skill-cascade-cross-skill-agent-attacks.md",
+      "url": "/llm/ai/paper-breakdown/2026/09/30/skill-cascade-cross-skill-agent-attacks.html"
+    },
+    {
+      "path": "_posts/2026-10-15/2026-10-15-rubygems-agents.md",
+      "url": "/llm/ai/deep-analysis/2026/10/15/rubygems-agents.html"
+    },
+    {
+      "path": "_posts/2026-10-21/2026-10-21-whatsapp-hidden-support-instructions.md",
+      "url": "/llm/ai/deep-analysis/2026/10/21/whatsapp-hidden-support-instructions.html"
+    }
+  ]
+}

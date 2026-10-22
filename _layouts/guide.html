@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<article class="post guide">
+  <header class="post-header">
+    <p class="post-meta"><a href="{{ '/' | relative_url }}">首頁</a> / 主題指南</p>
+    <h1 class="post-title">{{ page.title | escape }}</h1>
+    <p class="post-meta">作者：{{ page.author | default: site.author | escape }} · 最後更新：<time datetime="{{ page.last_modified_at | date_to_xmlschema }}">{{ page.last_modified_at | date: "%Y-%m-%d" }}</time></p>
+  </header>
+  <div class="post-content">
+    {{ content }}
+  </div>
+</article>

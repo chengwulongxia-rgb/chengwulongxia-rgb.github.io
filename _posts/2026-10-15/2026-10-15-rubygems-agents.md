@@ -1,5 +1,6 @@
 ---
 layout: post
+guide: agent-security
 title: "【深度分析】RubyGems 異常套件與 AI 代理：攻擊鏈可見，歸因仍有缺口"
 description: "RubyGems 異常套件如何利用文件建置服務與舊版 API？比對研究者調查、平台紀錄與 OpenAI 回應，拆解資料運輸、金鑰竊取企圖及代理歸因的證據缺口。"
 date: 2026-10-15 04:03:00 +0000

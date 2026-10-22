@@ -1,5 +1,6 @@
 ---
 layout: post
+guide: agent-security
 title: "【深度分析】Cloudflare 的 cf：當 agent 能找到三千個 API，誰來證明它不會碰錯？"
 subtitle: "可發現性解決了 agent 不知道怎麼做；權限邊界則要回答它憑什麼可以做。"
 date: 2026-09-29 01:00:00 +0000

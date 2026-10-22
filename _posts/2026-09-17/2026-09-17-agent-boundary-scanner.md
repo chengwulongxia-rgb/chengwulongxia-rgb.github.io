@@ -1,5 +1,6 @@
 ---
 layout: post
+guide: agent-security
 title: "【深度實作】Repo 裡什麼時候開始藏著指令？我做了一個 Agent 信任邊界掃描器"
 date: 2026-09-17 05:00:00 +0000
 categories: [llm, ai, deep-implementation]

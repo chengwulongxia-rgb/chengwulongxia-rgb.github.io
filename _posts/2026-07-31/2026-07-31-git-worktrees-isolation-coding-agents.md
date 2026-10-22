@@ -1,5 +1,6 @@
 ---
 layout: post
+guide: agent-security
 title: "【深度分析】Git worktree 不是 coding agent 的隔離邊界——而且 clone 根本沒比較貴"
 date: 2026-07-31 02:00:00 +0000
 categories: [llm, ai, deep-analysis]

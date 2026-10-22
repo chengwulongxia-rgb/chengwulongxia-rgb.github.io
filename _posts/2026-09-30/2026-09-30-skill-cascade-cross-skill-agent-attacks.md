@@ -1,5 +1,6 @@
 ---
 layout: post
+guide: agent-security
 title: "【論文拆解】每個 skill 都沒事，合起來卻出事：SkillCascade 揭開 agent 的組合盲區"
 subtitle: "213 個經驗證的級聯案例測到的不是單一惡意指令，而是安全責任在技能交接處消失。"
 date: 2026-09-30 01:00:00 +0000
