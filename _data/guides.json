@@ -3,5 +3,10 @@
     "title": "AI Agent 安全與隔離指南",
     "url": "/guides/agent-security/",
     "description": "從提示注入、工具權限到執行隔離，按問題閱讀案例與驗收方法。"
+  },
+  "coding-agent-evaluation": {
+    "title": "Coding Agent 評測與成本指南",
+    "url": "/guides/coding-agent-evaluation/",
+    "description": "拆開任務、模型與 harness，建立獨立驗收，將失敗與重試算進完成成本。"
   }
 }

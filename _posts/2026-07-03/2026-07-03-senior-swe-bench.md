@@ -3,6 +3,7 @@ layout: post
 title: "【深度分析】Senior SWE-Bench：把 coding agent 當 senior engineer 來考，才發現過去兩年都問錯問題了"
 date: 2026-07-03 02:00:00 +0000
 categories: [llm, ai, deep-analysis]
+guide: coding-agent-evaluation
 ---
 
 ![hero]({{ site.baseurl }}/assets/images/2026-07-03/senior-swe-bench.jpg)

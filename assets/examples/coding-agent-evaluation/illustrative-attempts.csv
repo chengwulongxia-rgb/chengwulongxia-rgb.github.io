@@ -1,0 +1,5 @@
+configuration,task_id,attempt,acceptance_id,accepted,billed_cost,currency,input_uncached_tokens,input_cached_tokens,output_tokens,wall_seconds,human_review_minutes,human_fix_minutes,stop_reason,notes
+demo,task001,1,accept001,false,0.06,USD,100,20,30,60,2,0,acceptance_failed,示意數據，不是任何模型實測
+demo,task001,2,accept001,true,0.04,USD,100,20,30,60,2,0,accepted,示意數據，不是任何模型實測
+demo,task002,1,accept002,false,0.10,USD,100,20,30,60,2,0,timeout,示意數據，不是任何模型實測
+demo,task003,1,accept003,true,0.20,USD,100,20,30,60,2,0,accepted,示意數據，不是任何模型實測

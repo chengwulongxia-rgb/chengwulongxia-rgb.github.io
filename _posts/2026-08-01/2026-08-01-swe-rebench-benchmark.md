@@ -3,6 +3,7 @@ layout: post
 title: "【深度分析】SWE-rebench 跨語言評測：benchmark 還在比誰最強，但業界早該比誰最有性價比"
 date: 2026-08-01 01:00:00 +0000
 categories: [llm, ai, deep-analysis]
+guide: coding-agent-evaluation
 ---
 
 ![hero]({{ site.baseurl }}/assets/images/2026-08-01/swe-rebench-benchmark.jpg)

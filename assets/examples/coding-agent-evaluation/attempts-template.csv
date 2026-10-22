@@ -1,0 +1,1 @@
+configuration,task_id,attempt,acceptance_id,accepted,billed_cost,currency,input_uncached_tokens,input_cached_tokens,output_tokens,wall_seconds,human_review_minutes,human_fix_minutes,stop_reason,notes

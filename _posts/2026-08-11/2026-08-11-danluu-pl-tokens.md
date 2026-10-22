@@ -3,6 +3,7 @@ layout: post
 title: "【深度分析】動態語言 token 比較省？Dan Luu 用 100+ bug fix 跑完 eval：那只是訓練資料量的影子"
 date: 2026-08-11 02:00:00 +0000
 categories: [llm, ai, deep-analysis]
+guide: coding-agent-evaluation
 ---
 
 ![hero]({{ site.baseurl }}/assets/images/2026-08-11/danluu-pl-tokens.jpg)

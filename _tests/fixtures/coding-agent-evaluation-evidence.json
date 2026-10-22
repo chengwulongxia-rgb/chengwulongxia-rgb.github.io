@@ -1,0 +1,183 @@
+{
+  "checked_at": "2026-10-22T13:55:32.621834+08:00",
+  "scope": "Methodology sources and synthetic accounting fixture; no coding-agent model benchmark was run.",
+  "related_posts": [
+    {
+      "path": "_posts/2026-07-03/2026-07-03-senior-swe-bench.md",
+      "url": "/llm/ai/deep-analysis/2026/07/03/senior-swe-bench.html",
+      "source_sha256_without_guide": "6b9a8c74066fec4cbf3e4890a7f87a7177ab84526092b984e8fe0c76a5337074"
+    },
+    {
+      "path": "_posts/2026-08-01/2026-08-01-swe-rebench-benchmark.md",
+      "url": "/llm/ai/deep-analysis/2026/08/01/swe-rebench-benchmark.html",
+      "source_sha256_without_guide": "866407449ae782f7b677491d332edd15d1a321b9c71b78dc6756568924b6399c"
+    },
+    {
+      "path": "_posts/2026-09-17/2026-09-17-harness-tax-coding-agents.md",
+      "url": "/llm/ai/deep-analysis/2026/09/17/harness-tax-coding-agents.html",
+      "source_sha256_without_guide": "4f74124870c9a28f6d54bed5b9d35457147485c8970eb5184243c4918d9f64f3"
+    },
+    {
+      "path": "_posts/2026-09-11/2026-09-11-agent-testing-verification.md",
+      "url": "/llm/ai/deep-analysis/2026/09/11/agent-testing-verification.html",
+      "source_sha256_without_guide": "867fdf9829b876ac5a54c2a53e3b4c6065f46d4b936d694282bf3fa61044ad6a"
+    },
+    {
+      "path": "_posts/2026-08-11/2026-08-11-danluu-pl-tokens.md",
+      "url": "/llm/ai/deep-analysis/2026/08/11/danluu-pl-tokens.html",
+      "source_sha256_without_guide": "97c65a9a89d98226e793720aee6845b434c83a44ba5caa991e8c1f3a733fa58b"
+    },
+    {
+      "path": "_posts/2026-07-13/2026-07-13-claude-code-opencode-token.md",
+      "url": "/llm/ai/deep-analysis/2026/07/13/claude-code-opencode-token.html",
+      "source_sha256_without_guide": "a4c108a0147ed29f12aa4905eec5365daa6ea2f87c5433b09a78c7e117db2e03"
+    }
+  ],
+  "primary_sources": {
+    "version": 1,
+    "sources": [
+      {
+        "id": 1,
+        "url": "https://www.swebench.com/SWE-bench/reference/harness",
+        "title": "SWE-bench evaluation harness: process and result caching",
+        "accessed": "2026-10-22",
+        "quotes": [
+          {
+            "text": "The harness operates in three main layers:",
+            "added": "2026-10-22"
+          },
+          {
+            "text": "The cache does not consider the prediction diff content",
+            "added": "2026-10-22"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "url": "https://raw.githubusercontent.com/openai/human-eval/master/human_eval/evaluation.py",
+        "title": "HumanEval: estimate_pass_at_k implementation",
+        "accessed": "2026-10-22",
+        "quotes": [
+          {
+            "text": "Calculates 1 - comb(n - c, k) / comb(n, k).",
+            "added": "2026-10-22"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "url": "https://harnesstax.github.io",
+        "title": "HarnessTax: model and harness comparison",
+        "accessed": "2026-10-22",
+        "quotes": [
+          {
+            "text": "Failed attempts add cost without adding success.",
+            "added": "2026-10-22"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "url": "https://senior-swe-bench.snorkel.ai",
+        "title": "Senior SWE-Bench: behavioral validation and quality criteria",
+        "accessed": "2026-10-22",
+        "quotes": [
+          {
+            "text": "Senior engineers build features without over-specified requirements",
+            "added": "2026-10-22"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "url": "https://swe-rebench.com/about",
+        "title": "SWE-rebench: evaluation methodology and comparability",
+        "accessed": "2026-10-22",
+        "quotes": [
+          {
+            "text": "Incomparable results due to scaffolding variability:",
+            "added": "2026-10-22"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "url": "https://danluu.com/agentic-testing",
+        "title": "Dan Luu: How well do agents use test and verification techniques?",
+        "accessed": "2026-10-22",
+        "quotes": [
+          {
+            "text": "All implementations were in Rust.",
+            "added": "2026-10-22"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "url": "https://raw.githubusercontent.com/SWE-bench/SWE-bench/main/swebench/harness/run_evaluation.py",
+        "title": "SWE-bench implementation: existing-report path and reuse",
+        "accessed": "2026-10-22",
+        "quotes": [
+          {
+            "text": "log_dir = RUN_EVALUATION_LOG_DIR / run_id / model_name_or_path / instance_id",
+            "added": "2026-10-22"
+          }
+        ]
+      }
+    ]
+  },
+  "retrieved_source_sha256": {
+    "senior-swe.txt": "31ff640210b1ebffd46c8f7171003d8efaa30b2f7a72fbd08e32e25a5939b28b",
+    "harnesstax.txt": "8ce98eabab2d0e312760a84a3f657b12bfb41d5a4b1b004aa62c24c9bd4b80c5",
+    "humaneval-evaluation.txt": "e926d5e9b8f1ec040096cd5952e8cf79f8dc0b7fb80ba6667ce604ffea0397bc",
+    "swebench-harness.txt": "5c418a9500159e5f43572164d231904fa15ab9b5b1d3578e952d5dfcba70e430",
+    "humaneval-readme.txt": "a6a3741a64527ae20026b7880e37af5de88e8ae4dcfed81eb19620c674b6e272",
+    "swe-rebench-about.txt": "99a1f04007307716db2df6ac890796ae38ff0257fca68de6706823523317d978",
+    "danluu-testing.txt": "b0d9dae659138e8d117a58b103386e858ec672f034ffefe907101f53db61034e",
+    "swebench-run-evaluation.py": "04b5dab584fbe62ae9d1ff025edf52d714e584102d587c7e647805d1efb37d84",
+    "swebench-harness-raw.md": "8c20f664af1ee8dfc0c6cb8f6a0f4e5ca8c6c48c1be796c01837b9867b0aa80b"
+  },
+  "accounting_example": {
+    "scope": "Synthetic accounting inputs only; not coding-agent model measurements.",
+    "command": [
+      "python3",
+      "summarize.py",
+      "--tasks",
+      "tasks-template.csv",
+      "--attempts",
+      "illustrative-attempts.csv"
+    ],
+    "stdout": {
+      "configurations": [
+        {
+          "configuration": "demo",
+          "currency": "USD",
+          "status": "complete",
+          "planned_tasks": 3,
+          "observed_tasks": 3,
+          "not_attempted": [],
+          "attempts": 4,
+          "unique_accepted_tasks": 2,
+          "first_attempt_successful_tasks": 1,
+          "known_cost_subtotal": "0.40",
+          "missing_cost_count": 0,
+          "total_cost": "0.40",
+          "cost_per_accepted_task": "0.20",
+          "input_uncached_tokens": 400,
+          "input_cached_tokens": 80,
+          "output_tokens": 120,
+          "cumulative_attempt_duration_seconds": "240",
+          "human_review_minutes": "8",
+          "human_fix_minutes": "0"
+        }
+      ]
+    },
+    "download_sha256": {
+      "attempts-template.csv": "0470ba9626c1ce9bbc072cf0b8b8b2e2573a76508b75ad961221c2e215dd9364",
+      "illustrative-attempts.csv": "b0c592e7d37f9cd396cdac14530974d7a6e8e72774ff411a88bd5293c4c8e8ff",
+      "README.md": "1342623afb8dab23f1c2041da6ea5604d9300bdcaa0798f86072343478dead60",
+      "summarize.py": "8fe13504d805357064a84a10dc28857db96979a21f60157a1c9fb79eebdea84e",
+      "tasks-template.csv": "7b9c38ff7f3c31bfd47fc1e80dae197d206c89daab444fa1029b1152ab78a93c"
+    }
+  }
+}

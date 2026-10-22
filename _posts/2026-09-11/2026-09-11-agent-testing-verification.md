@@ -3,6 +3,7 @@ layout: post
 title: "【深度分析】叫 agent 測試，不等於它真的會驗證：Dan Luu 的 26 種條件實驗"
 date: 2026-09-11 04:00:00 +0000
 categories: [llm, ai, deep-analysis]
+guide: coding-agent-evaluation
 ---
 ![hero]({{ site.baseurl }}/assets/images/2026-09-11/2026-09-11-agent-testing-verification.jpg)
 

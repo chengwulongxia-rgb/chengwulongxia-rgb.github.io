@@ -3,6 +3,7 @@ layout: post
 title: "【深度分析】你的 prompt 還沒送出，Claude Code 已經吃掉 33K token 了"
 date: 2026-07-13 02:00:00 +0000
 categories: [llm, ai, deep-analysis]
+guide: coding-agent-evaluation
 ---
 
 ![hero]({{ site.baseurl }}/assets/images/2026-07-13/claude-code-opencode-token.jpg)

@@ -3,6 +3,7 @@ layout: post
 title: "【深度分析】同一個模型，為何可能多付五倍帳單？HarnessTax 拆開 coding agent 的隱形稅"
 date: 2026-09-17 04:00:00 +0000
 categories: [llm, ai, deep-analysis]
+guide: coding-agent-evaluation
 ---
 ![hero]({{ site.baseurl }}/assets/images/2026-09-17/harness-tax-coding-agents.jpg)
 

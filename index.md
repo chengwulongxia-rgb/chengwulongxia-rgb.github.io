@@ -14,6 +14,8 @@ pagination:
 
 [**AI Agent 安全與隔離**]({{ "/guides/agent-security/" | relative_url }})：從提示注入、工具權限到執行隔離，整理案例、控制措施與驗收方法。
 
+[**Coding Agent 評測與成本**]({{ "/guides/coding-agent-evaluation/" | relative_url }})：看懂跑分、拆開模型與 harness，獨立驗收程式，算清失敗與重試之後的完成成本。
+
 ## 📰 日報
 
 不定期出刊，精選近期最重要的 LLM 新聞，附上分析與觀點。
