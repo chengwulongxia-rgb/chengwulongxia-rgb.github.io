@@ -33,6 +33,11 @@ body {
   padding-left: 24px;
 }
 
+/* Widen list pages only; reading pages keep the original measure. */
+body:has(.post-preview) .wrapper {
+  max-width: 1040px;
+}
+
 .page-content {
   padding: 3rem 0;
 }
