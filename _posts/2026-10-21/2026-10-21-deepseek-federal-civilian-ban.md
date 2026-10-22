@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "【深度分析】DHS 排除 DeepSeek：聯邦採購、第三方服務與風險證據的三條界線"
+description: "DHS 排除 DeepSeek 的命令涵蓋哪些聯邦機關與第三方服務？依公開通知拆解採購排除、既有系統移除、本地部署與資安證據的不同邊界。"
 date: 2026-10-21 14:34:02 +0800
 categories: [llm, ai, deep-analysis]
 ---

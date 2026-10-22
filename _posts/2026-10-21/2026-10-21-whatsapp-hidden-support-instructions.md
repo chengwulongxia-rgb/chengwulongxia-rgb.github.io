@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "【深度分析】WhatsApp 客服隱藏指令外洩：網頁裡有什麼，與模型做過什麼，是兩回事"
+description: "WhatsApp 客服頁面為何出現隱藏 AI 指令？整理 Redact 的掃描、移除時間線與公司回應，區分指令外洩、隱私資訊限制，以及尚未證實的模型服從效果。"
 date: 2026-10-21 14:34:03 +0800
 categories: [llm, ai, deep-analysis]
 ---

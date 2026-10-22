@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "【深度分析】Agentic Monitoring：讓代理設計監控，不代表讓模型接管告警迴圈"
+description: "Agentic Monitoring 如何讓 AI 代理協助監控軟體服務？拆解監控計畫、確定性執行器與調查代理的分工，說明告警可靠性、權限與部署驗收的檢查方式。"
 date: 2026-10-21 14:34:04 +0800
 categories: [llm, ai, deep-analysis]
 ---

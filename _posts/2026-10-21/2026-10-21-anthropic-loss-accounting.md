@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "【深度分析】Anthropic 淨損 807 億美元：會計重估、算力支出與十年承諾怎麼分"
+description: "Anthropic 上半年淨損 807 億美元，是否等於燒掉同額現金？依報導拆分可轉債重估、算力支出與十年採購承諾，說明判斷現金壓力仍缺哪些財報資料。"
 date: 2026-10-21 14:34:01 +0800
 categories: [llm, ai, deep-analysis]
 ---

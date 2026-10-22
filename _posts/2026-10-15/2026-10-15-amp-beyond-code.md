@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "【深度分析】Amp 把 AI 代理帶出程式碼：能交付更多，誰來驗收？"
+description: "Amp 如何把 AI 代理用於程式碼以外的工作？對照 Puck 的 Slack、語音與 MCP 功能，拆解跨系統權限、模型路由、成本及文件與產品頁面的驗收方式。"
 date: 2026-10-15 04:02:00 +0000
 categories: [llm, ai, deep-analysis]
 ---

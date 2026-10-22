@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "【深度分析】KillSwitch 讓 AI 寫程式卡關：是新語言難學，還是規格在設陷阱？"
+description: "KillSwitch 為何讓 AI 寫程式卡關？透過實跑成功與失敗範例，拆解反向執行、假規格與提示注入陷阱，並區分排行榜複合分數與原始通過率。"
 date: 2026-10-20 09:21:00 +0800
 categories: [llm, ai, deep-analysis]
 ---

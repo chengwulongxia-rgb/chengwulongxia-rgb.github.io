@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "【深度分析】從詞袋到 Jev：文字分類的進步，不是把模型愈做愈大"
+description: "文字分類一定需要大型聊天模型嗎？從詞袋、LSTM 到 Transformer 與 Jev，整理 IMDb 實測、決策介面及機率校準，分析本地分類器與 API 的選擇條件。"
 date: 2026-10-17 12:21:00 +0800
 categories: [llm, ai, deep-analysis]
 ---

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "【深度分析】一小時寫出《星海爭霸》Bot：StarSkirmish 究竟在測模型的什麼？"
+description: "StarSkirmish 測的是模型即時玩星海爭霸，還是代理限時編寫 Bot？拆解一小時寫碼、正式對戰、五次重跑與 CLI 工具鏈，說明勝率和成本比較的適用範圍。"
 date: 2026-10-17 12:20:00 +0800
 categories: [llm, ai, deep-analysis]
 ---
