@@ -32,6 +32,10 @@ checks = [
    ->(out) { out.include?("src=\"#{image}\"") && !out.include?('missing-preview.jpg') }],
   ['image_object_supported', {'image' => {'path' => image}, 'description' => '物件格式圖片的摘要。'},
    ->(out) { out.include?("src=\"#{image}\"") && out.include?('物件格式圖片的摘要。') }],
+  ['longer_lead_replaces_short_description', {'description' => '舊摘要。', 'content' => '<p>這是更完整的正文導讀，除了說明主題，也交代讀者可以看到的方法、結果與限制。</p>'},
+   ->(out) { out.include?('這是更完整的正文導讀') && !out.include?('舊摘要。') }],
+  ['long_preview_allows_320_characters', {'description' => '甲' * 400},
+   ->(out) { text = out[/<p class="post-excerpt">([^<]*)<\/p>/, 1]; text && text.length == 320 && text.start_with?('甲' * 161) }],
   ['no_image_no_placeholder', {'description' => '沒有圖片的文章保持純文字。'},
    ->(out) { out.include?('post-preview--no-image') && !out.include?('<img') && !out.include?('post-preview-thumbnail') }]
 ]

@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 from html.parser import HTMLParser
+from html import unescape
 import json
 from pathlib import Path
 import re
@@ -95,13 +96,16 @@ class HomepagePreviewTests(unittest.TestCase):
             with self.subTest(url=card['url']):
                 summary = card['summary'].strip()
                 self.assertGreater(len(summary), 20)
-                self.assertLessEqual(len(summary), 160)
+                self.assertLessEqual(len(summary), 320)
                 self.assertNotRegex(summary, r'^(原文|來源|作者|日期)[：:]')
                 self.assertNotIn('{{', summary)
                 self.assertNotIn('![hero]', summary)
-                if post and post['description']:
+                if post:
                     description = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', post['description'])).strip()
-                    self.assertTrue(summary.startswith(description[:40]), (summary, description))
+                    if not description or not summary.startswith(description[:40]):
+                        article = shared.read_target(card['url'])
+                        article_text = re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', '', article))).strip()
+                        self.assertIn(summary.removesuffix('...')[:40], article_text)
 
     def test_real_local_images_only_and_no_broken_placeholders(self):
         self.assertTrue(self.cards)

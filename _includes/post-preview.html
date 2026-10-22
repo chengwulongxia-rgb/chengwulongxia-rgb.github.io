@@ -1,16 +1,18 @@
 {%- assign preview_post = include.post -%}
 {%- assign preview_summary = preview_post.description | default: '' | strip_html | normalize_whitespace | strip -%}
-{%- if preview_summary == '' -%}
-  {%- assign preview_paragraphs = preview_post.content | split: '<p>' -%}
-  {%- assign preview_labels = '原文,來源,作者,日期,原文連結,Source,Original,Author,Date' | split: ',' -%}
-  {%- for preview_paragraph in preview_paragraphs offset:1 -%}
-    {%- assign preview_text = preview_paragraph | split: '</p>' | first | strip_html | normalize_whitespace | strip -%}
-    {%- assign preview_label = preview_text | replace: '：', ':' | split: ':' | first | strip -%}
-    {%- unless preview_text == '' or preview_labels contains preview_label -%}
-      {%- assign preview_summary = preview_text -%}
-      {%- break -%}
-    {%- endunless -%}
-  {%- endfor -%}
+{%- assign preview_lead = '' -%}
+{%- assign preview_paragraphs = preview_post.content | split: '<p>' -%}
+{%- assign preview_labels = '原文,來源,作者,日期,原文連結,Source,Original,Author,Date' | split: ',' -%}
+{%- for preview_paragraph in preview_paragraphs offset:1 -%}
+  {%- assign preview_text = preview_paragraph | split: '</p>' | first | strip_html | normalize_whitespace | strip -%}
+  {%- assign preview_label = preview_text | replace: '：', ':' | split: ':' | first | strip -%}
+  {%- unless preview_text == '' or preview_labels contains preview_label -%}
+    {%- assign preview_lead = preview_text -%}
+    {%- break -%}
+  {%- endunless -%}
+{%- endfor -%}
+{%- if preview_lead.size > preview_summary.size -%}
+  {%- assign preview_summary = preview_lead -%}
 {%- endif -%}
 
 {%- assign preview_image = preview_post.image.path | default: preview_post.image | default: '' -%}
@@ -45,6 +47,6 @@
   </a>
   {%- endif %}
   {%- if preview_summary != '' %}
-  <p class="post-excerpt">{{ preview_summary | truncate: 160 | escape_once }}</p>
+  <p class="post-excerpt">{{ preview_summary | truncate: 320 | escape_once }}</p>
   {%- endif %}
 </article>
