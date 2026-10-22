@@ -1,0 +1,50 @@
+{%- assign preview_post = include.post -%}
+{%- assign preview_summary = preview_post.description | default: '' | strip_html | normalize_whitespace | strip -%}
+{%- if preview_summary == '' -%}
+  {%- assign preview_paragraphs = preview_post.content | split: '<p>' -%}
+  {%- assign preview_labels = '原文,來源,作者,日期,原文連結,Source,Original,Author,Date' | split: ',' -%}
+  {%- for preview_paragraph in preview_paragraphs offset:1 -%}
+    {%- assign preview_text = preview_paragraph | split: '</p>' | first | strip_html | normalize_whitespace | strip -%}
+    {%- assign preview_label = preview_text | replace: '：', ':' | split: ':' | first | strip -%}
+    {%- unless preview_text == '' or preview_labels contains preview_label -%}
+      {%- assign preview_summary = preview_text -%}
+      {%- break -%}
+    {%- endunless -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- assign preview_image = preview_post.image.path | default: preview_post.image | default: '' -%}
+{%- unless include.image_paths contains preview_image -%}
+  {%- assign preview_image = '' -%}
+  {%- assign preview_images = preview_post.content | split: '<img ' -%}
+  {%- for preview_img in preview_images offset:1 -%}
+    {%- assign preview_img_tag = preview_img | split: '>' | first -%}
+    {%- assign preview_src_parts = preview_img_tag | split: 'src="' -%}
+    {%- if preview_src_parts.size > 1 -%}
+      {%- assign preview_src = preview_src_parts[1] | split: '"' | first -%}
+      {%- if include.image_paths contains preview_src -%}
+        {%- assign preview_image = preview_src -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endunless -%}
+
+<article class="post-preview{% if preview_image == '' %} post-preview--no-image{% endif %}">
+  <div class="post-preview-heading">
+    <span class="post-meta"><time datetime="{{ preview_post.date | date_to_xmlschema }}">{{ preview_post.date | date: include.date_format }}</time>
+      {%- for category in preview_post.categories %}
+      <a class="post-category" href="{{ '/categories/' | append: category | append: '/' | relative_url }}">{{ category | escape }}</a>
+      {%- endfor %}
+    </span>
+    <h3><a class="post-link" href="{{ preview_post.url | relative_url }}">{{ preview_post.title | escape }}</a></h3>
+  </div>
+  {%- if preview_image != '' %}
+  <a class="post-preview-thumbnail" href="{{ preview_post.url | relative_url }}" aria-label="閱讀全文：{{ preview_post.title | escape }}">
+    <img src="{{ preview_image | relative_url | escape }}" alt="" width="112" height="80" loading="{% if include.eager %}eager{% else %}lazy{% endif %}" decoding="async">
+  </a>
+  {%- endif %}
+  {%- if preview_summary != '' %}
+  <p class="post-excerpt">{{ preview_summary | truncate: 160 | escape_once }}</p>
+  {%- endif %}
+</article>

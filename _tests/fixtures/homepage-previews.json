@@ -1,0 +1,166 @@
+{
+  "baseline_commit": "f2cfe0b9e977ccac1ea6ab55180ac600d8ed9685",
+  "posts": [
+    {
+      "url": "/llm/ai/deep-implementation/2026/10/22/synthid-text-watermark-lab.html",
+      "title": "【深度實作】SynthID 文字浮水印怎麼測？CPU 實跑 96 份生成，也把誤報攤開看",
+      "path": "_posts/2026-10-22/2026-10-22-synthid-text-watermark-lab.md",
+      "sha256": "7809be096f8bb423e196254fb504537b5000924683c287ef8f0685649f4bba27",
+      "image": "/assets/images/2026-10-22/synthid-text-watermark-lab.jpg",
+      "description": "用純 Python 拆解 tournament sampling，再以 distilgpt2 與 Transformers 的 SynthID processor 實跑 96 份生成，檢查正確／錯誤密鑰、截短與 token 編輯，並公開校準門檻、誤報及重新分詞的限制。"
+    },
+    {
+      "url": "/llm/daily/2026/10/22/llm-daily.html",
+      "title": "【LLM 日報】2026 年 10 月 22 日 — LiteLLM 供應鏈攻擊、主動式代理與 agent-scale 基礎設施",
+      "path": "_posts/2026-10-22/2026-10-22-llm-daily.md",
+      "sha256": "774297d8b4137d13595e89f58903fe172e3e11210ed1806a80df63e46ddc373a",
+      "image": null,
+      "description": "本期聚焦 LiteLLM 1.107.0 被植入竊取憑證與遠端執行後門、Claude Duet 的背景代理預覽，以及 OpenAI 和 GitHub 為漏洞回應與 agent 流量調整基礎設施的方案。部分內容仍是公司或安全供應商的自述，正式可用範圍與獨立驗證有限。"
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/21/agentic-monitoring-harness.html",
+      "title": "【深度分析】Agentic Monitoring：讓代理設計監控，不代表讓模型接管告警迴圈",
+      "path": "_posts/2026-10-21/2026-10-21-agentic-monitoring-harness.md",
+      "sha256": "1e90bc06cf95f644b7421e3f667cb046531b085a82fcb43674c6f08ee9f27526",
+      "image": "/assets/images/2026-10-21/agentic-monitoring-harness.jpg",
+      "description": "Agentic Monitoring 如何讓 AI 代理協助監控軟體服務？拆解監控計畫、確定性執行器與調查代理的分工，說明告警可靠性、權限與部署驗收的檢查方式。"
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/21/whatsapp-hidden-support-instructions.html",
+      "title": "【深度分析】WhatsApp 客服隱藏指令外洩：網頁裡有什麼，與模型做過什麼，是兩回事",
+      "path": "_posts/2026-10-21/2026-10-21-whatsapp-hidden-support-instructions.md",
+      "sha256": "6e611bdc2b57faa2f16383c4d94b25558818911ecff498673249493bff23196c",
+      "image": "/assets/images/2026-10-21/whatsapp-hidden-support-instructions.jpg",
+      "description": "WhatsApp 客服頁面為何出現隱藏 AI 指令？整理 Redact 的掃描、移除時間線與公司回應，區分指令外洩、隱私資訊限制，以及尚未證實的模型服從效果。"
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/21/deepseek-federal-civilian-ban.html",
+      "title": "【深度分析】DHS 排除 DeepSeek：聯邦採購、第三方服務與風險證據的三條界線",
+      "path": "_posts/2026-10-21/2026-10-21-deepseek-federal-civilian-ban.md",
+      "sha256": "ff6e33256f716196b7663e7e0c32a04a9e61becdd59a0c7fcbd846ccc14cf590",
+      "image": "/assets/images/2026-10-21/deepseek-federal-civilian-ban.jpg",
+      "description": "DHS 排除 DeepSeek 的命令涵蓋哪些聯邦機關與第三方服務？依公開通知拆解採購排除、既有系統移除、本地部署與資安證據的不同邊界。"
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/21/anthropic-loss-accounting.html",
+      "title": "【深度分析】Anthropic 淨損 807 億美元：會計重估、算力支出與十年承諾怎麼分",
+      "path": "_posts/2026-10-21/2026-10-21-anthropic-loss-accounting.md",
+      "sha256": "b7d417899ae66a535a77d203e29b8e5095417680591017f364e81e549d2d3cbd",
+      "image": "/assets/images/2026-10-21/anthropic-loss-accounting.jpg",
+      "description": "Anthropic 上半年淨損 807 億美元，是否等於燒掉同額現金？依報導拆分可轉債重估、算力支出與十年採購承諾，說明判斷現金壓力仍缺哪些財報資料。"
+    },
+    {
+      "url": "/llm/daily/2026/10/21/llm-daily.html",
+      "title": "【LLM 日報】2026 年 10 月 21 日 — 開源執行環境、蛋白質設計與 AI 搜尋的驗證問題",
+      "path": "_posts/2026-10-21/2026-10-21-llm-daily.md",
+      "sha256": "a7bd24c4c4416622b638faf4a728f172f04fbc5e1a396bb088afa79cdf08a9cc",
+      "image": null,
+      "description": ""
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/20/killswitch-language-benchmark.html",
+      "title": "【深度分析】KillSwitch 讓 AI 寫程式卡關：是新語言難學，還是規格在設陷阱？",
+      "path": "_posts/2026-10-20/2026-10-20-killswitch-language-benchmark.md",
+      "sha256": "5c5d944f69856d4b3083d1e6b895ff5db9bfb902ce88494ebd0e628573ae2913",
+      "image": "/assets/images/2026-10-20/killswitch-language-benchmark.jpg",
+      "description": "KillSwitch 為何讓 AI 寫程式卡關？透過實跑成功與失敗範例，拆解反向執行、假規格與提示注入陷阱，並區分排行榜複合分數與原始通過率。"
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/20/jev-black-box-decisions.html",
+      "title": "【深度分析】Jev 把回答縮成機率：決策模型的黑箱要怎麼驗收？",
+      "path": "_posts/2026-10-20/2026-10-20-jev-black-box-decisions.md",
+      "sha256": "8dffef61ac08db5b1b717f66082dbe15be52ae4d76973817753d8c806fb8e8a9",
+      "image": "/assets/images/2026-10-20/jev-black-box-decisions.jpg",
+      "description": "Jev 只回傳機率、不提供理由，開發者該如何驗收？整理決策模型的選項順序、數值推理與對抗性輸入限制，說明校準、配對測試與人工覆核的設計。"
+    },
+    {
+      "url": "/llm/daily/2026/10/20/llm-daily.html",
+      "title": "【LLM 日報】2026 年 10 月 20 日 — 模型開始進入科學、程式語言與 GPU 執行環境",
+      "path": "_posts/2026-10-20/2026-10-20-llm-daily.md",
+      "sha256": "a18db4d8289b8709b0e59b47e31939481f14c03074e3351af6c52bda50bade64",
+      "image": null,
+      "description": ""
+    },
+    {
+      "url": "/llm/daily/2026/10/19/llm-daily.html",
+      "title": "【LLM 日報】2026 年 10 月 19 日 — 從模型記憶到科學工具，存取條件成為新聞主角",
+      "path": "_posts/2026-10-19/2026-10-19-llm-daily.md",
+      "sha256": "fdc1511ea97de94d2db39d3cd8a2d3344aba5351ef6691aacf2dc1c21803542d",
+      "image": null,
+      "description": ""
+    },
+    {
+      "url": "/llm/ai/weekly/2026/10/18/llm-weekly.html",
+      "title": "LLM 週報：模型競賽開始賣控制權，不只賣更大的分數",
+      "path": "_posts/2026-10-18/2026-10-18-llm-weekly.md",
+      "sha256": "fbb374cd3124da232c4630619ec1b6606c91551a77e9f4651aefa54855a21590",
+      "image": "/assets/images/2026-10-18/llm-weekly.jpg",
+      "description": ""
+    },
+    {
+      "url": "/llm/daily/2026/10/18/llm-daily.html",
+      "title": "【LLM 日報】2026 年 10 月 18 日 — 模型能力之外，部署條件與資料邊界更清楚了",
+      "path": "_posts/2026-10-18/2026-10-18-llm-daily.md",
+      "sha256": "04430c3282b61522b361b08ea6ceca30539ed643c15a00fcc70fe390ac9655db",
+      "image": null,
+      "description": ""
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/17/jev-text-classification.html",
+      "title": "【深度分析】從詞袋到 Jev：文字分類的進步，不是把模型愈做愈大",
+      "path": "_posts/2026-10-17/2026-10-17-jev-text-classification.md",
+      "sha256": "700c97d23aef82ecfbcfc7c8e6290d30eee792370a247871d72986637cc4f0ab",
+      "image": "/assets/images/2026-10-17/jev-text-classification.jpg",
+      "description": "文字分類一定需要大型聊天模型嗎？從詞袋、LSTM 到 Transformer 與 Jev，整理 IMDb 實測、決策介面及機率校準，分析本地分類器與 API 的選擇條件。"
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/17/star-skirmish-benchmark.html",
+      "title": "【深度分析】一小時寫出《星海爭霸》Bot：StarSkirmish 究竟在測模型的什麼？",
+      "path": "_posts/2026-10-17/2026-10-17-star-skirmish-benchmark.md",
+      "sha256": "33247cf5124184981310c145062492725da5d27484ae5cc6464f401455b6e769",
+      "image": "/assets/images/2026-10-17/star-skirmish-benchmark.jpg",
+      "description": "StarSkirmish 測的是模型即時玩星海爭霸，還是代理限時編寫 Bot？拆解一小時寫碼、正式對戰、五次重跑與 CLI 工具鏈，說明勝率和成本比較的適用範圍。"
+    },
+    {
+      "url": "/llm/daily/2026/10/17/llm-daily.html",
+      "title": "【LLM 日報】2026 年 10 月 17 日 — 從密碼學考古到量子電路，模型開始處理可驗證的工程問題",
+      "path": "_posts/2026-10-17/2026-10-17-llm-daily.md",
+      "sha256": "5f94869950dd721446ccf246f3b526001105104dfe6e1993e678504c399dd7f6",
+      "image": null,
+      "description": ""
+    },
+    {
+      "url": "/llm/daily/2026/10/16/llm-daily.html",
+      "title": "【LLM 日報】2026 年 10 月 16 日 — agent 的權限、評測與部署邊界",
+      "path": "_posts/2026-10-16/2026-10-16-llm-daily.md",
+      "sha256": "a35ada30e9fd9b8f0d5026a495b94df6c5b60c63c82527f5a9c72a138e90a3e7",
+      "image": null,
+      "description": ""
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/15/rubygems-agents.html",
+      "title": "【深度分析】RubyGems 異常套件與 AI 代理：攻擊鏈可見，歸因仍有缺口",
+      "path": "_posts/2026-10-15/2026-10-15-rubygems-agents.md",
+      "sha256": "3c89d3b78ab841bc4f9891d2064ad0a52e1865788d585f68dbadbfadfc59af15",
+      "image": "/assets/images/2026-10-15/rubygems-agents-hero.jpg",
+      "description": "RubyGems 異常套件如何利用文件建置服務與舊版 API？比對研究者調查、平台紀錄與 OpenAI 回應，拆解資料運輸、金鑰竊取企圖及代理歸因的證據缺口。"
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/15/amp-beyond-code.html",
+      "title": "【深度分析】Amp 把 AI 代理帶出程式碼：能交付更多，誰來驗收？",
+      "path": "_posts/2026-10-15/2026-10-15-amp-beyond-code.md",
+      "sha256": "a1d7b2302734082faf52d9fd5bab1ad76a0e57f18a40ccdd415238c07d8d46c8",
+      "image": "/assets/images/2026-10-15/amp-beyond-code-hero.jpg",
+      "description": "Amp 如何把 AI 代理用於程式碼以外的工作？對照 Puck 的 Slack、語音與 MCP 功能，拆解跨系統權限、模型路由、成本及文件與產品頁面的驗收方式。"
+    },
+    {
+      "url": "/llm/ai/deep-analysis/2026/10/15/openai-conference-room.html",
+      "title": "【深度分析】OpenAI 會議室錄音裝置案：從實體入侵到證據邊界",
+      "path": "_posts/2026-10-15/2026-10-15-openai-conference-room.md",
+      "sha256": "5c451e8b10b9d094bd9567da73b062dfbcc6f6e4fae61b493916ee62145a4d5d",
+      "image": "/assets/images/2026-10-15/openai-conference-room-hero.jpg",
+      "description": ""
+    }
+  ],
+  "frozen_site_description": "AI 時代的未解之謎 — LLM 前沿 × 深度分析 × 城武觀點"
+}

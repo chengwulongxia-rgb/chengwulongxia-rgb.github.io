@@ -18,22 +18,11 @@ layout: default
       {%- endif -%}
       <ul class="post-list">
         {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        {%- assign preview_image_paths = site.static_files | map: 'path' -%}
         {%- for post in post_list -%}
           {%- unless post.categories contains "archive" -%}
           <li>
-            <span class="post-meta">{{ post.date | date: date_format }}
-            {% for category in post.categories %}
-              <a class="post-category" href="{{ '/categories/' | append: category | append: '/' | relative_url }}">{{ category }}</a>
-            {% endfor %}
-            </span>
-            <h3>
-              <a class="post-link" href="{{ post.url | relative_url }}">
-                {{ post.title | escape }}
-              </a>
-            </h3>
-            {%- if site.minima.show_excerpts -%}
-              {{ post.excerpt }}
-            {%- endif -%}
+            {% include post-preview.html post=post date_format=date_format image_paths=preview_image_paths eager=forloop.first %}
           </li>
           {%- endunless -%}
         {%- endfor -%}
