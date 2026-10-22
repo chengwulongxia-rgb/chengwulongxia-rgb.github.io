@@ -76,11 +76,44 @@ PHP 傳統上用 bailout 處理 OOM——一個 `longjmp()`，直接從配置失
 - `fill_buffer()` 新增 `post_max_size` 的即時檢查，避免只在進入時檢查一次。
 - multipart header 解析收斂：只保留 `Content-Disposition` 與 `Content-Type`，忽略重複的 header。原本每個 header 都會 `estrdup` 進一份 list——那本身就是一條放大路徑。
 
-### 196 個 `oom_*` 測試是觸發面地圖
+### 為什麼一個請求的 OOM 會跨到下一個請求
 
-新增測試的命名直接標出維護者擔心哪些入口：`oom_array_fill_*`、`oom_array_pad_*`、`oom_json_decode_*`、`oom_SplFixedArray_*`、`oom_debug_backtrace_*`、`oom_exception_trace`、`oom_interrupt_unfinished_call_frame`……還有一整組 `tests/basic/oom_rfc1867_*.phpt`，專門打 multipart 解析。
+兩個 CVE 是同一件事的兩半，分界在「中斷發生在哪裡」。第一個 CVE 是損毀當下，第二個 CVE 是損毀留下來。
 
-那組測試的註解寫得很直白：每個測試都對 php-cgi 送出 multipart body，配一個**很小的 `memory_limit`**，並把其他輸入上限全部拉高，讓「只有記憶體上限在限制解析器累積什麼」。它們逐一測試：巨大的欄位名稱、巨大的陣列上傳名稱、大量檔案 part、在 `$_FILES` 註冊的每一步剛好撞到上限、超長檔名落在 `[full_path]`、header 續行、超長 header 行、header 數量。這是公開的、可稽核的觸發面清單。
+PHP 的 worker 生命週期是：處理請求、destroy 該請求持有的記憶體、處理下一個。但引擎與擴充有一批**由 worker 保留、內容卻指向單一請求**的全域狀態——錯誤處理、session、物件、擴充各自的狀態都屬於這一類。正常關閉時它們會被重設；被 bailout 打斷時，官方公告的說法是它們「可能沒有被正確重設，或在被重設之後又被重新填回」。
+
+於是下一個請求啟動時，任何**在正常初始化之前**就讀取這些全域的操作，讀到的是一塊已經被釋放的記憶體。這就是 use-after-free 的成形方式，也是為什麼修補的第二條寫的是「Properly reset various globals that may be accessed **during startup**」——關鍵詞是 during startup，不是 at shutdown。清理做得再乾淨，只要有一條路徑在下一個請求的初始化之前先讀了它，損毀就已經傳遞出去了。
+
+這個設計後果是：**損毀不需要停留在同一個請求裡，也不需要攻擊者控制第一個請求的結果。** 他只需要讓某個請求在錯誤的時機失敗，然後等下一個請求（可能是別人的請求）去讀它。在 mod_php 的 prefork 或 FPM 這種長命 worker 下，第二個請求是誰的，攻擊者甚至可以等。
+
+### 196 個 `oom_*` 測試才是嚴重性的實證
+
+如果有人想用「那只是 multipart 的問題」安慰自己，這份測試清單會直接否掉它。把新增的測試按子系統數一遍：
+
+| 子系統 | 新增 `oom_*` 測試 |
+|---|---|
+| Zend 引擎核心 | 63 |
+| ext/standard | 23 |
+| ext/mbstring | 22 |
+| tests/basic（含 rfc1867） | 19 |
+| ext/gd | 14 |
+| ext/date | 13 |
+| ext/soap | 11 |
+| ext/zlib | 9 |
+| ext/exif、ext/pcre、ext/xmlreader | 各 7 |
+| ext/filter、ext/iconv | 各 6 |
+| ext/intl | 4 |
+| ext/bz2、ext/simplexml、ext/xml | 各 3 |
+| ext/curl、sapi | 各 2 |
+| ext/dom、ext/fileinfo、ext/imap | 各 1 |
+
+**227 個檔案、189 個互不重複的操作。** 涵蓋的入口包括 `array_fill`、`array_pad`、`array_chunk`、`unserialize`（含 `SplFixedArray`）、`json_decode`、`gzdecode`／`gzcompress`／`bzdecompress`、`exif_read_data`、`getimagesize`／`getimagesizefromstring`、`imagecreatefrom*`、`filter_var`／`filter_input`、`preg_*`、`date_parse` 與 `DateTime` 建構、`SoapClient`／`SoapServer`、`curl_exec`／`curl_multi_exec`、`iconv`、`debug_backtrace`、`error_get_last`、`exception_trace`，以及 `interrupt`／`hard_limit_exceeded`／`after_main_script` 這類引擎生命週期狀態。
+
+這個分佈本身就是結論：**維護者認定「OOM 會造成狀態損毀」不是 multipart 解析的個別缺陷，而是一個橫跨 22 個子系統的模式。** 而這些入口裡有一大票可以被一般應用程式輸入直接觸及——上傳圖片丟給 `getimagesize`、把使用者資料餵進 `unserialize`、解一個壓縮檔、解析一段 XML。公告只示範了 multipart 那條，因為那是他們驗證到的第一條，不是唯一一條。
+
+對照組也值得看：`tests/basic/oom_rfc1867.inc` 的註解明說，每個測試都刻意把 `post_max_size`、`upload_max_filesize`、`max_input_vars`、`max_file_uploads` 拉到極高，再配一個**很小的 `memory_limit`**，讓「只有記憶體上限在限制解析器累積什麼」。所以觸發條件不是「傳很大的東西」，而是**讓某一次配置在錯誤的時機失敗**。這正是公告強調設定調整只是部分緩解的原因——把 `post_max_size` 調低只擋掉一條路，`unserialize` 那條還在那裡。
+
+那組測試同時把 multipart 的細節逐一列出來當回歸項：巨大的欄位名稱、巨大的陣列上傳名稱、大量檔案 part、在 `$_FILES` 註冊的每一步剛好撞到上限、超長檔名落在 `[full_path]`、header 續行、超長 header 行、header 數量。這是公開、可稽核的觸發面清單。
 
 `CVE-2026-109619` 則是另一條路：PHP 有各種全域狀態（error、session、object、extension）由 worker 持有、卻指向屬於單一請求的記憶體。某些在「下一個請求初始化之前」執行的操作，會存取到那份已經釋放的狀態——形成 use-after-free（CWE-416）。成立條件明確：需要一個請求留下殘留狀態，加上**後續請求落在同一個 worker** 上。官方確認兩條路徑：PHP 8.5 的 `fatal_error_backtraces`，以及預設開啟的 session upload progress。
 
@@ -100,9 +133,7 @@ PHP 傳統上用 bailout 處理 OOM——一個 `longjmp()`，直接從配置失
 
 ## 我自己在隔離環境跑了什麼
 
-先說一件會決定你怎麼讀這一節的事：**以下是我在隔離環境做到哪裡，不是這個漏洞有多嚴重的證據。** 嚴重性來自公告裡那組研究者的已驗證結果，不是來自我這台桌機。
-
-我沒有寫利用程式，也不會把「觸發 OOM」講成 RCE。這三個等級不能互相冒充：**觸發異常 → 觀察到記憶體錯誤 → 達到 RCE**。以下只做到第一項——而「我只做到第一項」是一個關於我花了多少力氣的敘述，不是關於攻擊者能做到什麼的敘述。
+這一節只量一件事：OOM 落在請求生命週期的哪個位置。三個等級不能互相冒充——**觸發異常 → 觀察到記憶體錯誤 → 達到 RCE**——我做到第一項，沒做到後兩項，所以以下只報第一項。
 
 環境是一對固定版本：`8.4.26` 與修補後的 `8.4.27`，分別以 `php-cgi`（短生命週期）、`php -S` 與 Apache mod_php（長生命週期）執行。容器一律 `--network none`、記憶體上限、lab 目錄唯讀掛載、跑完即刪。body 的形狀取自上游新增的那幾個 `oom_rfc1867` 測試。
 
@@ -126,7 +157,7 @@ Fatal error: Allowed memory size of 8388608 bytes exhausted
 
 **上面那張清單要這樣讀：每一項都是「我沒做到」，不是「做不到」。** 我掃的是公開測試用過的形狀、一個晚上、幾個填充值。從 OOM 走到控制流劫持需要對堆積重用做精確安排——那是投入多少工程時間的問題，不是可不可能的問題。而且驗證者不是我：公告裡那組人是在 mod_php、預設輸入與記憶體上限之下、用單一未驗證請求拿到完整 RCE，而且修補把 196 個回歸測試塞進公開 repo，本身就說明維護者認為這條路徑有多寬。**記憶體安全漏洞的分級從來不看「有沒有人示範給我看 shell」——攻擊者不會先發 PoC 再用。**
 
-換句話說：**OOM 確實可以在請求解析階段被觸發，但從那裡走到記憶體損毀，需要遠比「讓一次配置失敗」精確的堆積安排。** 我沒有做到，也不假裝做到。掃描的輸出、腳本與方法論都放在 [deep-dive-code](https://github.com/chengwulongxia-rgb/deep-dive-code/tree/main/php2shell-oom-to-uaf)。
+換句話說：**OOM 確實可以在請求解析階段被觸發，但從那裡走到記憶體損毀，需要遠比「讓一次配置失敗」精確的堆積安排。** 我沒有做到，也不假裝做到。這一節的價值在於把「OOM 發生在應用程式碼之前」量出來——那是嚴重性的前提，不是嚴重性本身；嚴重性來自上一節那 189 個入口的清單，以及 mod_php 上已驗證的 RCE。掃描的輸出、腳本與方法論都放在 [deep-dive-code](https://github.com/chengwulongxia-rgb/deep-dive-code/tree/main/php2shell-oom-to-uaf)。
 
 過程中踩到的兩個方法論陷阱值得記下來，因為它們會直接製造假結果：**第一，client 會繼承 server 的 ini**——把 mod_php 的 `memory_limit` 寫進 `conf.d/`，同一個容器裡負責發請求的 PHP CLI 也讀同一份，結果是 *client* 先 OOM，看起來像 server 的錯誤，實際上請求根本沒送出去。修法是 client 一律 `php -n`。**第二，CGI 模式看不出跨請求問題**——每個請求都是新程序，前一次 bailout 留下的狀態沒有機會被下一個請求讀到，只用 CGI 測會得到「兩版一樣」的結論，而那個結論沒有意義。
 
