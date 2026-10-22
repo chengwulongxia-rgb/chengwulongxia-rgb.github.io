@@ -25,17 +25,16 @@ body {
 }
 
 /* ===== Layout ===== */
+html {
+  scrollbar-gutter: stable;
+}
+
 .wrapper {
   max-width: 800px;
   margin-right: auto;
   margin-left: auto;
   padding-right: 24px;
   padding-left: 24px;
-}
-
-/* Main content stays 800px; home pages reserve extra space for the sidebar. */
-body:has(.post-preview) .wrapper {
-  max-width: 1040px;
 }
 
 .page-content {
@@ -411,7 +410,7 @@ a:hover {
 /* ===== Homepage Two-Column Layout ===== */
 .home-layout {
   display: grid;
-  grid-template-columns: 1fr 200px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 2.5rem;
   align-items: start;
 }
@@ -421,8 +420,18 @@ a:hover {
 
 /* ===== Sidebar ===== */
 .sidebar {
-  position: sticky;
+  position: static;
   top: 1.5rem;
+}
+
+/* Keep the centered main column intact; use the outer gutter for the sidebar. */
+@media (min-width: 1360px) {
+  .home-layout {
+    grid-template-columns: 800px 200px;
+  }
+  .sidebar {
+    position: sticky;
+  }
 }
 .sidebar-heading {
   font-size: 0.75rem;
@@ -467,8 +476,8 @@ a:hover {
   text-align: center;
 }
 
-/* Mobile: stack sidebar below */
-@media (max-width: 700px) {
+/* Stack the sidebar whenever the outer gutter cannot hold it safely. */
+@media (max-width: 1359px) {
   .home-layout {
     grid-template-columns: 1fr;
   }
