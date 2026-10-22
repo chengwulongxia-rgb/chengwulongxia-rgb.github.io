@@ -138,15 +138,20 @@ class HomepagePreviewTests(unittest.TestCase):
         self.assertNotIn('不定期出刊，精選近期最重要', intro)
         self.assertNotIn('由 Hermes Agent 自動化管線驅動', intro)
 
-    def test_wider_home_is_scoped_without_widening_article_pages(self):
+    def test_main_content_is_800_with_extra_space_for_home_sidebar(self):
         css = shared.read_target('/assets/css/style.css')
         base = re.search(r'\.wrapper\s*\{\s*max-width:\s*(\d+)px;', css)
         home = re.search(r'body:has\(\.post-preview\)\s+\.wrapper\s*\{\s*max-width:\s*(\d+)px;', css)
         self.assertIsNotNone(base)
         self.assertIsNotNone(home, 'Homepage-only width rule is missing')
         assert base is not None and home is not None
-        self.assertEqual(int(base[1]), 720)
+        self.assertEqual(int(base[1]), 800)
         self.assertEqual(int(home[1]), 1040)
+        for route in ['/about/', '/all-categories/', '/llm/ai/deep-analysis/2026/10/21/agentic-monitoring-harness.html']:
+            with self.subTest(route=route):
+                page = shared.read_target(route)
+                self.assertIn('class="wrapper"', page)
+                self.assertNotRegex(page, r'class="post-preview(?:\s|")')
 
     def test_posts_and_frozen_subtitle_preserved(self):
         for post in self.evidence['posts']:

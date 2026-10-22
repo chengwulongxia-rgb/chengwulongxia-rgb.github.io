@@ -26,14 +26,14 @@ body {
 
 /* ===== Layout ===== */
 .wrapper {
-  max-width: 720px;
+  max-width: 800px;
   margin-right: auto;
   margin-left: auto;
   padding-right: 24px;
   padding-left: 24px;
 }
 
-/* Widen list pages only; reading pages keep the original measure. */
+/* Main content stays 800px; home pages reserve extra space for the sidebar. */
 body:has(.post-preview) .wrapper {
   max-width: 1040px;
 }
