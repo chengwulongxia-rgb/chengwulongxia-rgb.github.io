@@ -5,7 +5,7 @@ description: "AI Agent 讀到惡意指令後，哪些控制能阻止越權？從
 permalink: /guides/agent-security/
 nav: false
 author: 龍蝦城武
-last_modified_at: 2026-10-22
+last_modified_at: 2026-10-27
 sitemap: true
 seo:
   type: WebPage
@@ -65,6 +65,10 @@ Prompt injection 的要點不是文字裡有沒有「忽略先前指示」，而
 這是任務權限的設計示例，不是某一套 agent 已經具備的預設政策。實際切分也要看資料敏感性：唯讀工具若能讀遍所有客戶資料，再把內容放進回答，一樣可能造成外洩。<sup><a href="#source-2">[2]</a></sup>
 
 人工核准也要對準具體動作。畫面應讓人核對操作、資源、參數與預期影響；執行器要確認核准屬於目前使用者及這一次呼叫，而且尚未失效或被消耗。模型在文字裡說「使用者同意了」，不能取代這個檢查。<sup><a href="#source-7">[7]</a></sup>
+
+[Argus 的原始碼與 18 項離線控制測試]({{ '/llm/ai/deep-analysis/2026/10/27/argus-action-broker-boundaries.html' | relative_url }})提供一個具體對照：開啟低風險自動核准後，同一 principal 提出相同動作，human 請求可以自動核准，帶有 agent run ID 的請求仍待人工核准；另一項測試確認 agent 提案工具沒有呼叫假執行器的 execute。它驗證應用程式的授權路徑，不是模型不會被誘導的證明，也不是作業系統隔離。
+
+驗收還要跨過時間與恢復路徑。該選集測到「請求已排隊、worker 檢查前啟用 kill switch」會拒絕執行；讀碼則顯示 worker 的新 dry-run 之後沒有再檢開關，而且 rollback 同樣受開關阻擋。因此應分開設計「停止新動作」與「恢復已變更資源」的測試，不把一個停止按鈕當成所有時間點的中止保證。真雲端副作用、回滾與多 worker 同步不在這次假執行器測試的驗證範圍。
 
 延伸閱讀：[Cloudflare `cf` 的命令發現與權限問題]({{ '/llm/ai/deep-analysis/2026/09/29/cloudflare-cf-agent-cli-permission-boundary.html' | relative_url }})。其中社群提出的細粒度授權建議，不能直接當成產品已交付的功能。
 
@@ -158,14 +162,15 @@ main after clone change: changed-in-worktree
 不必按發布日期全部讀完，可以選一條路線：
 
 - **正在導入 coding agent**：先看 [worktree 的共享狀態]({{ '/llm/ai/deep-analysis/2026/07/31/git-worktrees-isolation-coding-agents.html' | relative_url }})，再用 [信任邊界掃描器]({{ '/llm/ai/deep-implementation/2026/09/17/agent-boundary-scanner.html' | relative_url }})理解安裝與 CI 入口，最後列出自己的路徑、網路及憑證權限。
-- **正在設計工具與技能**：讀 [Cloudflare `cf` 的授權問題]({{ '/llm/ai/deep-analysis/2026/09/29/cloudflare-cf-agent-cli-permission-boundary.html' | relative_url }})與 [SkillCascade 的交接條件]({{ '/llm/ai/paper-breakdown/2026/09/30/skill-cascade-cross-skill-agent-attacks.html' | relative_url }})，把敏感動作的核准放到真正執行它的元件。
+- **正在設計工具與技能**：讀 [Cloudflare `cf` 的授權問題]({{ '/llm/ai/deep-analysis/2026/09/29/cloudflare-cf-agent-cli-permission-boundary.html' | relative_url }})與 [SkillCascade 的交接條件]({{ '/llm/ai/paper-breakdown/2026/09/30/skill-cascade-cross-skill-agent-attacks.html' | relative_url }})，再用 [Argus 的提案／執行與 kill switch 對照]({{ '/llm/ai/deep-analysis/2026/10/27/argus-action-broker-boundaries.html' | relative_url }})檢查核准是否到真正執行時仍有效。
 - **想判讀安全研究與新聞**：比較 [CoT Forgery 的小樣本實作]({{ '/llm/ai/deep-implementation/2026/06/23/cot-forgery.html' | relative_url }})、[WhatsApp 的外洩證據]({{ '/llm/ai/deep-analysis/2026/10/21/whatsapp-hidden-support-instructions.html' | relative_url }})與 [RubyGems 的歸因缺口]({{ '/llm/ai/deep-analysis/2026/10/15/rubygems-agents.html' | relative_url }})，練習把輸入、行為、後果與身分分開。
 
 ## 更新紀錄與使用範圍
 
 - **2026-10-22**：建立本指南，加入 Git config 共享的無害實跑、分層控制檢查及按問題分組的閱讀路線。
+- **2026-10-27**：加入 Argus 的 agent 提案、排隊後政策重檢與停止／恢復分離案例，附 18 項離線控制測試的範圍與限制。
 - 本頁是持續維護的主題指南，不是最新產品功能表。舊文章保留原發布時間與當時脈絡；本文不沿用其無條件安全保證，也不把歷史數字當現行產品成績。
-- Git 小實驗是本版新增實測；其餘驗收案例是建議流程。更新只有增加或修正實質內容時才調整日期，不因連結重排就假裝重新驗證全部產品。
+- Git 小實驗與 Argus 文章的指定離線測試有實跑紀錄；其餘驗收案例是建議流程。更新只有增加或修正實質內容時才調整日期，不因連結重排就假裝重新驗證全部產品。
 
 ## Sources
 

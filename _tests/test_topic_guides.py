@@ -155,7 +155,7 @@ class TopicGuideTests(unittest.TestCase):
         posts = assigned_posts()
         evidence = json.loads((ROOT / '_tests/fixtures/agent-security-evidence.json').read_text())
         expected = [post['url'] for post in evidence['related_posts']]
-        self.assertEqual(len(expected), 9)
+        self.assertEqual(len(expected), 10)
         self.assertEqual(set(posts), set(expected))
         guide_links = Document(read_target(GUIDE_URL)).links
         for route in posts:
