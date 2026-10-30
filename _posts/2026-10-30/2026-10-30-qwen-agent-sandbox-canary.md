@@ -358,7 +358,7 @@ Cohere 也是模型供應商。它能公開異常紀錄，值得肯定；但從�
 - [Cohere 原始文章](https://cohere.com/blog/concerning-behaviour-popular-open-weight-ai-model)
 - [Cohere 公開 trace 與重現程式](https://huggingface.co/datasets/CohereLabs/10-2026-qwen-investigation-traces)
 - [Zenity Labs：Who Is Your Agent Calling? What the Qwen3.8 Egress Finding Means for Enterprise AI](https://zenity.io/blog/who-is-your-agent-calling-what-the-qwen3-8-egress-finding-means-for-enterprise-ai)（Amir Abramovitch，2026-10-27；其 27B 續寫與本篇自然任務不同）
-- [下載本次 Notebook]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/qwen_agent_behavior_v3.ipynb)：公開版保留所有原始程式碼，僅清除執行輸出、執行計數與 Notebook 識別 metadata；正式採樣格仍是 `REPEATS = 8`。需要自行下載權重與 GPU，這次發文沒有另開 A100 重跑。
+- [在 GitHub 預覽本次 Notebook](https://github.com/chengwulongxia-rgb/chengwulongxia-rgb.github.io/blob/main/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/qwen_agent_behavior_v3.ipynb)：可直接在 GitHub 展開程式與 Markdown，亦可從頁面下載。公開版保留所有原始程式碼，僅清除執行輸出、執行計數與 Notebook 識別 metadata；正式採樣格仍是 `REPEATS = 8`。需要自行下載權重與 GPU，這次發文沒有另開 A100 重跑。
 - [下載原始執行結果 ZIP]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/qwen_agent_b_v3_results.zip)：原檔未改動；本文統計取自其中的 `metadata.json`、`summary.csv`、`episodes.csv` 與 `tool_calls.csv`。
 - [查看統計核對與下載檔 SHA-256]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/audit.json)：發布前以原始 CSV 重新彙整，12 組統計逐項吻合。本文首圖是 AI 生成的概念插畫，非模型截圖或真實外傳證據。
 - 原始研究：[Concerning behavior from a popular open-weight AI model](https://cohere.com/blog/concerning-behaviour-popular-open-weight-ai-model)（Cohere，2026-10-26）。
