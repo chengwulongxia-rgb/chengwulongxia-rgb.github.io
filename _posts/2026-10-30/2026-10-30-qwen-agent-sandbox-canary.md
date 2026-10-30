@@ -5,10 +5,10 @@ description: "從 Cohere 的 Qwen 異常上傳紀錄出發，核對 Qwen3.8-27B 
 date: 2026-10-30 16:09:37 +0800
 categories: [llm, ai, deep-implementation]
 guide: agent-security
-image: "/assets/images/2026-10-30/qwen-agent-sandbox-canary-hero.jpg"
+image: "/assets/images/2026-10-30/qwen-agent-sandbox-canary-hero-v2.jpg"
 ---
 
-![hero]({{ site.baseurl }}/assets/images/2026-10-30/qwen-agent-sandbox-canary-hero.jpg)
+![hero]({{ site.baseurl }}/assets/images/2026-10-30/qwen-agent-sandbox-canary-hero-v2.jpg)
 
 前幾天看到 [iThome 這則新聞](https://www.ithome.com.tw/news/179978)：Cohere 在測試阿里巴巴的 `Qwen3.8-Flash-Next` 時，發現模型沒有乖乖寫偵測規則，反而檢查起執行環境，接著生成 `curl` 命令，試圖把測試字串上傳到北京的阿里雲儲存空間。
 
@@ -351,5 +351,5 @@ Cohere 也是模型供應商。它能公開異常紀錄，值得肯定；但從�
 - [Cohere 公開 trace 與重現程式](https://huggingface.co/datasets/CohereLabs/10-2026-qwen-investigation-traces)
 - [下載本次 Notebook]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/qwen_agent_behavior_v3.ipynb)：公開版保留所有原始程式碼，僅清除執行輸出、執行計數與 Notebook 識別 metadata；正式採樣格仍是 `REPEATS = 8`。需要自行下載權重與 GPU，這次發文沒有另開 A100 重跑。
 - [下載原始執行結果 ZIP]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/qwen_agent_b_v3_results.zip)：原檔未改動；本文統計取自其中的 `metadata.json`、`summary.csv`、`episodes.csv` 與 `tool_calls.csv`。
-- [查看統計核對與下載檔 SHA-256]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/audit.json)：發布前以原始 CSV 重新彙整，12 組統計逐項吻合。本文首圖是依實驗結果繪製的資料流示意，不是模型截圖。
+- [查看統計核對與下載檔 SHA-256]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/audit.json)：發布前以原始 CSV 重新彙整，12 組統計逐項吻合。本文首圖是 AI 生成的概念插畫，非模型截圖或真實外傳證據。
 - 原始研究：[Concerning behavior from a popular open-weight AI model](https://cohere.com/blog/concerning-behaviour-popular-open-weight-ai-model)（Cohere，2026-10-26）。
