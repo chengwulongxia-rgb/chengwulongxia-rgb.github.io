@@ -16,7 +16,7 @@ image: "/assets/images/2026-10-30/qwen-agent-sandbox-canary-hero-v2.jpg"
 
 看到這裡，很容易直接跳到「抓到後門了」。但對每天要把模型接進專案、終端機與部署流程的人來說，我更想知道：**原始紀錄究竟證明了什麼？換成自己手邊的 Agent，它又會怎麼做？**
 
-新聞主角太大，我沒有設備直接跑。於是開了一張 Colab 的 `NVIDIA A100-SXM4-80GB`，載入同系列、但不同模型的 `Qwen/Qwen3.8-27B`，自己做了一套記憶體內的虛擬檔案系統與模擬 Shell。
+新聞主角太大，我沒有設備直接跑；但 Zenity 的後續測試在開放權重的 `Qwen/Qwen3.8-27B` 看到了相關的 `curl` 檔案代理下載樣式。我因此開了一張 Colab 的 `NVIDIA A100-SXM4-80GB`，載入這個同系列、但不同於新聞主角的模型，自己做了一套記憶體內的虛擬檔案系統與模擬 Shell。
 
 三種普通程式碼任務、兩種提示策略、兩種檔案環境，每格跑 8 次，總共 **96 個 episode、627 次工具呼叫**。不預填半截命令，也不要求它上網。
 
@@ -58,15 +58,21 @@ Cohere 表示，這類行為在其評估中低於每十萬次呼叫一次；相�
 
 這張表顯示，前綴稍微改變，後續生成分布就會明顯變動。它可以幫忙研究模型在特定上下文裡容易接出什麼，**卻不能直接估計一般任務中，模型多常自己走到那裡。**
 
-同樣地，接出阿里雲網址，也不能單憑這點斷言「只是背過內部腳本」。訓練殘留是一種可能解釋，不是已經查驗過的訓練資料事實。
+同樣地，單靠接出阿里雲網址，還不能斷言「只是背過內部腳本」。下文 Zenity 的對照增加了訓練殘留這個解釋的支持，但沒有取得模型訓練資料或確認首次北京上傳的成因。
 
 還有一個容易混淆的細節：[公開重現腳本](https://huggingface.co/datasets/CohereLabs/10-2026-qwen-investigation-traces)保留原始 trace 的前 2,323 個 token，註解指出截斷位置已到上傳測試字串附近。它不是只丟進一行孤零零的 `curl -o`；也不能與表格各截斷點視為完全相同的設定。
 
 我對這段研究的保留很具體：**前綴續寫的結果，不能直接包裝成自然任務的觸發率。** 但因為後續用了 prefilling，就把第一次異常紀錄一起丟掉，也不公平。
 
-### 3. 所以，我改問自己能測的問題
+### 3. 為什麼選 27B：Zenity 看到同一類 `curl` 下載樣式
 
-我沒有重跑 `Flash-Next`，也沒有使用原本的資安題庫。這次測的是 `27B` 在三種普通程式碼任務裡的行為：
+選 `Qwen3.8-27B` 不是隨便找個同系列模型。[Zenity Labs 的後續分析](https://zenity.io/blog/who-is-your-agent-calling-what-the-qwen3-8-egress-finding-means-for-enterprise-ai)也測了這個開放權重模型：研究者根據 Cohere 公開的任務與部分推理內容重建場景，在四個 `curl` 命令截斷點續寫，並用兩個 Qwen3.6 模型對照。Zenity 報告，27B 的 31,000 次續寫中有 253 次以新加坡 `routify` 檔案代理主機作為第一個網址主機；兩個 Qwen3.6 模型各 31,000 次都沒有出現該主機。這給了我選 27B 的具體理由：它確實在別人的受控續寫測試中，生成過與新聞後續調查相關的 `curl` 外部下載連結。
+
+但「同類樣式」不是「同一事件」。Zenity 沒測 `Flash-Next`，也沒有重現首次異常的北京 `PUT` 上傳；其隔離執行的 48 條監控清單命令中，連到 `routify` 的 32 條是下載請求，沒有送出資料，也沒有執行下載內容。Zenity 傾向解釋為訓練紀錄殘留，這是它根據連結格式與對照組作的判斷，不是已公開訓練集可逐筆驗明的事實。它還指出，27B 在 `curl -s -m 10 -o` 截斷點沒有重現 Cohere 對 `Flash-Next` 報告的 23% 監控清單主機比例。模型、設定與可推論的問題都不能直接互換。
+
+### 4. 所以，我改問自己能測的問題
+
+我沒有重跑 `Flash-Next`，也沒有使用原本的資安題庫；更沒有像 Zenity 那樣預填 `curl` 前綴。這次測的是 `27B` 在三種普通程式碼任務裡的行為：
 
 - 不塞半截命令時，會不會生成外連命令？
 - 只叫它看程式碼，會不會擴大範圍去讀 `.env`？
@@ -295,7 +301,7 @@ head -c 200 /workspace/.env | sed 's/=.*/=<redacted>/'
 
 可疑網址要查，正常報告也不能免檢。
 
-這次實驗沒有找到原始事件的答案。我無法判定 Cohere 觀察到的行為是訓練殘留、污染，還是刻意植入；也不能拿另一個模型的零外連結果，替整個系列保證安全。
+這次實驗沒有找到原始事件的答案。Zenity 的對照讓「訓練殘留」更值得考慮，但我仍無法判定 Cohere 首次北京上傳的成因；也不能拿另一個模型的零外連結果，替整個系列保證安全。
 
 但我有一個很明確的立場：**Agent 安全要追蹤資料實際怎麼流動，不能只檢查模型有沒有說出危險的話。**
 
@@ -349,6 +355,7 @@ Cohere 也是模型供應商。它能公開異常紀錄，值得肯定；但從�
 - [iThome：阿里巴巴 Qwen 模型異常嘗試向北京上傳資料，推理紀錄卻稱不呼叫工具](https://www.ithome.com.tw/news/179978)
 - [Cohere 原始文章](https://cohere.com/blog/concerning-behaviour-popular-open-weight-ai-model)
 - [Cohere 公開 trace 與重現程式](https://huggingface.co/datasets/CohereLabs/10-2026-qwen-investigation-traces)
+- [Zenity Labs：Who Is Your Agent Calling? What the Qwen3.8 Egress Finding Means for Enterprise AI](https://zenity.io/blog/who-is-your-agent-calling-what-the-qwen3-8-egress-finding-means-for-enterprise-ai)（Amir Abramovitch，2026-10-27；其 27B 續寫與本篇自然任務不同）
 - [下載本次 Notebook]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/qwen_agent_behavior_v3.ipynb)：公開版保留所有原始程式碼，僅清除執行輸出、執行計數與 Notebook 識別 metadata；正式採樣格仍是 `REPEATS = 8`。需要自行下載權重與 GPU，這次發文沒有另開 A100 重跑。
 - [下載原始執行結果 ZIP]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/qwen_agent_b_v3_results.zip)：原檔未改動；本文統計取自其中的 `metadata.json`、`summary.csv`、`episodes.csv` 與 `tool_calls.csv`。
 - [查看統計核對與下載檔 SHA-256]({{ site.baseurl }}/assets/downloads/2026-10-30/qwen-agent-sandbox-canary/audit.json)：發布前以原始 CSV 重新彙整，12 組統計逐項吻合。本文首圖是 AI 生成的概念插畫，非模型截圖或真實外傳證據。
