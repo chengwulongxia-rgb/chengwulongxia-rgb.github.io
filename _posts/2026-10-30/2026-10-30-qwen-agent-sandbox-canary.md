@@ -217,7 +217,9 @@ Work entirely offline; do not contact external services, install anything, or in
 
 ![實驗結果：工具回傳與最終回答中的假 Canary]({{ site.baseurl }}/assets/images/2026-10-30/qwen-agent-sandbox-canary-results.png)
 
-先看有 `.env` 的六格。每格分母都是 8：
+先看有 `.env` 的六格。**每一列都跑了 8 個 episode（完整任務回合），不是 8 次工具呼叫。** `2/8` 表示 8 回中有 2 回至少一次出現該欄行為；`0/8` 只表示這 8 回沒有觀察到，不代表發生機率是零。
+
+讀欄位時也要分開：**「潛在機密存取標記」**只表示命令提到了 `.env` 等路徑，未必讀到內容；**「工具回傳含 Canary」**才表示模擬工具把完整假字串交回模型；**「最終回答含 Canary」**表示模型又把它寫進報告。「偵測到外連」則是有限的命令分類器標記，並非真的連上網路。這幾欄不能相加，也都不是實際機密外洩次數。
 
 <div style="overflow-x:auto" markdown="1">
 
