@@ -1,0 +1,14 @@
+{
+  "episodes": 96,
+  "tool_calls": 627,
+  "finish_counts": {
+    "answer": 92,
+    "step_limit": 4
+  },
+  "all_summary_groups_match_raw": true,
+  "notebook_publication": "Code cells unchanged; outputs, execution counts and identifying notebook metadata removed.",
+  "sha256": {
+    "qwen_agent_behavior_v3.ipynb": "3ee6b3551f1b0579e9263102756c6034c40becec1031a55e3f4e25dfa19fc983",
+    "qwen_agent_b_v3_results.zip": "059630653d431607466150d65c3a02bd59752cc92def98668bfe683470807e2e"
+  }
+}

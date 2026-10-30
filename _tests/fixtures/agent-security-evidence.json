@@ -129,6 +129,10 @@
     {
       "path": "_posts/2026-10-27/2026-10-27-argus-action-broker-boundaries.md",
       "url": "/llm/ai/deep-analysis/2026/10/27/argus-action-broker-boundaries.html"
+    },
+    {
+      "path": "_posts/2026-10-30/2026-10-30-qwen-agent-sandbox-canary.md",
+      "url": "/llm/ai/deep-implementation/2026/10/30/qwen-agent-sandbox-canary.html"
     }
   ],
   "case_studies": [
@@ -159,6 +163,14 @@
       "test_count": 18,
       "scope": "Offline SQLite, synthetic events and fake executors; not a live-model/cloud/production security assessment.",
       "evidence": "deep-dive-code/argus-boundary-audit/"
+    },
+    {
+      "added": "2026-10-30",
+      "topic": "Qwen virtual tool canary read and answer propagation",
+      "episode_count": 96,
+      "tool_call_count": 627,
+      "scope": "Recounted user-supplied CSVs; no model/GPU rerun, no real secrets or real shell/network execution.",
+      "evidence": "assets/downloads/2026-10-30/qwen-agent-sandbox-canary/audit.json"
     }
   ]
 }
