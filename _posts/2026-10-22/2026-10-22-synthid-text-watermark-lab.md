@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "【深度實作】SynthID 文字浮水印怎麼測？CPU 實跑 96 份生成，也把誤報攤開看"
-description: "用純 Python 拆解 tournament sampling，再以 distilgpt2 與 Transformers 的 SynthID processor 實跑 96 份生成，檢查正確／錯誤密鑰、截短與 token 編輯，並公開校準門檻、誤報及重新分詞的限制。"
+description: "用 distilgpt2／CPU 與 Qwen3-4B／Colab L4 分別實跑 96 份 SynthID 生成，公開校準門檻、截短與 token 編輯後的檢出、漏檢、誤報及重新分詞限制，附可重跑 Notebook。"
+last_modified_at: 2026-11-03 17:36:07 +0800
 image: /assets/images/2026-10-22/synthid-text-watermark-lab.jpg
 date: 2026-10-22 12:48:40 +0800
 categories: [llm, ai, deep-implementation]
@@ -12,6 +13,8 @@ categories: [llm, ai, deep-implementation]
 文字浮水印不是在句子裡塞一個看不見的字元，而是在選下一個 token 時，留下可以事後打分的統計訊號。問題是：訊號看得見，是否就足以判斷來源？這次真的在 CPU 上跑了 96 份模型生成。正確密鑰下，兩個長度的水印測試樣本都檢出；但 128-token、未加水印的 12 份對照，也有 3 份被判陽性。
 
 所以本文不只展示一張漂亮的檢出圖。我們先用一段純 Python 淘汰賽看清機制，再接 Hugging Face 的正式 SynthID processor，把取樣、有效位置、校準、誤報與文字重新分詞逐項攤開。這裡用的是公開小模型與自選實驗密鑰，**不是能驗出真正 Claude 浮水印的工具**。
+
+**2026 年 11 月 3 日 GPU 補測：**後續已用 Qwen3-4B／Colab L4 另跑同設計的 96 份生成。未編輯組仍全數檢出，但 64-token 刪除組降為 `7/12`，128-token 刪除組出現 `2/12` 未水印誤報。下方保留 10 月 22 日 CPU 實驗原貌，新結果另列於[GPU 補測](#qwen-gpu-retest)，不把兩輪混成同一份實驗。
 
 ## 原文摘要
 
@@ -211,7 +214,69 @@ HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 uv run python audit.py --replay
 
 要修改實驗，可從 `real_lab.py` 的 keys、`ngram_len`、提示組或生成設定開始。但換了設定，舊門檻不會自動繼續有效；應重新生成校準與測試資料，保留未水印 negative，然後重跑 audit。這比先替畫面放一個漂亮的「AI 機率」數字重要。
 
+<span id="qwen-gpu-retest"></span>
+## 2026-11-03 GPU 補測：換成 Qwen3-4B，刪除後開始漏檢
+
+原 CPU 實驗已經是真實模型生成，不是只有教學玩具。這次另用 `Qwen/Qwen3-4B` 在 NVIDIA L4 上生成，保留相同英文故事提示、seed、校準／測試切分、公開實驗 keys、64／128 新生成 tokens、取樣設定與評分規則；門檻則依新模型的未水印校準資料重新計算。舊 CPU 數據不覆蓋，兩輪也不合併成更大的獨立樣本。
+
+模型 revision 固定如下，載入不啟用 remote code、使用 safetensors：
+
+```text
+1cfa9a7208912126459214e8b04321603b3df60c
+```
+
+實際環境為 Python `3.13.16`、torch `2.11.0+cu130`、CUDA `13.0`、Transformers `4.57.1`；模型採 bfloat16、eager attention。提示逐字沿用原本的英文續寫句，不套 chat template、不加 thinking 前綴，因此這不是 Qwen 標準助理／思考模式的能力評測。模型、分詞器、精度與硬體都改了，不能把分數或耗時差異只歸因於 GPU。
+
+### 移到 GPU 時，兩個容易讓對照失準的地方
+
+第一個是 SynthID sampling table。相同 table seed 不代表 CPU 與 CUDA 的亂數產生器會給出相同表格；若生成端在 GPU 建表、評分端卻在 CPU 重建，就可能不是用同一張表驗同一份水印。這次先依舊實驗規則在 CPU 建立官方 processor 的 table，再將 table 與 keys 複製到 CUDA。正式生成前核對整張 table 及固定 token 序列的 g-values，保存 table 的 SHA-256；這是本實驗的重現配置，不是廠商部署設定。
+
+第二個是 checkpoint 自帶的生成預設。Qwen 的 temperature、top-p 或多個 EOS 設定不能悄悄混進舊實驗。因此明確建立 GenerationConfig、設 `use_model_defaults=False`，指定本次使用的 scalar EOS，並保持 `temperature=1`、`top_k=40`、`top_p=1`、`min_new_tokens=max_new_tokens`。評分仍排除 prompt，只對生成內容重算 context、EOS 與重複位置遮罩。
+
+### 正式 96 份：檢出與誤報一起列
+
+正式資料仍是每長度 24 份校準 plain、12 份測試 plain、12 份測試 watermarked，合計 **96 份生成、768 筆評分、16 組門檻**。下表只列正確 key；每列的水印與 plain 分母各為 12，前者數檢出、後者數誤報。例如 `7/12` 是 12 份水印中只判出 7 份，`0/12` 是本批未觀察到誤報，不是保證真實誤報率為零。不同編輯條件共享同一份原始生成，不是額外獨立文章。
+
+| 原始新生成 tokens | 條件 | 水印檢出 | plain 誤報 |
+|---:|---|---:|---:|
+| 64 | 未編輯 | 12/12 | 1/12 |
+| 64 | 保留前半 | 12/12 | 1/12 |
+| 64 | 刪除約一成 | 7/12 | 1/12 |
+| 64 | 替換約一成 | 10/12 | 2/12 |
+| 128 | 未編輯 | 12/12 | 0/12 |
+| 128 | 保留前半 | 12/12 | 0/12 |
+| 128 | 刪除約一成 | 11/12 | 2/12 |
+| 128 | 替換約一成 | 10/12 | 0/12 |
+
+![Qwen3-4B／L4 實跑：正確與錯誤 key 的水印檢出、未水印誤報並排比較]({{ site.baseurl }}/assets/images/2026-11-03/synthid-qwen3-l4-results.png)
+
+與 CPU 小模型那一批不同，這次的 64-token 刪除組出現漏檢；128-token 刪除組也同時出現漏檢與誤報。刪除／替換仍只操作 6 或 12 個 token，也就是原長度的 9.375%，不是語義改寫或翻譯。每個編輯條件依舊分開校準，不能把這張表當作單一部署門檻面對未知編輯的盲測。
+
+錯誤 key 的 watermarked 組只有「128 tokens 保留前半」為 `1/12`，其餘組為 `0/12`；錯誤 key 的 plain 誤報則在「128 tokens 未編輯」與「64 tokens 保留前半」各有 `1/12`，其餘為 `0/12`。這些也保存於完整 JSON，不把錯誤 key 包裝成永遠不會陽性的對照。
+
+### 抽一份漏檢看：少掉的不是只有字數
+
+以來源 `64-evaluation-watermarked-01` 為例，未編輯時有 59 個有效位置，mean-g 約 `0.567797`，高於該組門檻 `0.545833`，所以檢出。刪除 6 個 token 後，序列剩 58 個 token、54 個有效位置，重新計算的 mean-g 降為 `0.513889`，低於刪除組另外校準的門檻 `0.553241`，因此漏檢。
+
+這不是拿原本分數扣掉六份證據：刪除讓後面的局部 5-gram context 改變，程式必須重新建立 g-values 與遮罩。另一份未水印來源 `128-evaluation-plain-03`，刪除後分數約 `0.529018`，反而超過該組門檻 `0.525901`，成為誤報。加長樣本或換大模型，都不能省掉未水印測試。
+
+### Notebook、重新分詞與實際執行帳
+
+這輪的模型載入、生成、評分、audit 與圖表直接寫在原生 Notebook cells，沒有把核心藏進另一支 Python worker。生成端在 CUDA，離線評分採 CPU；另用原 CPU 專案的 scorer 交叉重算全部 768 筆 g-values、遮罩、分數與 16 組門檻，結果一致。正式執行的 Notebook 沒有 cell 錯誤；原有測試加 Notebook 離線測試共 16 項通過。
+
+Qwen 也沒有自動解決 decode→encode 問題。未編輯的 plain 為 `0/72` 不一致、watermarked 為 `1/24`；刪除後是 `10/72` 與 `4/24`，替換後是 `27/72` 與 `15/24`。plain 分母含校準與測試，watermarked 只有測試。這輪有保存重新分詞後的分數，但沒有套原 ID 門檻下判斷，仍不能宣稱完成「貼任意文字即可測」的端到端評估。
+
+正式一輪包含安裝、下載、生成、取回結果與關機約 15.23 分鐘。過程先遇到 Colab 缺 ensurepip，以及預載 Matplotlib 與指定版本衝突；後者雖有 cell 錯誤，CLI 仍繼續生成了 96 份，所以那輪明確排除於正式資料。修正後重跑的正式 96 份與前一輪逐 token 一致，不能因此混算成 192 份獨立主樣本。三次 VM lifecycle 合計約 31.41 分鐘，未超過本次 60 分鐘上限，所有 VM 已停止；完整執行帳另存，沒有把故障與重跑成本藏掉。
+
+- [可重跑的原生 Notebook](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/66ae8f75ebba9ea3b4e07080a4063ebcd069af9a/synthid-text-lab/qwen3_gpu.ipynb)與[本次執行輸出](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/66ae8f75ebba9ea3b4e07080a4063ebcd069af9a/synthid-text-lab/qwen3_gpu_output.ipynb)。首次 Run all 需要網路、L4 與主機安全注入的 HF_TOKEN；憑證不寫進 cells 或結果，勿把 token 值放入命令列。
+- [正式逐筆 JSON](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/66ae8f75ebba9ea3b4e07080a4063ebcd069af9a/synthid-text-lab/results/qwen3-l4-20261103/real.json)、[96 份原始生成](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/66ae8f75ebba9ea3b4e07080a4063ebcd069af9a/synthid-text-lab/results/qwen3-l4-20261103/generations.jsonl)、[父端交叉驗收](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/66ae8f75ebba9ea3b4e07080a4063ebcd069af9a/synthid-text-lab/results/qwen3-l4-20261103/parent-audit.json)與[三次執行帳](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/66ae8f75ebba9ea3b4e07080a4063ebcd069af9a/synthid-text-lab/results/qwen3-l4-20261103/attempts.json)。
+- [完整結果 ZIP](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/66ae8f75ebba9ea3b4e07080a4063ebcd069af9a/synthid-text-lab/results/qwen3-l4-20261103/results.zip)。只重算分數與圖表時，可在 Notebook 設 `MODE='replay'`，將 `REPLAY_SOURCE` 指向解壓資料，並使用另一個空的輸出目錄；此模式不重新生成，也不下載模型。舊 CPU 的 audit.py 含 GPT-2 特定 EOS／vocabulary，Qwen 應走 Notebook 的相應驗收路徑。
+
+這次增加的是「換模型後，哪些條件會漏檢、誤報」的實際反例，不是對正式 Claude 水印的測試，也沒有做文字品質盲測。浮水印訊號能否用來判定來源，仍取決於模型、長度、編輯與校準分布，不能只靠未編輯組的 `12/12`。
+
 ## 城武觀點
+
+*以下保留 2026 年 10 月 22 日原稿觀點，數字指當時的 CPU 實驗。*
 
 我支持把浮水印當成可查證的來源線索，反對把它升格成作者身分裁判。這次同一套流程能檢出全部水印測試樣本，也能把未水印對照中的三份判成陽性；連轉成文字再讀回，七份水印樣本的 token 序列都變了。真正要交付的不是一個分數，而是分數的有效條件。正式密鑰不必為了透明而公開，但持有密鑰、掌握驗證權的一方，仍應交代適用長度、校準分布、誤報與申訴方式。這份小實驗沒有評判商用 Claude 的能力；它讓我更不願接受只有「檢出」兩字、沒有檢查路徑的來源判斷。
 
