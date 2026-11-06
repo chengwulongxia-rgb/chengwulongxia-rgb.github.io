@@ -3,6 +3,7 @@ layout: post
 title: "【深度分析】LLM成本能省42%？用兩項基準重算模型混用方案"
 description: "以Jeffery Kline的公開快照，重算兩模型混用的成本與逐項分數門檻，再比較只保留單一門檻會選出什麼。這是CPU算術與約束核對，不是重新評測模型或實際API帳單。"
 date: 2026-11-06 11:31:06 +0800
+last_modified_at: 2026-11-06 11:59:42 +0800
 categories: [llm, ai, deep-analysis]
 image: /assets/images/2026-11-06/llm-cost-frontier.png
 ---
@@ -91,14 +92,19 @@ $75.18; AA-LCR 82.0%; GDP.pdf 25.6%
 
 ## 六、核對程式與資料範圍
 
-[下載CPU核對程式]({{ '/assets/downloads/2026-11-06/audit_cost.py' | relative_url }})與[本次原始精度核對結果]({{ '/assets/downloads/2026-11-06/cost-audit.json' | relative_url }})。程式只需Python標準函式庫：預設讀取原作者公開頁面的JSON，不執行該頁JavaScript，也不呼叫模型API。它會先檢查快照雜湊；來源資料改變時即停止，不把新資料冒充本篇的歷史案例。也可指定本機JSON做離線核對。
+完整實作收在[deep-dive-code的獨立專案](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/4c6cfef654fde2c0c5847dd0cc64362b01415a36/llm-cost-frontier/README.md)，包含[核對程式](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/4c6cfef654fde2c0c5847dd0cc64362b01415a36/llm-cost-frontier/audit_cost.py)、[固定輸入快照](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/4c6cfef654fde2c0c5847dd0cc64362b01415a36/llm-cost-frontier/data/cost-data.json)與[原始核對結果](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/4c6cfef654fde2c0c5847dd0cc64362b01415a36/llm-cost-frontier/results/cost-audit.json)。程式與驗證資料以repo為準，blog只保留文章解說與圖片。
 
 ```bash
-python audit_cost.py
-# 或：python audit_cost.py cost-data.json
+git clone https://github.com/chengwulongxia-rgb/deep-dive-code.git
+cd deep-dive-code/llm-cost-frontier
+uv sync --frozen --python 3.13
+uv run --frozen python audit_cost.py data/cost-data.json
+uv run --frozen python -m unittest discover -s tests -v
 ```
 
-本次兩種讀取方式均已實跑並得到相同結果；正文的小範例另行執行。完整核對還包含放寬單一條件的失敗對照。首圖為依這份資料自行繪製，沒有使用模型生成圖片。
+上述核對指令使用專案內固定JSON，取得Python環境後即可離線執行，不需要GPU、API key或模型服務，也不執行該頁JavaScript。原CLI省略輸入路徑時，才會連網讀取作者公開頁面；快照雜湊改變即停止，不把新資料冒充本篇的歷史案例。
+
+本次搬移後已從專案內資料重新執行，並以五項測試核對原始結果一致、單一門檻失敗對照、快照變動拒絕及離線不觸發HTTP。程式與先前公布的結果保留原位元組；本次CLI輸出另存於[重跑結果](https://github.com/chengwulongxia-rgb/deep-dive-code/blob/4c6cfef654fde2c0c5847dd0cc64362b01415a36/llm-cost-frontier/results/replay.json)。首圖仍為依資料自行繪製的圖片。
 
 ## Sources
 
