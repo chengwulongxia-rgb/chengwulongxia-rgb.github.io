@@ -40,11 +40,11 @@ OpenAI 11 月 13 日宣布 ChatGPT Wallet，首波透過 dots 提供給美國符
 
 ### 4. [Claude Code 憑證外洩研究：「不要再問」留下的，不只有方便](https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again)
 
-Apiiro 11 月 5 日發布、11 月 8 日補上 Anthropic 回應的研究，指出永久核准 shell 指令時，帶有密鑰的完整命令可能被存入 `.claude/settings.local.json`，再隨 Git 提交公開。研究統計的 **1,122 是含其判定之 secret 的公開檔案數**，不是 1,122 名使用者或已遭入侵組織；該批檔案包含 1,379 個不同 secret，也不代表全部仍有效。這是本週延續追蹤的更新，不冒充本週才發生的新漏洞。
+11 月 8 日本站追蹤的 Apiiro 研究指出，永久核准 shell 指令時，帶有密鑰的完整命令可能被存入 `.claude/settings.local.json`，再隨 Git 提交公開。研究統計的 **1,122 是含其判定之 secret 的公開檔案數**，不是 1,122 名使用者或已遭入侵組織，也不代表所有憑證仍有效。本次原頁未成功取得正文，這項數據沿用本站 11 月 8 日保存的核對紀錄；研究蒐集期為 11 月 1–3 日，不冒充本週才發生的新漏洞。
 
 真正的機制不是「模型突然想外洩」，而是核准指令變成持久化規則，規則又碰上版本控制。[Claude Code 文件](https://code.claude.com/docs/en/settings)說明既有的全域 Git 排除保護，不能把它寫成完全沒有防線；但全域設定不隨程式庫搬家，而 [Git 官方規則](https://git-scm.com/docs/gitignore)也明確指出，ignore 不會讓已追蹤檔案停止追蹤。於是，一次用來授權執行的內容，可能意外成為可散布的秘密副本。
 
-這讓「保留人工同意就安全」的直覺失效：人核准的是執行某個動作，不必然知道相同內容將被長期保存並進入提交。Anthropic 回應正在研究改善方向，仍不等於全部情境已修好。實務上，先確認目前檔案及 Git 歷史是否含敏感值，發現外露先輪替憑證；刪掉現有檔案或補一行 ignore，不能撤回已經公開的副本。減少核准疲勞有價值，但不能靠擴大秘密的生命週期來換。
+這讓「保留人工同意就安全」的直覺失效：人核准的是執行某個動作，不必然知道相同內容將被長期保存並進入提交。現有忽略保護也不能替已公開的歷史版本收尾。實務上，先確認目前檔案及 Git 歷史是否含敏感值，發現外露先輪替憑證；刪掉現有檔案或補一行 ignore，不能撤回已經公開的副本。減少核准疲勞有價值，但不能靠擴大秘密的生命週期來換。
 
 ### 5. [模型權重驗出 Blackwell 痕跡：技術證據變強，不等於違規已定案](https://unemploymentlabs.com/checkpoint-forensics)
 
@@ -60,7 +60,7 @@ Unemployment Labs 11 月 12 日發表 checkpoint forensics 研究，稱四家中
 - **Businesses in ChatGPT 進入 beta**：商家可認領並更新資訊，Business Agents 首波面向符合條件的美國電商與線上服務業者。([來源](https://openai.com/index/introducing-businesses-chatgpt))
 - **Brave Search 支援 x402 付款**：以 Base 上的 USDC 逐次支付搜尋請求，讓 agent 不必先走傳統帳戶與 API key 流程。([來源](https://brave.com/blog/search-api-agentic-payments/))
 - **Modern Web Guidance 1.0 發布**：Chrome 團隊把現代網頁實務、相容性資料與既有程式庫現代化流程整理成 coding agent skills。([來源](https://developer.chrome.com/blog/modern-web-guidance-v1))
-- **Atuin Threads 串起不同工具的 agent sessions**：主打跨機器搜尋、同步與接續工作紀錄，處理對話脈絡散落各處的問題。([來源](https://blog.atuin.sh/threads-agent-sessions/))
+
 - **DeepSeek Ultrafast 公開推論引擎**：Baseten 提供 DeepSeek-V4.1-Flash 引擎與重現說明，其 2,060 tokens/s 是指定八張 B300 及 coding prompt 下的結果。([來源](https://github.com/basetenlabs/deepseek-ultrafast))
 - **清理 agent 歷史可能反而害它做錯**：一篇新預印本以受控實驗指出，世界尚未修正、歷史卻寫成已完成時，後續模型可能比保留原錯誤更難恢復。([來源](https://arxiv.org/abs/2611.14654))
 - **Together Compiler 探索持續最佳化推論**：新預印本以持續 agent 迴圈與常駐引擎設計，處理低成本量測與真實端到端效能不一致的問題。([來源](https://arxiv.org/abs/2611.14681))
