@@ -87,6 +87,18 @@
           "added": "2026-10-22"
         }
       ]
+    },
+    {
+      "id": 8,
+      "url": "https://arxiv.org/html/2611.26747v1",
+      "title": "SkillPrivus v1: privacy-of-use audit and limitations",
+      "accessed": "2026-11-24",
+      "quotes": [
+        {
+          "text": "The analysis identifies potential privacy harms supported by these artifacts",
+          "added": "2026-11-24"
+        }
+      ]
     }
   ],
   "related_posts": [
@@ -133,6 +145,10 @@
     {
       "path": "_posts/2026-10-30/2026-10-30-qwen-agent-sandbox-canary.md",
       "url": "/llm/ai/deep-implementation/2026/10/30/qwen-agent-sandbox-canary.html"
+    },
+    {
+      "path": "_posts/2026-11-24/2026-11-24-skillprivus-privacy-of-use.md",
+      "url": "/llm/ai/paper-breakdown/2026/11/24/skillprivus-privacy-of-use.html"
     }
   ],
   "case_studies": [
