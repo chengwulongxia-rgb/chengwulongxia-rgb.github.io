@@ -1,11 +1,11 @@
 ---
 layout: guide
 title: "AI Agent 安全與隔離指南：提示注入、工具權限與沙箱的邊界"
-description: "AI Agent 讀到惡意指令後，哪些控制能阻止越權？從提示注入、工具授權與 Git worktree，到容器、VM、技能交接與實際驗收，整理控制措施、案例閱讀順序及證據限制。"
+description: "AI Agent 讀到惡意指令後，哪些控制能阻止越權？從提示注入、工具授權與 Git worktree，到容器、VM、技能交接、資料用途與實際驗收，整理控制措施、案例閱讀順序及證據限制。"
 permalink: /guides/agent-security/
 nav: false
 author: 龍蝦城武
-last_modified_at: 2026-10-30
+last_modified_at: 2026-11-24
 sitemap: true
 seo:
   type: WebPage
@@ -142,6 +142,12 @@ main after clone change: changed-in-worktree
 
 [SkillCascade 論文拆解]({{ '/llm/ai/paper-breakdown/2026/09/30/skill-cascade-cross-skill-agent-attacks.html' | relative_url }})適合接著讀，但要保留攻擊者可控制多個已安裝技能的前提。文中的 Python 玩具例子是確定性資料流示意，不是真實 LLM 攻擊測試；不能拿它當掃描器已被繞過的證據。
 
+### 正常功能，也要檢查資料用途
+
+技能可能沒有惡意，也沒有超出已授予的檔案或網路權限，卻仍把資料拿去做任務未要求的推導、保留或分享。SkillPrivus把這類問題稱為用途隱私風險：從技能宣告及指令／程式重建資料操作，再檢查資料類型、主體、接收方與用途規範是否相稱。這是靜態風險審查，不是實際外洩紀錄；規範也部分來自模型判斷，不能把Privacy Card當成放行證書。<sup><a href="#source-8">[8]</a></sup>
+
+因此，本站建議在權限清單之外，另外寫出任務允許產生哪些個人屬性、交給誰、是否需新增保留檔。唯讀與網域allowlist只能限制部分動作，不能單獨判定新推論是否符合任務目的。具體案例及「原碼有行號，為何仍未驗證抽取完整」的對照，見[SkillPrivus論文拆解]({{ '/llm/ai/paper-breakdown/2026/11/24/skillprivus-privacy-of-use.html' | relative_url }})；這份閱讀材料沒有在本站重新執行技能或模型。
+
 ## 部署前怎麼驗收，事故報導又該怎麼讀
 {: #acceptance-tests }
 
@@ -172,6 +178,7 @@ main after clone change: changed-in-worktree
 - **2026-10-22**：建立本指南，加入 Git config 共享的無害實跑、分層控制檢查及按問題分組的閱讀路線。
 - **2026-10-27**：加入 Argus 的 agent 提案、排隊後政策重檢與停止／恢復分離案例，附 18 項離線控制測試的範圍與限制。
 - **2026-10-30**：加入 Qwen 虛擬工具實驗的 Canary 資料流案例，分開工具讀取、最終回答與有限外連分類的證據。
+- **2026-11-24**：加入SkillPrivus的用途隱私審查，區分獲准存取、用途相稱與靜態審查器的測量範圍。
 - 本頁是持續維護的主題指南，不是最新產品功能表。舊文章保留原發布時間與當時脈絡；本文不沿用其無條件安全保證，也不把歷史數字當現行產品成績。
 - Git 小實驗與 Argus 文章的指定離線測試有實跑紀錄；其餘驗收案例是建議流程。更新只有增加或修正實質內容時才調整日期，不因連結重排就假裝重新驗證全部產品。
 
@@ -199,3 +206,6 @@ main after clone change: changed-in-worktree
 
 <span id="source-7"></span>
 [7] [OWASP AI Agent Security](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
+
+<span id="source-8"></span>
+[8] [SkillPrivus v1：用途隱私審查、實驗與限制](https://arxiv.org/html/2611.26747v1)
