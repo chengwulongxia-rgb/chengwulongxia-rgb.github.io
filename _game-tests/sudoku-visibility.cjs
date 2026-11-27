@@ -1,6 +1,6 @@
-const {chromium}=require('/tmp/ttt-browser/node_modules/playwright');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const assert=require('node:assert/strict');
-(async()=>{const browser=await chromium.launch();try{const page=await browser.newPage();await page.goto(process.env.GAME_URL||'http://127.0.0.1:8765/sudoku/');await page.waitForFunction(()=>document.querySelectorAll('.cell[data-given]').length===81);await page.waitForTimeout(1200);
+(async()=>{const browser=await chromium.launch();try{const page=await browser.newPage();await page.goto(process.env.GAME_URL||'http://127.0.0.1:49157/sudoku/');await page.waitForFunction(()=>document.querySelectorAll('.cell[data-given]').length===81);await page.waitForTimeout(1200);
 // Simulate the browser visibility API only, never puzzle state.
 await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));});
 await page.waitForTimeout(1100);const before=await page.locator('#time').innerText();await page.waitForTimeout(2200);assert.equal(await page.locator('#time').innerText(),before);
